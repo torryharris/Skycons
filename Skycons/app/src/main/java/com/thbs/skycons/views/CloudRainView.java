@@ -19,7 +19,8 @@ public class CloudRainView extends View {
     private int screenW, screenH;
     private float X, Y;
     private Path path, path1, path2, path3;
-    int m=0, x1=0, y1=0, x2=0, y2=0, x3=0, y3=0;
+    int x1=0, y1=0, x2=0, y2=0, x3=0, y3=0;
+    float m = 0;
     boolean drop1 = true, drop2 = false, drop3 = false;
     private double count;
 
@@ -138,7 +139,7 @@ public class CloudRainView extends View {
             }
             if(y1==0) {
                 float value = (int) P1c2.y-((P1c1.y+P1Y)/2);
-                y1 = (int) (P1c2.y-value/2) + 10;
+                y1 = (int) (P1c2.y-value/2) + 15;
             }
 
             path1.moveTo(x1, y1);
@@ -149,7 +150,7 @@ public class CloudRainView extends View {
 
             canvas.drawPath(path1, paint1);
 
-            m = m+2;
+            m = m+2.5f;
             if(m==100) {
                 m=0;
                 path1.reset();
@@ -180,7 +181,8 @@ public class CloudRainView extends View {
 
             canvas.drawPath(path1, paint1);
 
-            m = m+2;
+            m = m+2.5f;
+
             if(m==100) {
                 m=0;
                 path1.reset();
@@ -199,7 +201,7 @@ public class CloudRainView extends View {
                 x3 = (x1+x2)/2 + 10;
             }
             if(y3==0) {
-                y3 = (y1+y2)/2;
+                y3 = (y1+y2)/2 + 10;
             }
 
             path1.moveTo(x3, y3);
@@ -211,7 +213,7 @@ public class CloudRainView extends View {
             canvas.drawPath(path1, paint1);
 
 
-            m = m+2;
+            m = m+2.5f;
             if(m==100) {
                 m=0;
                 path1.reset();

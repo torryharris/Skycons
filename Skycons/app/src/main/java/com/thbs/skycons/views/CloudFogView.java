@@ -159,6 +159,7 @@ public class CloudFogView extends View {
                move = false;
                backupL11 = (L1+20)+m*0.3f;
                backupL12 = (L2-20)+m*0.3f;
+
                m=0;
             }
 
@@ -168,6 +169,8 @@ public class CloudFogView extends View {
 
             path1.moveTo(backupL11-m*0.3f, H1);
             path1.lineTo(backupL12-m*0.15f, H1);
+
+            canvas.drawPath(path1, paintFog);
 
             if(m==50) {
                 move = true;
