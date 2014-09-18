@@ -6,12 +6,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by administrator on 11/09/14.
+ * Created by administrator on 17/09/14.
  */
 public class MoonView extends View {
 
@@ -66,6 +67,7 @@ public class MoonView extends View {
         super.onDraw(canvas);
 
         path = new Path();
+
         RectF rectF1 = new RectF();
         RectF rectF2 = new RectF();
 
@@ -76,16 +78,15 @@ public class MoonView extends View {
 
             pathPoints = getPoints(path);
 
-            if(a == 0) {
-                a = pathPoints[0].getX()-radius*0.3f;
-                b = pathPoints[999].getY()-radius*0.015f;
-                c = pathPoints[999].getX()+radius*0.3f;
-                d = pathPoints[0].getY()+radius*0.015f;
-            }
+            a = pathPoints[0].getX();
+            b = pathPoints[0].getY();
+            c = pathPoints[999].getX();
+            d = pathPoints[999].getY();
 
-            rectF2.set(a-(m/9.4f), b-(m/3f), c+(m/9.8f), d-(m/3f));
+            PointF P1c1 = calculateTriangle(c, d, a, b, true);
+            PointF P1c2 = calculateTriangle(c, d, a, b, false);
 
-            path.addArc(rectF2, 112-(m/2), 190);
+            path.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, a, b);
 
             canvas.drawPath(path, paint);
 
@@ -104,10 +105,15 @@ public class MoonView extends View {
 
             pathPoints = getPoints(path);
 
-            rectF2.set(backupRectF.left+(m/9.4f), backupRectF.top+(m/3f),
-                    backupRectF.right-(m/9.8f), backupRectF.bottom+(m/3f));
+            a = pathPoints[0].getX();
+            b = pathPoints[0].getY();
+            c = pathPoints[999].getX();
+            d = pathPoints[999].getY();
 
-            path.addArc(rectF2, 62+(m/2), 190);
+            PointF P1c1 = calculateTriangle(c, d, a, b, true);
+            PointF P1c2 = calculateTriangle(c, d, a, b, false);
+
+            path.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, a, b);
 
             canvas.drawPath(path, paint);
 
@@ -155,13 +161,33 @@ public class MoonView extends View {
         }
 
         public float getX() {
-        return x;
-    }
+            return x;
+        }
 
         public float getY() {
-        return y;
+            return y;
+        }
+
     }
 
+    private PointF calculateTriangle(float x1, float y1, float x2, float y2, boolean left) {
+
+        PointF result = new PointF(0,0);
+        float dy = y2 - y1;
+        float dx = x2 - x1;
+        float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
+        float sideDist = (float)  - 0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
+
+        if (left){
+            result.x = (int) (Math.cos(dangle) * sideDist + x1);
+            result.y = (int) (Math.sin(dangle) * sideDist + y1);
+
+        } else {
+            result.x = (int) (Math.cos(dangle) * sideDist + x2);
+            result.y = (int) (Math.sin(dangle) * sideDist + y2);
+        }
+
+        return result;
     }
 
 }

@@ -20,7 +20,7 @@ public class CloudFogView extends View {
     private Path pathCloud, path1, path2;
     private double count;
     boolean move = true, compress = false, expand = false;
-    int m=0;
+    float m=0;
     float backupL11, backupL12, backupL21, backupL22;
 
     public CloudFogView(Context context) {
@@ -54,7 +54,7 @@ public class CloudFogView extends View {
         paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
         paintFog.setColor(Color.BLACK);
-        paintFog.setStrokeWidth(7);
+        paintFog.setStrokeWidth(10);
         paintFog.setAntiAlias(true);
         paintFog.setStrokeCap(Paint.Cap.ROUND);
         paintFog.setStrokeJoin(Paint.Join.ROUND);
@@ -75,11 +75,11 @@ public class CloudFogView extends View {
         Y = (screenH/2);
 
         if(L2 == 0) {
-            L2 =  screenW * 0.78f;
-            H2 =  screenH * 0.85f;
+            L1 =  screenW * 0.2f;
+            H1 =  screenH * 0.88f;
 
-            L1 =  screenW * 0.24f;
-            H1 =  screenH * 0.95f;
+            L2 =  screenW * 0.78f;
+            H2 =  screenH * 0.98f;
 
         }
 
@@ -146,19 +146,23 @@ public class CloudFogView extends View {
 
         if(move) {
 
-            path1.moveTo((L1+20)+m*0.3f, H1);
-            path1.lineTo((L2-20)+m*0.3f, H1);
+            path1.moveTo((L1+25)+m*0.15f, H1);
+            path1.lineTo((L2-25)+m*0.15f, H1);
             canvas.drawPath(path1, paintFog);
 
-            //path2.moveTo((L1-10)-m*0.3f, H2);
-            //path2.lineTo((L2-10)+m*0.3f, H2);
-            //canvas.drawPath(path2, paintFog);
+            path2.moveTo((L1+25)-m*0.15f, H2);
+            path2.lineTo((L2-25)-m*0.15f, H2);
+            canvas.drawPath(path2, paintFog);
 
             if(m==50) {
                compress = true;
                move = false;
-               backupL11 = (L1+20)+m*0.3f;
-               backupL12 = (L2-20)+m*0.3f;
+
+               backupL11 = (L1+25)+m*0.15f;
+               backupL12 = (L2-25)+m*0.15f;
+
+               backupL21 = (L1+25)-m*0.15f;
+               backupL22 = (L2-25)-m*0.15f;
 
                m=0;
             }
@@ -167,29 +171,52 @@ public class CloudFogView extends View {
 
         if(compress) {
 
-            path1.moveTo(backupL11-m*0.3f, H1);
-            path1.lineTo(backupL12-m*0.15f, H1);
-
+            path1.moveTo(backupL11+m*0.1f, H1);
+            path1.lineTo(backupL12-m*0.3f, H1);
             canvas.drawPath(path1, paintFog);
 
+            path2.moveTo(backupL21-m*0.3f, H2);
+            path2.lineTo(backupL22+m*0.1f, H2);
+            canvas.drawPath(path2, paintFog);
+
             if(m==50) {
-                move = true;
+                expand = true;
+                move = false;
                 compress = false;
+
+                backupL11 = backupL11+m*0.1f;
+                backupL12 = backupL12-m*0.3f;
+
+                backupL21 = backupL21-m*0.3f;
+                backupL22 = backupL22+m*0.1f;
+
                 m=0;
-               // move = false;
             }
 
         }
 
         if(expand) {
 
-            path1.moveTo((L1+20)-m*0.3f, H1);
-            path1.lineTo((L2-20)-m*0.2f, H1);
+            path1.moveTo(backupL11-m*0.15f-m/10, H1);
+            path1.lineTo(backupL12+m*0.3f-m/10, H1);
+            canvas.drawPath(path1, paintFog);
+
+            path2.moveTo(backupL21+m*0.3f-m/10, H2);
+            path2.lineTo(backupL22, H2);
+            canvas.drawPath(path2, paintFog);
+
+            if(m==50) {
+                move = true;
+                compress = false;
+                expand = false;
+
+                m=0;
+            }
 
         }
 
 
-        m = m + 1;
+        m = m + 0.5f;
 
         invalidate();
 
