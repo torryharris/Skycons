@@ -51,13 +51,18 @@ public class CloudHvRainView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
+//        paint1.setColor(Color.BLACK);
+//        paint1.setStrokeWidth(7);
+//        paint1.setAntiAlias(true);
+//        paint1.setStrokeCap(Paint.Cap.ROUND);
+//        paint1.setStrokeJoin(Paint.Join.ROUND);
+//        paint1.setStyle(Paint.Style.STROKE);
+//        paint1.setShadowLayer(0, 0, 0, Color.BLACK);
+
+
         paint1.setColor(Color.BLACK);
-        paint1.setStrokeWidth(7);
-        paint1.setAntiAlias(true);
-        paint1.setStrokeCap(Paint.Cap.ROUND);
-        paint1.setStrokeJoin(Paint.Join.ROUND);
-        paint1.setStyle(Paint.Style.STROKE);
-        paint1.setShadowLayer(0, 0, 0, Color.BLACK);
+        paint1.setStrokeWidth(8);
+        paint1.setStyle(Paint.Style.FILL_AND_STROKE);
 
         path = new Path();
     }
@@ -129,7 +134,6 @@ public class CloudHvRainView extends View {
         path.cubicTo(P4c1.x,P4c1.y,P4c2.x,P4c2.y,P4X,P4Y);
         path.cubicTo(P5c1.x,P5c1.y,P5c2.x,P5c2.y,X1,Y1);
 
-        canvas.drawPath(path, paint);
 
         if(!pointsStored) {
             x1 = (int) P1c2.x;
@@ -247,6 +251,17 @@ public class CloudHvRainView extends View {
         if(i == 51) {
             i = 0;
         }
+
+
+        //fill cloud with white color
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawPath(path, paint);
+
+        //draw stroke with back color
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(path, paint);
 
         invalidate();
 

@@ -24,7 +24,6 @@ public class CloudMoonView extends View {
     float m = 0;
     float radius;
     boolean clockwise = false;
-    RectF backupRectF;
     float a=0, b=0, c=0, d=0;
     private double count;
 
@@ -86,7 +85,6 @@ public class CloudMoonView extends View {
         // Moon shape
         pathMoon = new Path();
         RectF rectF1 = new RectF();
-        RectF rectF2 = new RectF();
 
         if(!clockwise) {
 
@@ -95,15 +93,16 @@ public class CloudMoonView extends View {
 
             pathPoints = getPoints(pathMoon);
 
-            a = pathPoints[0].getX();
-            b = pathPoints[0].getY();
-            c = pathPoints[999].getX();
-            d = pathPoints[999].getY();
+            a = pathPoints[999].getX();
+            b = pathPoints[999].getY();
+            c = pathPoints[0].getX();
+            d = pathPoints[0].getY() + 3;
 
-            PointF P1c1 = calculateTriangle(c, d, a, b, true);
-            PointF P1c2 = calculateTriangle(c, d, a, b, false);
 
-            pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, a, b);
+            PointF P1c1 = calculateTriangle(a, b, c, d, true);
+            PointF P1c2 = calculateTriangle(a, b, c, d, false);
+
+            pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
             canvas.drawPath(pathMoon, paintMoon);
 
@@ -111,7 +110,6 @@ public class CloudMoonView extends View {
 
             if(m == 100) {
                 m = 0;
-                backupRectF = rectF2;
                 clockwise = !clockwise;
             }
 
@@ -122,15 +120,16 @@ public class CloudMoonView extends View {
 
             pathPoints = getPoints(pathMoon);
 
-            a = pathPoints[0].getX();
-            b = pathPoints[0].getY();
-            c = pathPoints[999].getX();
-            d = pathPoints[999].getY();
+            a = pathPoints[999].getX();
+            b = pathPoints[999].getY();
+            c = pathPoints[0].getX();
+            d = pathPoints[0].getY() + 3;
 
-            PointF P1c1 = calculateTriangle(c, d, a, b, true);
-            PointF P1c2 = calculateTriangle(c, d, a, b, false);
 
-            pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, a, b);
+            PointF P1c1 = calculateTriangle(a, b, c, d, true);
+            PointF P1c2 = calculateTriangle(a, b, c, d, false);
+
+            pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
             canvas.drawPath(pathMoon, paintMoon);
 

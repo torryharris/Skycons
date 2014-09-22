@@ -9,9 +9,8 @@
     android:background="#ffffff"
     tools:context=".MainActivity">
 
-    <com.thbs.skycons.views.WindView4
-        android:layout_width="95dp"
-        android:layout_height="100dp"
-        android:layout_centerVertical="true"/>
+    <com.thbs.skycons.views.LeafView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
 
 </RelativeLayout>

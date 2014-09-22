@@ -10,7 +10,7 @@ import android.widget.Button;
 public class MainActivity extends Activity {
 
     Button btnCloud, btnCloudRain, btnCloudHvRain, btnCloudSnow,
-           btnCloudFog, btnMoon, btnCloudMoon;
+           btnCloudFog, btnMoon, btnCloudMoon, btnWind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
         btnCloudFog = (Button) findViewById(R.id.cloud_fog);
         btnMoon = (Button) findViewById(R.id.moon);
         btnCloudMoon = (Button) findViewById(R.id.cloud_moon);
+        btnWind = (Button) findViewById(R.id.wind);
 
         btnCloud.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +84,15 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, CloudMoonActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+
+        btnWind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, WindActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }

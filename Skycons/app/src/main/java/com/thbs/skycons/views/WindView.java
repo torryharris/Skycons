@@ -21,6 +21,7 @@ public class WindView extends View {
     PathPoints[] points1, points2;
     float m = 0, n = 0;
     float radius;
+
     boolean one = true, two = false, three = false, four = false;
 
     public WindView(Context context) {
@@ -39,6 +40,9 @@ public class WindView extends View {
     }
 
     private void init() {
+
+
+
         paint1 = new Paint();
         paint1.setColor(Color.BLACK);
         paint1.setStrokeWidth(10);
@@ -84,6 +88,8 @@ public class WindView extends View {
         super.onDraw(canvas);
 
         // canvas.drawPath(path2, paint1);
+
+
 
         if (one) {
 

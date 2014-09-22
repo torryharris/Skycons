@@ -131,6 +131,14 @@ public class CloudSnowView extends View {
         cloudPath.cubicTo(P4c1.x,P4c1.y,P4c2.x,P4c2.y,P4X,P4Y);
         cloudPath.cubicTo(P5c1.x,P5c1.y,P5c2.x,P5c2.y,X1,Y1);
 
+        //fill cloud with white color
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawPath(cloudPath, paint);
+
+        //draw stroke with back color
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.STROKE);
         canvas.drawPath(cloudPath, paint);
 
         if(x1==0) {
