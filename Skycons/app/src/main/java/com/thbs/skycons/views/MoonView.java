@@ -82,10 +82,10 @@ public class MoonView extends View {
             c = pathPoints[0].getX();
             d = pathPoints[0].getY();
 
-
             PointF P1c1 = calculateTriangle(a, b, c, d, true);
             PointF P1c2 = calculateTriangle(a, b, c, d, false);
 
+            path.moveTo(a, b);
             path.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
             canvas.drawPath(path, paint);
@@ -109,10 +109,10 @@ public class MoonView extends View {
             c = pathPoints[0].getX();
             d = pathPoints[0].getY();
 
-
             PointF P1c1 = calculateTriangle(a, b , c, d, true);
             PointF P1c2 = calculateTriangle(a, b, c, d, false);
 
+            path.moveTo(a, b);
             path.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
             canvas.drawPath(path, paint);

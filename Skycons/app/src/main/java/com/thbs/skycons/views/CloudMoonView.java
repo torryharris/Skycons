@@ -100,10 +100,10 @@ public class CloudMoonView extends View {
             c = pathPoints[0].getX();
             d = pathPoints[0].getY();
 
-
             PointF P1c1 = calculateTriangle(a, b, c, d, true);
             PointF P1c2 = calculateTriangle(a, b, c, d, false);
 
+            pathMoon.moveTo(a, b);
             pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
             canvas.drawPath(pathMoon, paintMoon);
@@ -127,10 +127,10 @@ public class CloudMoonView extends View {
             c = pathPoints[0].getX();
             d = pathPoints[0].getY();
 
-
             PointF P1c1 = calculateTriangle(a, b, c, d, true);
             PointF P1c2 = calculateTriangle(a, b, c, d, false);
 
+            pathMoon.moveTo(a, b);
             pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
             canvas.drawPath(pathMoon, paintMoon);
