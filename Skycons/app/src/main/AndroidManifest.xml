@@ -31,11 +31,13 @@
         <activity
             android:name=".CloudHvRainActivity"
             android:label="Cloud+Rain" >
+
         </activity>
 
         <activity
             android:name=".CloudSnowActivity"
             android:label="Cloud+Snow" >
+
         </activity>
 
         <activity

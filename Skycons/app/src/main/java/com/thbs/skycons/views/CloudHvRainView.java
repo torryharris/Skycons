@@ -51,17 +51,9 @@ public class CloudHvRainView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
-//        paint1.setColor(Color.BLACK);
-//        paint1.setStrokeWidth(7);
-//        paint1.setAntiAlias(true);
-//        paint1.setStrokeCap(Paint.Cap.ROUND);
-//        paint1.setStrokeJoin(Paint.Join.ROUND);
-//        paint1.setStyle(Paint.Style.STROKE);
-//        paint1.setShadowLayer(0, 0, 0, Color.BLACK);
-
-
         paint1.setColor(Color.BLACK);
         paint1.setStrokeWidth(8);
+        paint1.setAntiAlias(true);
         paint1.setStyle(Paint.Style.FILL_AND_STROKE);
 
         path = new Path();
@@ -137,25 +129,21 @@ public class CloudHvRainView extends View {
 
         if(!pointsStored) {
             x1 = (int) P1c2.x;
-            float value = (int) P1c2.y-((P1c1.y+P1Y)/2);
-            y1 = (int) (P1c2.y-value/2);
-
             x2 = (int) P2c2.x;
-            float value1 = (int) P2c2.y-((P2c1.y+P2Y)/2);
-            y2 = (int) (P2c2.y-value1/2);
-
             x3 = (x1+x2)/2;
-            y3 = (y1+y2)/2;
+
+            float value = (int) P1c2.y-((P1c1.y+P1Y)/2);
+            y1 = y2 = y3 = (int) (P1c2.y-value/2) - 20;
 
             pointsStored = true;
 
         }
 
-        if(i<45) {
+        if(i<=49) {
 
             if(i<25) {
 
-                //drop1 logic
+                //drop11 logic
                 if (m1 < 24) {
                     path1.moveTo(x1, y1);
 
@@ -174,69 +162,71 @@ public class CloudHvRainView extends View {
                     count1 = 0;
                 }
 
-                //drop3 logic
+                //drop21 logic
                 if(i>10) {
 
-                    if(m3 < 24) {
-                        path3.moveTo(x3, y3);
+                    if(m2 < 24) {
+                        path2.moveTo(x2, y2);
 
                     } else {
-                        count3 = count3 + 4;
-                        path3.moveTo(x3, y3+count3);
+                        count2 = count2 + 4;
+                        path2.moveTo(x2, y2+count2);
                     }
 
-                    path3.lineTo(x3, y3+m3+25);
-                    canvas.drawPath(path3, paint1);
+                    path2.lineTo(x2, y2+m2+25);
+                    canvas.drawPath(path2, paint1);
 
-                    m3 = m3 + 4;
+                    m2 = m2 + 4;
 
-                    if(m3 == 100) {
-                        m3 = 0;
-                        count3 = 0;
+                    if(m2 == 100) {
+                        m2 = 0;
+                        count2 = 0;
                     }
 
                 }
 
             }
 
-            if(i>=25 && i<51) {
+            if(i>=25 && i<=49) {
 
-                if(m2 < 24) {
-                    path2.moveTo(x2, y2);
+                // drop 3
+                if(m3 < 24) {
+                    path3.moveTo(x3, y3);
 
                 } else {
-                    count2 = count2 + 4;
-                    path2.moveTo(x2, y2+count2);
+                    count3 = count3 + 4;
+                    path3.moveTo(x3, y3+count3);
                 }
 
-                path2.lineTo(x2, y2+m2+25);
-                canvas.drawPath(path2, paint1);
+                path3.lineTo(x3, y3+m3+25);
+                canvas.drawPath(path3, paint1);
 
-                m2 = m2 + 4;
+                m3 = m3 + 4;
 
-                if(m2 == 100) {
-                    m2 = 0;
-                    count2 = 0;
+                if(m3 == 100) {
+                    m3 = 0;
+                    count3 = 0;
                 }
 
+                // drop21
                 if(i<36) {
 
-                    if(m3 < 24) {
-                        path3.moveTo(x3, y3);
+                    if(m2 < 24) {
+                        path2.moveTo(x2, y2);
 
                     } else {
-                        count3 = count3 + 4;
-                        path3.moveTo(x3, y3+count3);
+                        count2 = count2 + 4;
+                        path2.moveTo(x2, y2+count2);
                     }
 
-                    path3.lineTo(x3, y3+m3+25);
-                    canvas.drawPath(path3, paint1);
+                    path2.lineTo(x2, y2+m2+25);
+                    canvas.drawPath(path2, paint1);
 
-                    m3 = m3 + 4;
+                    m2 = m2 + 4;
 
-                    if(m3 == 100) {
-                        m3 = 0;
-                        count3 = 0;
+                    if(m2 == 100) {
+                        m2 = 0;
+                        count2 = 0;
                     }
 
                 }
@@ -248,10 +238,9 @@ public class CloudHvRainView extends View {
 
         i++;
 
-        if(i == 51) {
+        if(i == 50) {
             i = 0;
         }
-
 
         //fill cloud with white color
         paint.setColor(Color.WHITE);

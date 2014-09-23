@@ -140,7 +140,6 @@ public class CloudFogView extends View {
 
         canvas.drawPath(pathCloud, paintCloud);
 
-
         path1 = new Path();
         path2 = new Path();
 

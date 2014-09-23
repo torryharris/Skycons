@@ -44,11 +44,13 @@ public class WindView extends View {
 
 
         paint1 = new Paint();
+        paint1.setAntiAlias(true);
         paint1.setColor(Color.BLACK);
         paint1.setStrokeWidth(10);
         paint1.setStyle(Paint.Style.STROKE);
 
         paint2 = new Paint();
+        paint2.setAntiAlias(true);
         paint2.setColor(Color.WHITE);
         paint2.setStrokeWidth(12);
         paint2.setStyle(Paint.Style.FILL_AND_STROKE);

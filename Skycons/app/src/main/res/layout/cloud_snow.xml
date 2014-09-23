@@ -10,7 +10,7 @@
 
     <com.thbs.skycons.views.CloudSnowView
         android:layout_width="200dp"
-        android:layout_height="130dp"
+        android:layout_height="145dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 

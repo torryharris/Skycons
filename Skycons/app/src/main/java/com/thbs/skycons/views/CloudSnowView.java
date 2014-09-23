@@ -16,19 +16,26 @@ import android.view.View;
 public class CloudSnowView extends View {
 
     private static Paint paint, paint1;
-    PathPoints[] pathPoints11, pathPoints12, pathPoints21, pathPoints22;
+
+    PathPoints[] pathPoints11, pathPoints12, pathPoints21, pathPoints22,
+                 pointsCircle11, pointsCircle12, pointsCircle21, pointsCircle22;
+
     private int screenW, screenH;
     private float X, Y;
 
     private Path cloudPath, path11, path12, path13,
-                 path21, path22, path23,
+                 path21, path22, path23, //visible drawn paths
+
                  cubicPath11, cubicPath12,
-                 cubicPath21, cubicPath22;
+                 cubicPath21, cubicPath22, //Invisible paths for drop movement
+
+                 pathCircle1, pathCircle2; //Invisible paths for rotate operation
 
     int m=0, n=0, x1=0, y1=0, x2=0, y2=0;
 
-    boolean drop1 = true, drop2 = false, pointsStored = false;
-    boolean drop1Enable = false, drop2Enable = false;
+    boolean drop11 = true, drop12 = false, drop21 = false, drop22 = false,
+            pointsStored = false;
+
     private double count;
 
     public CloudSnowView(Context context) {
@@ -62,10 +69,13 @@ public class CloudSnowView extends View {
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
         paint1.setColor(Color.BLACK);
-        paint1.setStrokeWidth(5);
+        paint1.setStrokeWidth(7);
+        paint1.setAntiAlias(true);
+        paint1.setStrokeCap(Paint.Cap.ROUND);
         paint1.setStyle(Paint.Style.STROKE);
 
         cloudPath = new Path();
+        pathCircle1 = new Path();
     }
 
     @Override
@@ -131,22 +141,12 @@ public class CloudSnowView extends View {
         cloudPath.cubicTo(P4c1.x,P4c1.y,P4c2.x,P4c2.y,P4X,P4Y);
         cloudPath.cubicTo(P5c1.x,P5c1.y,P5c2.x,P5c2.y,X1,Y1);
 
-        //fill cloud with white color
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawPath(cloudPath, paint);
-
-        //draw stroke with back color
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawPath(cloudPath, paint);
-
         if(x1==0) {
             x1 = (int) P1c2.x + 10;
         }
         if(y1==0) {
             float value = (int) P1c2.y-((P1c1.y+P1Y)/2);
-            y1 = (int) (P1c2.y-value/2) + 5;
+            y1 = (int) (P1c2.y-value/2);
         }
 
         if(x2==0) {
@@ -154,76 +154,126 @@ public class CloudSnowView extends View {
         }
         if(y2==0) {
             float value = (int) P2c2.y-((P2c1.y+P2Y)/2);
-            y2 = (int) (P2c2.y-value/2) + 5;
+            y2 = (int) (P2c2.y-value/2);
         }
 
         if(!pointsStored) {
             cubicPath11 = new Path();
             cubicPath11.moveTo(x1, y1);
-            cubicPath11.cubicTo(x1-10, y1+20, x1-20, y1+40, x1-30, y1+60);
+            cubicPath11.cubicTo(x1-10, y1+30, x1-20, y1+60, x1-30, y1+90);
             pathPoints11 = getPoints(cubicPath11);
 
-            cubicPath21 = new Path();
-            int x = x1-5;
-            cubicPath21.moveTo(x, y1);
-            cubicPath21.cubicTo(x+10, y1+20, x+15, y1+40, x-5, y1+60);
-            pathPoints21 = getPoints(cubicPath21);
 
             cubicPath12 = new Path();
-            cubicPath12.moveTo(x2, y2);
-            cubicPath12.cubicTo(x2+10, y2+20, x2+20, y2+40, x2+30, y2+60);
+            int x = x1-5;
+            cubicPath12.moveTo(x, y1);
+            cubicPath12.cubicTo(x+10, y1+30, x+15, y1+60, x-5, y1+90);
             pathPoints12 = getPoints(cubicPath12);
+
+            cubicPath21 = new Path();
+            cubicPath21.moveTo(x2, y2);
+            cubicPath21.cubicTo(x2+10, y2+30, x2+20, y2+60, x2+30, y2+90);
+            pathPoints21 = getPoints(cubicPath21);
 
             cubicPath22 = new Path();
             int xx= x2+5;
             cubicPath22.moveTo(xx, y2);
-            cubicPath22.cubicTo(xx-10, y2+20, xx-15, y2+40, xx+5, y2+60);
+            cubicPath22.cubicTo(xx-10, y2+30, xx-15, y2+60, xx+5, y2+90);
             pathPoints22 = getPoints(cubicPath22);
 
             pointsStored = true;
         }
 
-        if(drop1) {
+
+        if(drop11) {
+
+            pathCircle1 = new Path();
+            pathCircle1.addCircle(pathPoints11[m].getX(), pathPoints11[m].getY(),
+                    13, Path.Direction.CW);
+            pointsCircle11 = getPoints(pathCircle1);
 
             //1st drop
             path11 = new Path();
             path12 = new Path();
             path13 = new Path();
 
-            path11.moveTo(pathPoints11[m].getX(), pathPoints11[m].getY()+2);
-            path12.moveTo(pathPoints11[m].getX()-15, pathPoints11[m].getY()+2);
-            path13.moveTo(pathPoints11[m].getX() - 7, pathPoints11[m].getY() - 2);
+            int a = (25+m/5) >= 100 ? 25+m/5 - 100 : 25+m/5;
+            int b = (8+m/5) >= 100 ? 8+m/5 - 100 : 8+m/5;
+            int c = (40+m/5) >= 100 ? 40+m/5 - 100 : 40+m/5;
 
-            path11.lineTo(pathPoints11[m].getX()-15, (pathPoints11[m].getY()+13));
-            path12.lineTo(pathPoints11[m].getX(), (pathPoints11[m].getY() + 13));
-            path13.lineTo(pathPoints11[m].getX() - 8, (pathPoints11[m].getY() + 17));
+            path11.moveTo(pointsCircle11[a].getX(), pointsCircle11[a].getY());
+            path12.moveTo(pointsCircle11[b].getX(), pointsCircle11[b].getY());
+            path13.moveTo(pointsCircle11[c].getX(), pointsCircle11[c].getY());
+
+            a = (75+m/5) >= 100 ? 75+m/5 - 100 : 75+m/5;
+            b = (59+m/5) >= 100 ? 59+m/5 - 100 : 59+m/5;
+            c = (90+m/5) >= 100 ? 90+m/5 - 100 : 90+m/5;
+
+            path11.lineTo(pointsCircle11[a].getX(), (pointsCircle11[a].getY()));
+            path12.lineTo(pointsCircle11[b].getX(), (pointsCircle11[b].getY()));
+            path13.lineTo(pointsCircle11[c].getX(), (pointsCircle11[c].getY()));
 
             canvas.drawPath(path11, paint1);
             canvas.drawPath(path12, paint1);
             canvas.drawPath(path13, paint1);
 
+            //fill cloud with white color
+            paint.setColor(Color.WHITE);
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawPath(cloudPath, paint);
+
+            //draw stroke with back color
+            paint.setColor(Color.BLACK);
+            paint.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(cloudPath, paint);
+
             m = m+1;
 
             if(m > 75) {
+
+                pathCircle2 = new Path();
+                pathCircle2.addCircle(pathPoints12[n].getX(), pathPoints12[n].getY(),
+                        13, Path.Direction.CW);
+                pointsCircle12 = getPoints(pathCircle2);
 
                 //2nd drop
                 path21 = new Path();
                 path22 = new Path();
                 path23 = new Path();
 
-                path21.moveTo(pathPoints21[n].getX()-5, pathPoints21[n].getY()+2);
-                path22.moveTo(pathPoints21[n].getX()-20, pathPoints21[n].getY()+2);
-                path23.moveTo(pathPoints21[n].getX() - 12, pathPoints21[n].getY() - 2);
+                a = (25+n/5) >= 100 ? 25+n/5 - 100 : 25+n/5;
+                b = (8+n/5) >= 100 ? 8+n/5 - 100 : 8+n/5;
+                c = (40+n/5) >= 100 ? 40+n/5 - 100 : 40+n/5;
 
-                path21.lineTo(pathPoints21[n].getX() - 20, (pathPoints21[n].getY() + 13));
-                path22.lineTo(pathPoints21[n].getX()-5, (pathPoints21[n].getY() + 13));
-                path23.lineTo(pathPoints21[n].getX() - 13, (pathPoints21[n].getY() + 17));
+                path21.moveTo(pointsCircle12[a].getX(), pointsCircle12[a].getY());
+                path22.moveTo(pointsCircle12[b].getX(), pointsCircle12[b].getY());
+                path23.moveTo(pointsCircle12[c].getX(), pointsCircle12[c].getY());
 
-                n = n+1;
+                a = (75+n/5) >= 100 ? 75+n/5 - 100 : 75+n/5;
+                b = (59+n/5) >= 100 ? 59+n/5 - 100 : 59+n/5;
+                c = (90+n/5) >= 100 ? 90+n/5 - 100 : 90+n/5;
+
+                path21.lineTo(pointsCircle12[a].getX(), (pointsCircle12[a].getY()));
+                path22.lineTo(pointsCircle12[b].getX(), (pointsCircle12[b].getY()));
+                path23.lineTo(pointsCircle12[c].getX(), (pointsCircle12[c].getY()));
 
                 canvas.drawPath(path21, paint1);
                 canvas.drawPath(path22, paint1);
                 canvas.drawPath(path23, paint1);
+
+                //fill cloud with white color
+                paint.setColor(Color.WHITE);
+                paint.setStyle(Paint.Style.FILL);
+                canvas.drawPath(cloudPath, paint);
+
+
+                //draw stroke with back color
+                paint.setColor(Color.BLACK);
+                paint.setStyle(Paint.Style.STROKE);
+                canvas.drawPath(cloudPath, paint);
+
+                n = n+1;
+
             }
 
             if(m==100) {
@@ -245,29 +295,55 @@ public class CloudSnowView extends View {
                 x2=0;
                 y2=0;
 
-                drop1Enable = true;
-                drop1 = false;
+                drop12 = true;
+                drop11 = false;
 
             }
+
         }
 
-        if(drop1Enable) {
+        if(drop12) {
 
+            pathCircle2 = new Path();
+            pathCircle2.addCircle(pathPoints12[n].getX(), pathPoints12[n].getY(),
+                    13, Path.Direction.CW);
+            pointsCircle12 = getPoints(pathCircle2);
+
+            //2nd drop
             path21 = new Path();
             path22 = new Path();
             path23 = new Path();
 
-            path21.moveTo(pathPoints21[n].getX()-5, pathPoints21[n].getY()+2);
-            path22.moveTo(pathPoints21[n].getX()-20, pathPoints21[n].getY()+2);
-            path23.moveTo(pathPoints21[n].getX() - 12, pathPoints21[n].getY() - 2);
+            int a = (25+n/5) >= 100 ? 25+n/5 - 100 : 25+n/5;
+            int b = (8+n/5) >= 100 ? 8+n/5 - 100 : 8+n/5;
+            int c = (40+n/5) >= 100 ? 40+n/5 - 100 : 40+n/5;
 
-            path21.lineTo(pathPoints21[n].getX() - 20, (pathPoints21[n].getY() + 13));
-            path22.lineTo(pathPoints21[n].getX()-5, (pathPoints21[n].getY() + 13));
-            path23.lineTo(pathPoints21[n].getX() - 13, (pathPoints21[n].getY() + 17));
+            path21.moveTo(pointsCircle12[a].getX(), pointsCircle12[a].getY());
+            path22.moveTo(pointsCircle12[b].getX(), pointsCircle12[b].getY());
+            path23.moveTo(pointsCircle12[c].getX(), pointsCircle12[c].getY());
+
+            a = (75+n/5) >= 100 ? 75+n/5 - 100 : 75+n/5;
+            b = (59+n/5) >= 100 ? 59+n/5 - 100 : 59+n/5;
+            c = (90+n/5) >= 100 ? 90+n/5 - 100 : 90+n/5;
+
+            path21.lineTo(pointsCircle12[a].getX(), (pointsCircle12[a].getY()));
+            path22.lineTo(pointsCircle12[b].getX(), (pointsCircle12[b].getY()));
+            path23.lineTo(pointsCircle12[c].getX(), (pointsCircle12[c].getY()));
 
             canvas.drawPath(path21, paint1);
             canvas.drawPath(path22, paint1);
             canvas.drawPath(path23, paint1);
+
+            //fill cloud with white color
+            paint.setColor(Color.WHITE);
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawPath(cloudPath, paint);
+
+
+            //draw stroke with back color
+            paint.setColor(Color.BLACK);
+            paint.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(cloudPath, paint);
 
             n = n+1;
 
@@ -288,53 +364,104 @@ public class CloudSnowView extends View {
                 x1=0;
                 y1=0;
 
-                drop2 = true;
-                drop1 = false;
-                drop1Enable = false;
+                drop21 = true;
+                drop11 = false;
+                drop12 = false;
 
             }
 
         }
 
-        if(drop2) {
+        if(drop21) {
+
+            pathCircle1 = new Path();
+            pathCircle1.addCircle(pathPoints21[m].getX(), pathPoints21[m].getY(),
+                    13, Path.Direction.CW);
+            pointsCircle21 = getPoints(pathCircle1);
+
+            //1st drop
             path11 = new Path();
             path12 = new Path();
             path13 = new Path();
 
-            path11.moveTo(pathPoints12[m].getX(), pathPoints12[m].getY()+2);
-            path12.moveTo(pathPoints12[m].getX()-15, pathPoints12[m].getY()+2);
-            path13.moveTo(pathPoints12[m].getX() - 7, pathPoints12[m].getY() - 2);
+            int a = (25+m/5) >= 100 ? 25+m/5 - 100 : 25+m/5;
+            int b = (8+m/5) >= 100 ? 8+m/5 - 100 : 8+m/5;
+            int c = (40+m/5) >= 100 ? 40+m/5 - 100 : 40+m/5;
 
-            path11.lineTo(pathPoints12[m].getX() - 15, (pathPoints12[m].getY() + 13));
-            path12.lineTo(pathPoints12[m].getX(), (pathPoints12[m].getY() + 13));
-            path13.lineTo(pathPoints12[m].getX() - 8, (pathPoints12[m].getY() + 17));
+            path11.moveTo(pointsCircle21[a].getX(), pointsCircle21[a].getY());
+            path12.moveTo(pointsCircle21[b].getX(), pointsCircle21[b].getY());
+            path13.moveTo(pointsCircle21[c].getX(), pointsCircle21[c].getY());
+
+            a = (75+m/5) >= 100 ? 75+m/5 - 100 : 75+m/5;
+            b = (59+m/5) >= 100 ? 59+m/5 - 100 : 59+m/5;
+            c = (90+m/5) >= 100 ? 90+m/5 - 100 : 90+m/5;
+
+            path11.lineTo(pointsCircle21[a].getX(), (pointsCircle21[a].getY()));
+            path12.lineTo(pointsCircle21[b].getX(), (pointsCircle21[b].getY()));
+            path13.lineTo(pointsCircle21[c].getX(), (pointsCircle21[c].getY()));
 
             canvas.drawPath(path11, paint1);
             canvas.drawPath(path12, paint1);
             canvas.drawPath(path13, paint1);
 
-            m=m+1;
+            //fill cloud with white color
+            paint.setColor(Color.WHITE);
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawPath(cloudPath, paint);
+
+
+            //draw stroke with back color
+            paint.setColor(Color.BLACK);
+            paint.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(cloudPath, paint);
+
+            m = m+1;
 
             if(m > 75) {
+
+                pathCircle2 = new Path();
+                pathCircle2.addCircle(pathPoints22[n].getX(), pathPoints22[n].getY(),
+                        13, Path.Direction.CW);
+                pointsCircle22 = getPoints(pathCircle2);
 
                 //2nd drop
                 path21 = new Path();
                 path22 = new Path();
                 path23 = new Path();
 
-                path21.moveTo(pathPoints22[n].getX()-5, pathPoints22[n].getY()+2);
-                path22.moveTo(pathPoints22[n].getX()-20, pathPoints22[n].getY()+2);
-                path23.moveTo(pathPoints22[n].getX() - 12, pathPoints22[n].getY() - 2);
+                a = (25+n/5) >= 100 ? 25+n/5 - 100 : 25+n/5;
+                b = (8+n/5) >= 100 ? 8+n/5 - 100 : 8+n/5;
+                c = (40+n/5) >= 100 ? 40+n/5 - 100 : 40+n/5;
 
-                path21.lineTo(pathPoints22[n].getX() - 20, (pathPoints22[n].getY() + 13));
-                path22.lineTo(pathPoints22[n].getX()-5, (pathPoints22[n].getY() + 13));
-                path23.lineTo(pathPoints22[n].getX() - 13, (pathPoints22[n].getY() + 17));
+                path21.moveTo(pointsCircle22[a].getX(), pointsCircle22[a].getY());
+                path22.moveTo(pointsCircle22[b].getX(), pointsCircle22[b].getY());
+                path23.moveTo(pointsCircle22[c].getX(), pointsCircle22[c].getY());
 
-                n = n+1;
+                a = (75+n/5) >= 100 ? 75+n/5 - 100 : 75+n/5;
+                b = (59+n/5) >= 100 ? 59+n/5 - 100 : 59+n/5;
+                c = (90+n/5) >= 100 ? 90+n/5 - 100 : 90+n/5;
+
+                path21.lineTo(pointsCircle22[a].getX(), (pointsCircle22[a].getY()));
+                path22.lineTo(pointsCircle22[b].getX(), (pointsCircle22[b].getY()));
+                path23.lineTo(pointsCircle22[c].getX(), (pointsCircle22[c].getY()));
 
                 canvas.drawPath(path21, paint1);
                 canvas.drawPath(path22, paint1);
                 canvas.drawPath(path23, paint1);
+
+                //fill cloud with white color
+                paint.setColor(Color.WHITE);
+                paint.setStyle(Paint.Style.FILL);
+                canvas.drawPath(cloudPath, paint);
+
+
+                //draw stroke with back color
+                paint.setColor(Color.BLACK);
+                paint.setStyle(Paint.Style.STROKE);
+                canvas.drawPath(cloudPath, paint);
+
+                n = n+1;
+
             }
 
             if(m==100) {
@@ -353,29 +480,54 @@ public class CloudSnowView extends View {
                 x1=0;
                 y1=0;
 
-                drop2Enable = true;
-                drop2 = false;
+                drop22 = true;
+                drop21 = false;
             }
 
         }
 
-        if(drop2Enable) {
+        if(drop22) {
 
+            pathCircle2 = new Path();
+            pathCircle2.addCircle(pathPoints22[n].getX(), pathPoints22[n].getY(),
+                    13, Path.Direction.CW);
+            pointsCircle22 = getPoints(pathCircle2);
+
+            //2nd drop
             path21 = new Path();
             path22 = new Path();
             path23 = new Path();
 
-            path21.moveTo(pathPoints22[n].getX()-5, pathPoints22[n].getY()+2);
-            path22.moveTo(pathPoints22[n].getX()-20, pathPoints22[n].getY()+2);
-            path23.moveTo(pathPoints22[n].getX() - 12, pathPoints22[n].getY() - 2);
+            int a = (25+n/5) >= 100 ? 25+n/5 - 100 : 25+n/5;
+            int b = (8+n/5) >= 100 ? 8+n/5 - 100 : 8+n/5;
+            int c = (40+n/5) >= 100 ? 40+n/5 - 100 : 40+n/5;
 
-            path21.lineTo(pathPoints22[n].getX() - 20, (pathPoints22[n].getY() + 13));
-            path22.lineTo(pathPoints22[n].getX()-5, (pathPoints22[n].getY() + 13));
-            path23.lineTo(pathPoints22[n].getX() - 13, (pathPoints22[n].getY() + 17));
+            path21.moveTo(pointsCircle22[a].getX(), pointsCircle22[a].getY());
+            path22.moveTo(pointsCircle22[b].getX(), pointsCircle22[b].getY());
+            path23.moveTo(pointsCircle22[c].getX(), pointsCircle22[c].getY());
+
+            a = (75+n/5) >= 100 ? 75+n/5 - 100 : 75+n/5;
+            b = (59+n/5) >= 100 ? 59+n/5 - 100 : 59+n/5;
+            c = (90+n/5) >= 100 ? 90+n/5 - 100 : 90+n/5;
+
+            path21.lineTo(pointsCircle22[a].getX(), (pointsCircle22[a].getY()));
+            path22.lineTo(pointsCircle22[b].getX(), (pointsCircle22[b].getY()));
+            path23.lineTo(pointsCircle22[c].getX(), (pointsCircle22[c].getY()));
 
             canvas.drawPath(path21, paint1);
             canvas.drawPath(path22, paint1);
             canvas.drawPath(path23, paint1);
+
+            //fill cloud with white color
+            paint.setColor(Color.WHITE);
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawPath(cloudPath, paint);
+
+
+            //draw stroke with back color
+            paint.setColor(Color.BLACK);
+            paint.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(cloudPath, paint);
 
             n = n+1;
 
@@ -396,10 +548,10 @@ public class CloudSnowView extends View {
                 x1=0;
                 y1=0;
 
-                drop1 = true;
-                drop1Enable = false;
-                drop2 = false;
-                drop2Enable = false;
+                drop11 = true;
+                drop12 = false;
+                drop21 = false;
+                drop22 = false;
 
             }
 
@@ -409,7 +561,9 @@ public class CloudSnowView extends View {
 
     }
 
-    private PointF calculateTriangle(float x1, float y1, float x2, float y2, boolean left, double count) {
+    private PointF calculateTriangle(float x1, float y1, float x2, float y2,
+                                     boolean left, double count) {
+
         PointF result = new PointF(0,0);
         float dy = y2 - y1;
         float dx = x2 - x1;
@@ -435,7 +589,6 @@ public class CloudSnowView extends View {
         float[] aCoordinates = new float[2];
 
         while ((distance < length) && (counter < 100)) {
-            // get point from the pathMoon
             pm.getPosTan(distance, aCoordinates, null);
             pointArray[counter] = new PathPoints(aCoordinates[0], aCoordinates[1]);
             counter++;
