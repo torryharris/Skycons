@@ -47,7 +47,7 @@ public class MoonView extends View {
         paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
-
+        paint.setStrokeCap(Paint.Cap.ROUND);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class MoonView extends View {
             a = pathPoints[999].getX();
             b = pathPoints[999].getY();
             c = pathPoints[0].getX();
-            d = pathPoints[0].getY() + 3;
+            d = pathPoints[0].getY();
 
 
             PointF P1c1 = calculateTriangle(a, b, c, d, true);
@@ -107,7 +107,7 @@ public class MoonView extends View {
             a = pathPoints[999].getX();
             b = pathPoints[999].getY();
             c = pathPoints[0].getX();
-            d = pathPoints[0].getY() + 3;
+            d = pathPoints[0].getY();
 
 
             PointF P1c1 = calculateTriangle(a, b , c, d, true);

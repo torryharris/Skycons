@@ -54,6 +54,7 @@ public class CloudHvRainView extends View {
         paint1.setColor(Color.BLACK);
         paint1.setStrokeWidth(8);
         paint1.setAntiAlias(true);
+        paint1.setStrokeCap(Paint.Cap.ROUND);
         paint1.setStyle(Paint.Style.FILL_AND_STROKE);
 
         path = new Path();

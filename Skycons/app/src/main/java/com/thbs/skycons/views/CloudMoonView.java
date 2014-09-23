@@ -48,12 +48,14 @@ public class CloudMoonView extends View {
         paintCloud.setStrokeCap(Paint.Cap.ROUND);
         paintCloud.setStrokeJoin(Paint.Join.ROUND);
         paintCloud.setStyle(Paint.Style.STROKE);
+        paintCloud.setAntiAlias(true);
         paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
         paintMoon = new Paint();
         paintMoon.setColor(Color.BLACK);
         paintMoon.setAntiAlias(true);
         paintMoon.setStrokeWidth(10);
+        paintMoon.setStrokeCap(Paint.Cap.ROUND);
         paintMoon.setStyle(Paint.Style.STROKE);
 
         count = 0;
@@ -96,7 +98,7 @@ public class CloudMoonView extends View {
             a = pathPoints[999].getX();
             b = pathPoints[999].getY();
             c = pathPoints[0].getX();
-            d = pathPoints[0].getY() + 3;
+            d = pathPoints[0].getY();
 
 
             PointF P1c1 = calculateTriangle(a, b, c, d, true);
@@ -123,7 +125,7 @@ public class CloudMoonView extends View {
             a = pathPoints[999].getX();
             b = pathPoints[999].getY();
             c = pathPoints[0].getX();
-            d = pathPoints[0].getY() + 3;
+            d = pathPoints[0].getY();
 
 
             PointF P1c1 = calculateTriangle(a, b, c, d, true);
