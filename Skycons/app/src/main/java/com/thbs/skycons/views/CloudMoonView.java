@@ -222,7 +222,8 @@ public class CloudMoonView extends View {
         return result;
     }
 
-    private PointF calculateTriangle(float x1, float y1, float x2, float y2, boolean left) {
+    private PointF calculateTriangle(float x1, float y1, float x2,
+                                     float y2, boolean left) {
 
         PointF result = new PointF(0,0);
         float dy = y2 - y1;
@@ -253,7 +254,6 @@ public class CloudMoonView extends View {
         float[] aCoordinates = new float[2];
 
         while ((distance < length) && (counter < 1000)) {
-            // get point from the pathMoon
             pm.getPosTan(distance, aCoordinates, null);
             pointArray[counter] = new PathPoints(aCoordinates[0], aCoordinates[1]);
             counter++;

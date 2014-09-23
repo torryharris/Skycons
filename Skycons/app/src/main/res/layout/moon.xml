@@ -9,8 +9,8 @@
     tools:context=".MainActivity">
 
     <com.thbs.skycons.views.MoonView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 

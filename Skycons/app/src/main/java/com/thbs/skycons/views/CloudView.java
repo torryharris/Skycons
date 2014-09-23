@@ -24,12 +24,46 @@ public class CloudView extends View {
 
     public CloudView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        String num[] = attrs.getAttributeValue(0).split(".dip");
+        System.out.println(num[0]);
+
+       // screenW = Integer.valueOf(attrs.getAttributeValue(0).split("dp""));
+        //screenH = Integer.valueOf(attrs.getAttributeValue(1));
+
+        X = screenW/2;
+        Y = (screenH/2);
+
+        path.moveTo(X, Y);
+
         init();
     }
 
     public CloudView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        //screenW = Integer.valueOf(attrs.getAttributeValue(0));
+        //screenH = Integer.valueOf(attrs.getAttributeValue(1));
+
+        X = screenW/2;
+        Y = (screenH/2);
+
+        path.moveTo(X, Y);
+
         init();
+    }
+
+
+    @Override
+    public void onSizeChanged (int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        screenW = w;
+        screenH = h;
+
+        X = screenW/2;
+        Y = (screenH/2);
+
     }
 
     private void init() {
@@ -56,19 +90,6 @@ public class CloudView extends View {
         paint1.setShadowLayer(0, 0, 0, Color.BLACK);
 
         path = new Path();
-    }
-
-    @Override
-    public void onSizeChanged (int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        screenW = w;
-        screenH = h;
-        X = screenW/2;
-        Y = (screenH/2);
-
-        path.moveTo(X, Y);
-
     }
 
 
@@ -126,7 +147,6 @@ public class CloudView extends View {
         canvas.drawPath(path, paint);
 
         invalidate();
-
 
     }
 

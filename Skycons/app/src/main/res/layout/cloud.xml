@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
     <com.thbs.skycons.views.CloudView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_width="100.5dp"
+        android:layout_height="100.5dp" />
 
 </RelativeLayout>

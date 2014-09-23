@@ -9,7 +9,7 @@
     android:background="#ffffff"
     tools:context=".MainActivity">
 
-    <com.thbs.skycons.views.LeafView
+    <com.thbs.skycons.views.WindView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 
