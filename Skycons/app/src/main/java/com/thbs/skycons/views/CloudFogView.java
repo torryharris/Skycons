@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,7 +16,18 @@ import android.view.View;
 public class CloudFogView extends View {
 
     private static Paint paintCloud, paintFog;
+    Path npth1,npth,secpath1,secpath2;
+    static int midPt = 49;
+    boolean expanding = false;
+    boolean moving = true;
+    boolean secMove = false;
+
+    static float ctr = 0;
+    static int ctr2 = 99;
+    static float i,j;
     private int screenW, screenH;
+    PathPoints[] ppts,ppts2;
+    Boolean check;
     private float X, Y, L1=0, H1=0, L2=0, H2=0;
     private Path pathCloud, path1, path2;
     private double count;
@@ -41,7 +53,13 @@ public class CloudFogView extends View {
     private void init() {
 
         count = 0;
-
+        i=0f;
+        j=(int)0.5;
+        check = false;
+        npth1 = new Path();
+        npth = new Path();
+        secpath1 = new Path();
+        secpath2 = new Path();
         paintCloud = new Paint();
         paintFog = new Paint();
 
@@ -58,7 +76,7 @@ public class CloudFogView extends View {
         paintFog.setAntiAlias(true);
         paintFog.setStrokeCap(Paint.Cap.ROUND);
         paintFog.setStrokeJoin(Paint.Join.ROUND);
-        paintFog.setStyle(Paint.Style.STROKE);
+        paintFog.setStyle(Paint.Style.FILL_AND_STROKE);
         paintFog.setShadowLayer(0, 0, 0, Color.BLACK);
 
         pathCloud = new Path();
@@ -74,14 +92,7 @@ public class CloudFogView extends View {
         X = screenW/2;
         Y = (screenH/2);
 
-        if(L2 == 0) {
-            L1 =  screenW * 0.2f;
-            H1 =  screenH * 0.88f;
 
-            L2 =  screenW * 0.78f;
-            H2 =  screenH * 0.98f;
-
-        }
 
         pathCloud.moveTo(X, Y);
 
@@ -140,82 +151,207 @@ public class CloudFogView extends View {
 
         canvas.drawPath(pathCloud, paintCloud);
 
+
         path1 = new Path();
         path2 = new Path();
 
-        if(move) {
 
-            path1.moveTo((L1+25)+m*0.15f, H1);
-            path1.lineTo((L2-25)+m*0.15f, H1);
-            canvas.drawPath(path1, paintFog);
+        float line1Y = (float) (Y+ Y*70.0/100.0);
+        float line2Y = (float) (Y+Y*85.0/100.0);
 
-            path2.moveTo((L1+25)-m*0.15f, H2);
-            path2.lineTo((L2-25)-m*0.15f, H2);
-            canvas.drawPath(path2, paintFog);
+        float lineStartX = (float)(X-X*50.0/100.0);
 
-            if(m==50) {
-               compress = true;
-               move = false;
+        float lineEndX = (float) (X+X*50.0/100);
 
-               backupL11 = (L1+25)+m*0.15f;
-               backupL12 = (L2-25)+m*0.15f;
+        float tempLength =  lineEndX - lineStartX;
+        float fogLength = tempLength * (float)80.0/(float)100.0;
+        float temp = (lineEndX-lineStartX)*(float)95.0/(float)100;
+        float temp2 = lineEndX - (float)100.0;
 
-               backupL21 = (L1+25)-m*0.15f;
-               backupL22 = (L2-25)-m*0.15f;
 
-               m=0;
+
+        path1.moveTo(lineStartX,line1Y);
+        path1.lineTo(lineStartX+temp,line1Y);
+
+        path2.moveTo(lineEndX,line2Y);
+        path2.lineTo(lineEndX-temp,line2Y);
+
+        if(moving&&(lineStartX+temp+ctr)<=lineEndX)
+        {
+
+            path1.reset();
+            path1.moveTo(lineStartX+ctr+i,line1Y);
+            path1.lineTo(lineStartX+ctr+temp+i,line1Y);
+
+            path2.reset();
+            path2.moveTo(lineEndX-ctr+i+i,line2Y);
+            path2.lineTo(lineEndX-ctr-temp+i-i,line2Y);
+
+            ctr = ctr+(float)0.1;
+            if((lineStartX+temp+ctr)>lineEndX)
+            {
+                expanding = true;
+                moving = false;
             }
+        }
+
+        if(expanding)
+        {
+
+            if(i<=5f)
+            {
+                i=i+0.1f;
+                path1.reset();
+                path1.moveTo(lineStartX+ctr+temp+i,line1Y);
+                path1.lineTo(lineStartX+ctr-i,line1Y);
+
+                path2.reset();
+                path2.moveTo(lineEndX-ctr-temp+i,line2Y);
+                path2.lineTo(lineEndX-ctr-i,line2Y);
+
+
+            }
+            else
+            {
+
+                path1.reset();
+                path1.moveTo(lineStartX + ctr +temp + i, line1Y);
+                path1.lineTo(lineStartX + ctr - i , line1Y);
+
+                path2.reset();
+                path2.moveTo(lineEndX-ctr-temp+i,line2Y);
+                path2.lineTo(lineEndX-ctr-i,line2Y);
+
+                ctr = ctr - 0.1f;
+                if (lineStartX + ctr <= lineStartX) {
+                    expanding = false;
+                    compress = true;
+                    ctr = 0.0f;
+                }
+            }
+        }
+
+        if(compress)
+        {
+
+            System.out.println("In compress");
+             if(i>0.0f) {
+                 i = i - 0.1f;
+                 path1.reset();
+                 path1.moveTo(lineStartX + ctr - i, line1Y);
+                 path1.lineTo(lineStartX + ctr + temp + i, line1Y);
+
+                 path2.reset();
+                 path2.moveTo(lineEndX-ctr-i,line2Y);
+                 path2.lineTo(lineEndX-ctr-temp+i,line2Y);
+
+             }
+            else {
+                 compress = false;
+                 moving = true;
+             }
 
         }
 
-        if(compress) {
-
-            path1.moveTo(backupL11+m*0.1f, H1);
-            path1.lineTo(backupL12-m*0.3f, H1);
-            canvas.drawPath(path1, paintFog);
-
-            path2.moveTo(backupL21-m*0.3f, H2);
-            path2.lineTo(backupL22+m*0.1f, H2);
-            canvas.drawPath(path2, paintFog);
-
-            if(m==50) {
-                expand = true;
-                move = false;
-                compress = false;
-
-                backupL11 = backupL11+m*0.1f;
-                backupL12 = backupL12-m*0.3f;
-
-                backupL21 = backupL21-m*0.3f;
-                backupL22 = backupL22+m*0.1f;
-
-                m=0;
-            }
-
-        }
-
-        if(expand) {
-
-            path1.moveTo(backupL11-m*0.15f-m/10, H1);
-            path1.lineTo(backupL12+m*0.3f-m/10, H1);
-            canvas.drawPath(path1, paintFog);
-
-            path2.moveTo(backupL21+m*0.3f-m/10, H2);
-            path2.lineTo(backupL22, H2);
-            canvas.drawPath(path2, paintFog);
-
-            if(m==50) {
-                move = true;
-                compress = false;
-                expand = false;
-
-                m=0;
-            }
-
-        }
 
 
-        m = m + 0.5f;
+
+
+
+
+
+        PathPoints[] path1ppts = getPoints(path1);
+        PathPoints[] path2ppts = getPoints(path2);
+
+
+
+       // npth.moveTo(path1ppts[0].getX(),path1ppts[0].getY());
+
+
+//        if(ctr+20+i<path1ppts.length&&ctr-i>=0&&expanding)
+//        {
+//            if(ctr+20+i<=path1ppts.length&&ctr-i>=0||exp1)
+//            {
+//                i = i+1;
+//
+//           }
+//            else
+//            {
+//
+//                i = 0;
+//                if(ctr+20+i<=ctr+21)
+//                {
+//                    exp1=true;
+//                }
+//            }
+//            npth.reset();
+//            if(ctr-1>0)
+//            {
+//                npth.moveTo(path1ppts[ctr-1].getX(),path1ppts[ctr-1].getY());
+//            }
+//           else{
+//                npth.moveTo(path1ppts[ctr].getX(),path1ppts[ctr].getY());
+//            }
+//            npth.lineTo(path1ppts[ctr+20+i].getX(),path1ppts[ctr+20+i].getY());
+//            ctr++;
+//            ctr2=99;
+//        }
+//        else
+//        {
+//            expanding = false;
+//            if(ctr2-20-i>=0) {
+//                i=i+1;
+//                npth.reset();
+//                npth.moveTo(path1ppts[ctr2].getX(), path1ppts[ctr2].getY());
+//                npth.lineTo(path1ppts[ctr2-20-i].getX(), path1ppts[ctr2-20-i].getY());
+//                ctr2--;
+//            }
+//            else
+//            {
+//                expanding = true;
+//                ctr=0;
+//                //i=0;
+//            }
+//        }
+
+//        if(ctr==0) {
+//            npth.lineTo(path1ppts[midPt].getX(), path1ppts[midPt].getY());
+//            npth1.lineTo(path2ppts[midPt].getX(), path2ppts[midPt].getY());
+//            ctr++;
+//        }
+//        else if(ctr>0&&ctr<49&&expanding)
+//        {
+//
+//                npth.moveTo(path1ppts[ctr].getX(),path1ppts[0].getY());
+//                npth1.moveTo(path2ppts[path2ppts.length -ctr].getX(),path2ppts[path2ppts.length -1].getY());
+//                npth.lineTo(path1ppts[midPt + ctr].getX(), path1ppts[midPt].getY());
+//                npth1.lineTo(path2ppts[midPt - ctr].getX(), path2ppts[midPt].getY());
+//                ctr++;
+//                if (ctr == 48) {
+//                    expanding = false;
+//                    System.out.println("Value of Counter is 48");
+//                }
+//
+//        }
+//        else if(!expanding)
+//        {
+//
+//
+//
+//                System.out.println("In not expanding code " + ctr);
+//                ctr--;
+//                npth.lineTo(path1ppts[midPt - ctr].getX(), path1ppts[midPt].getY());
+//                npth1.lineTo(path2ppts[midPt + ctr].getX(), path2ppts[midPt].getY());
+//           if(ctr==0)
+//            {
+//                expanding = true;
+//            }
+//        }
+
+
+        canvas.drawPath(path1,paintFog);
+        canvas.drawPath(path2,paintFog);
+
 
         invalidate();
 
@@ -239,6 +375,45 @@ public class CloudFogView extends View {
         }
 
         return result;
+
+    }
+
+    private PathPoints[] getPoints(Path path) {
+        PathPoints[] pointArray = new PathPoints[100];
+        PathMeasure pm = new PathMeasure(path, false);
+        float length = pm.getLength();
+        float distance = 0f;
+        float speed = length / 100;
+        int counter = 0;
+        float[] aCoordinates = new float[2];
+
+        while ((distance < length) && (counter < 100)) {
+            // get point from the pathMoon
+            pm.getPosTan(distance, aCoordinates, null);
+            pointArray[counter] = new PathPoints(aCoordinates[0], aCoordinates[1]);
+            counter++;
+            distance = distance + speed;
+        }
+
+        return pointArray;
+    }
+
+    class PathPoints {
+
+        float x, y;
+
+        public PathPoints(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public float getX() {
+            return x;
+        }
+
+        public float getY() {
+            return y;
+        }
 
     }
 
