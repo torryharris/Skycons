@@ -38,23 +38,23 @@ public class CloudSnowView extends View {
 
     private double count;
 
-    public CloudSnowView(Context context) {
-        super(context);
-        init();
-    }
 
     public CloudSnowView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
 
-    public CloudSnowView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        String num1[] = attrs.getAttributeValue(0).split("\\.");
+        String num2[] = attrs.getAttributeValue(1).split("\\.");
+
+        screenW = Integer.valueOf(num1[0]);
+        screenH = Integer.valueOf(num2[0]);
+
+        X = screenW/2;
+        Y = (screenH/2);
+
         init();
     }
 
     private void init() {
-
         count = 0;
 
         paint = new Paint();
@@ -69,7 +69,7 @@ public class CloudSnowView extends View {
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
         paint1.setColor(Color.BLACK);
-        paint1.setStrokeWidth(7);
+        paint1.setStrokeWidth((int)(screenW/2*0.035));
         paint1.setAntiAlias(true);
         paint1.setStrokeCap(Paint.Cap.ROUND);
         paint1.setStyle(Paint.Style.STROKE);
@@ -77,20 +77,6 @@ public class CloudSnowView extends View {
         cloudPath = new Path();
         pathCircle1 = new Path();
     }
-
-    @Override
-    public void onSizeChanged (int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        screenW = w;
-        screenH = h;
-        X = screenW/2;
-        Y = (screenH/2);
-
-        cloudPath.moveTo(X, Y);
-
-    }
-
 
     @Override
     public void onDraw(Canvas canvas) {
@@ -158,27 +144,32 @@ public class CloudSnowView extends View {
         }
 
         if(!pointsStored) {
-            cubicPath11 = new Path();
-            cubicPath11.moveTo(x1, y1);
-            cubicPath11.cubicTo(x1-10, y1+30, x1-20, y1+60, x1-30, y1+90);
-            pathPoints11 = getPoints(cubicPath11);
 
+            cubicPath11 = new Path();
+            int height = screenH - y1;
+            cubicPath11.moveTo(x1, y1);
+            cubicPath11.cubicTo(x1-screenW*0.06f, y1+height*0.3f, x1-screenW*0.12f,
+                    y1+height*0.7f, x1-screenW*0.18f, y1+height*1.1f);
+            pathPoints11 = getPoints(cubicPath11);
 
             cubicPath12 = new Path();
             int x = x1-5;
             cubicPath12.moveTo(x, y1);
-            cubicPath12.cubicTo(x+10, y1+30, x+15, y1+60, x-5, y1+90);
+            cubicPath12.cubicTo(x+screenW*0.06f, y1+height*0.3f, x+screenW*0.1f,
+                    y1+height*0.7f, x-screenW*0.03f, y1+height*1.1f);
             pathPoints12 = getPoints(cubicPath12);
 
             cubicPath21 = new Path();
             cubicPath21.moveTo(x2, y2);
-            cubicPath21.cubicTo(x2+10, y2+30, x2+20, y2+60, x2+30, y2+90);
+            cubicPath21.cubicTo(x2+screenW*0.06f, y2+height*0.3f, x2+screenW*0.12f,
+                    y2+height*0.7f, x2+screenW*0.18f, y2+height*1.1f);
             pathPoints21 = getPoints(cubicPath21);
 
             cubicPath22 = new Path();
             int xx= x2+5;
             cubicPath22.moveTo(xx, y2);
-            cubicPath22.cubicTo(xx-10, y2+30, xx-15, y2+60, xx+5, y2+90);
+            cubicPath22.cubicTo(xx-screenW*0.06f, y2+height*0.3f, xx-screenW*0.1f,
+                    y2+height*0.6f, xx+screenW*0.03f, y2+height*1.1f);
             pathPoints22 = getPoints(cubicPath22);
 
             pointsStored = true;
@@ -189,7 +180,7 @@ public class CloudSnowView extends View {
 
             pathCircle1 = new Path();
             pathCircle1.addCircle(pathPoints11[m].getX(), pathPoints11[m].getY(),
-                    13, Path.Direction.CW);
+                    screenW*0.04f, Path.Direction.CW);
             pointsCircle11 = getPoints(pathCircle1);
 
             //1st drop
@@ -233,7 +224,7 @@ public class CloudSnowView extends View {
 
                 pathCircle2 = new Path();
                 pathCircle2.addCircle(pathPoints12[n].getX(), pathPoints12[n].getY(),
-                        13, Path.Direction.CW);
+                        screenW*0.04f, Path.Direction.CW);
                 pointsCircle12 = getPoints(pathCircle2);
 
                 //2nd drop
@@ -285,10 +276,6 @@ public class CloudSnowView extends View {
                 path13.reset();
                 path13.moveTo(0, 0);
 
-                canvas.clipPath(path11);
-                canvas.clipPath(path12);
-                canvas.clipPath(path13);
-
                 x1=0;
                 y1=0;
 
@@ -306,7 +293,7 @@ public class CloudSnowView extends View {
 
             pathCircle2 = new Path();
             pathCircle2.addCircle(pathPoints12[n].getX(), pathPoints12[n].getY(),
-                    13, Path.Direction.CW);
+                    screenW*0.04f, Path.Direction.CW);
             pointsCircle12 = getPoints(pathCircle2);
 
             //2nd drop
@@ -357,10 +344,6 @@ public class CloudSnowView extends View {
                 path23.reset();
                 path23.moveTo(0, 0);
 
-                canvas.clipPath(path21);
-                canvas.clipPath(path22);
-                canvas.clipPath(path23);
-
                 x1=0;
                 y1=0;
 
@@ -376,7 +359,7 @@ public class CloudSnowView extends View {
 
             pathCircle1 = new Path();
             pathCircle1.addCircle(pathPoints21[m].getX(), pathPoints21[m].getY(),
-                    13, Path.Direction.CW);
+                    screenW*0.04f, Path.Direction.CW);
             pointsCircle21 = getPoints(pathCircle1);
 
             //1st drop
@@ -421,7 +404,7 @@ public class CloudSnowView extends View {
 
                 pathCircle2 = new Path();
                 pathCircle2.addCircle(pathPoints22[n].getX(), pathPoints22[n].getY(),
-                        13, Path.Direction.CW);
+                        screenW*0.04f, Path.Direction.CW);
                 pointsCircle22 = getPoints(pathCircle2);
 
                 //2nd drop
@@ -473,10 +456,6 @@ public class CloudSnowView extends View {
                 path13.reset();
                 path13.moveTo(0, 0);
 
-                canvas.clipPath(path11);
-                canvas.clipPath(path12);
-                canvas.clipPath(path13);
-
                 x1=0;
                 y1=0;
 
@@ -490,7 +469,7 @@ public class CloudSnowView extends View {
 
             pathCircle2 = new Path();
             pathCircle2.addCircle(pathPoints22[n].getX(), pathPoints22[n].getY(),
-                    13, Path.Direction.CW);
+                    screenW*0.04f, Path.Direction.CW);
             pointsCircle22 = getPoints(pathCircle2);
 
             //2nd drop
@@ -540,10 +519,6 @@ public class CloudSnowView extends View {
                 path22.moveTo(0, 0);
                 path23.reset();
                 path23.moveTo(0, 0);
-
-                canvas.clipPath(path21);
-                canvas.clipPath(path22);
-                canvas.clipPath(path23);
 
                 x1=0;
                 y1=0;

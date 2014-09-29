@@ -11,44 +11,23 @@ import android.view.View;
 
 public class CloudView extends View {
 
-    private static Paint paint, paint1;
+    private Paint paint;
     private int screenW, screenH;
     private float X, Y;
     private Path path;
     private double count;
+    double radius1, radius2;
 
-    public CloudView(Context context) {
-        super(context);
-        init();
-    }
 
     public CloudView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        String num[] = attrs.getAttributeValue(0).split(".dip");
-        System.out.println(num[0]);
-
-       // screenW = Integer.valueOf(attrs.getAttributeValue(0).split("dp""));
-        //screenH = Integer.valueOf(attrs.getAttributeValue(1));
-
-        X = screenW/2;
-        Y = (screenH/2);
-
-//        path.moveTo(X, Y);
 
         init();
     }
 
     public CloudView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
-        //screenW = Integer.valueOf(attrs.getAttributeValue(0));
-        //screenH = Integer.valueOf(attrs.getAttributeValue(1));
-
-        X = screenW/2;
-        Y = (screenH/2);
-
-        //path.moveTo(X, Y);
 
         init();
     }
@@ -63,6 +42,8 @@ public class CloudView extends View {
 
         X = screenW/2;
         Y = (screenH/2);
+        radius1 = 90;
+        radius2 = 50;
 
     }
 
@@ -71,8 +52,6 @@ public class CloudView extends View {
         count = 0;
 
         paint = new Paint();
-        paint1 = new Paint();
-
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth((screenW/25));
         paint.setAntiAlias(true);
@@ -81,17 +60,10 @@ public class CloudView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
-        paint1.setColor(Color.BLACK);
-        paint1.setStrokeWidth((screenW/25));
-        paint1.setAntiAlias(true);
-        paint1.setStrokeCap(Paint.Cap.ROUND);
-        paint1.setStrokeJoin(Paint.Join.ROUND);
-        paint1.setStyle(Paint.Style.STROKE);
-        paint1.setShadowLayer(0, 0, 0, Color.BLACK);
 
         path = new Path();
-    }
 
+    }
 
     @Override
     public void onDraw(Canvas canvas) {
@@ -104,13 +76,7 @@ public class CloudView extends View {
 
         int retval = Double.compare(count, 360.00);
 
-        if(retval > 0) {
-
-        }
-        else if(retval < 0) {
-
-        }
-        else {
+        if(retval == 0) {
             count = 0;
         }
 
@@ -128,6 +94,7 @@ public class CloudView extends View {
         float P3Y = ((float)(r1 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
         float P4X =(float)(r1 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
         float P4Y = ((float)(r1 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
+
 
         path.moveTo(X1,Y1);
 
@@ -164,15 +131,17 @@ public class CloudView extends View {
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
 
-        if (left){
+        if (left) {
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
-        }else{
+        } else {
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
+
         return result;
+
     }
 
 }

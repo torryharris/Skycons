@@ -26,18 +26,20 @@ public class MoonView extends View {
     boolean clockwise = false;
     float a=0, b=0, c=0, d=0;
 
-    public MoonView(Context context) {
-        super(context);
-        init();
-    }
-
     public MoonView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
 
-    public MoonView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+//        String num1[] = attrs.getAttributeValue(0).split("\\.");
+//        String num2[] = attrs.getAttributeValue(1).split("\\.");
+//
+//        screenW = Integer.valueOf(num1[0]);
+//        screenH = Integer.valueOf(num2[0]);
+//
+//        X = screenW/2;
+//        Y = (screenH/2);
+//
+//        radius = screenW/3;
+
         init();
     }
 
@@ -59,7 +61,8 @@ public class MoonView extends View {
         X = screenW/2;
         Y = (screenH/2);
 
-        radius = screenW/7;
+        radius = 70;
+
     }
 
     @Override

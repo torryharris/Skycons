@@ -20,21 +20,28 @@ public class CloudHvRainView extends View {
     int count1 = 0, count2 = 0, count3 = 0, i=0;
     private double count;
     boolean pointsStored = false;
-
-    public CloudHvRainView(Context context) {
-        super(context);
-        init();
-    }
+    double radius1, radius2;
 
     public CloudHvRainView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+//        String num1[] = attrs.getAttributeValue(0).split("\\.");
+//        String num2[] = attrs.getAttributeValue(1).split("\\.");
+//
+//        screenW = Integer.valueOf(num1[0]);
+//        screenH = Integer.valueOf(num2[0]);
+//
+//        X = screenW/2;
+//        Y = (screenH/2);
+//
+//        radius1 = 90;
+//        radius2 = 50;
+
         init();
     }
 
-    public CloudHvRainView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init();
-    }
+
+
 
     private void init() {
 
@@ -60,19 +67,21 @@ public class CloudHvRainView extends View {
         path = new Path();
     }
 
+
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
         screenW = w;
         screenH = h;
+
         X = screenW/2;
         Y = (screenH/2);
 
-        path.moveTo(X, Y);
+        radius1 = 90;
+        radius2 = 50;
 
     }
-
 
     @Override
     public void onDraw(Canvas canvas) {
@@ -97,16 +106,16 @@ public class CloudHvRainView extends View {
             count = 0;
         }
 
-        float X1 = (float)(90 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
-        float Y1 = ((float)(50 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
-        float P1X = (float)(90 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
-        float P1Y = ((float)(50 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
-        float P2X = (float)(90 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
-        float P2Y = ((float)((50+(0.111*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
-        float P3X = (float)(90 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
-        float P3Y = ((float)(90 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
-        float P4X =(float)(90 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
-        float P4Y = ((float)(90 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
+        float X1 = (float)(radius1 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
+        float Y1 = ((float)(radius2 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
+        float P1X = (float)(radius1 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
+        float P1Y = ((float)(radius2 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
+        float P2X = (float)(radius1 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
+        float P2Y = ((float)((radius2+(0.111*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
+        float P3X = (float)(radius1 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
+        float P3Y = ((float)(radius1 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
+        float P4X =(float)(radius1 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
+        float P4Y = ((float)(radius1 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
 
         path.moveTo(X1,Y1);
         PointF P1c1 = calculateTriangle(X1, Y1, P1X, P1Y, true, count);

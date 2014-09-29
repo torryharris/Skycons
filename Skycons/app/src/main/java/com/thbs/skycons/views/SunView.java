@@ -8,9 +8,6 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- * Created by administrator on 9/29/14.
- */
 public class SunView extends View {
 
     private static Paint paint;
@@ -49,8 +46,6 @@ public class SunView extends View {
 
         X = screenW/2;
         Y = (screenH/2);
-
-     //   path.moveTo(X, Y);
 
         init();
     }
@@ -120,4 +115,3 @@ public class SunView extends View {
 
     }
 }
-

@@ -3,9 +3,6 @@ package com.thbs.skycons;
 import android.app.Activity;
 import android.os.Bundle;
 
-/**
- * Created by administrator on 9/29/14.
- */
 public class CloudSunActivity extends Activity {
 
     @Override
