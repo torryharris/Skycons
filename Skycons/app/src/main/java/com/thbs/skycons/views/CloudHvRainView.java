@@ -10,6 +10,9 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
 
+/**
+ * This view draws cloud with heavy rain.
+ */
 public class CloudHvRainView extends View {
 
     private static Paint paint, paint1;
@@ -50,6 +53,7 @@ public class CloudHvRainView extends View {
         paint = new Paint();
         paint1 = new Paint();
 
+        //Paint for drawing cloud
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(10);
         paint.setAntiAlias(true);
@@ -58,6 +62,7 @@ public class CloudHvRainView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
+        //Paint for drawing rain drops
         paint1.setColor(Color.BLACK);
         paint1.setStrokeWidth(8);
         paint1.setAntiAlias(true);
@@ -68,6 +73,7 @@ public class CloudHvRainView extends View {
     }
 
 
+    // Initial declaration of the coordinates.
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -87,10 +93,10 @@ public class CloudHvRainView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        path = new Path();
-        path1 = new Path();
-        path2 = new Path();
-        path3 = new Path();
+        path = new Path(); // path for cloud
+        path1 = new Path();// path for drop 1
+        path2 = new Path();// path for drop 2
+        path3 = new Path();// path for drop 3
 
         count = count+0.5;
 
@@ -137,6 +143,7 @@ public class CloudHvRainView extends View {
         path.cubicTo(P5c1.x,P5c1.y,P5c2.x,P5c2.y,X1,Y1);
 
 
+        // Store starting x, y coordinates of rain drops
         if(!pointsStored) {
             x1 = (int) P1c2.x;
             x2 = (int) P2c2.x;
@@ -266,20 +273,26 @@ public class CloudHvRainView extends View {
 
     }
 
+    //
     private PointF calculateTriangle(float x1, float y1,
                                      float x2, float y2, boolean left, double count) {
 
         PointF result = new PointF(0,0);
+        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
+
+        // calculating angle and the distance between center and the two points
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
 
-        if (left){
+        if (left) {
+            //point from center to the left
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
-        }else{
+        } else {
+            //point from center to the right
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }

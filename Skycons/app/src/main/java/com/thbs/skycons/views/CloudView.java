@@ -32,7 +32,7 @@ public class CloudView extends View {
         init();
     }
 
-
+    // Initial declaration of the coordinates.
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -126,16 +126,20 @@ public class CloudView extends View {
                                      float y2, boolean left, double count) {
 
         PointF result = new PointF(0,0);
+        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
+        // calculating angle and the distance between center and the two points
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
 
         if (left) {
+            //point from center to the left
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
         } else {
+            //point from center to the right
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }

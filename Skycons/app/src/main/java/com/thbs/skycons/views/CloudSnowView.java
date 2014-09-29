@@ -11,11 +11,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by administrator on 09/09/14.
+ * This view draws cloud with snow.
  */
 public class CloudSnowView extends View {
 
-    private static Paint paint, paint1;
+    private Paint paintCloud, paintSnow;
 
     PathPoints[] pathPoints11, pathPoints12, pathPoints21, pathPoints22,
                  pointsCircle11, pointsCircle12, pointsCircle21, pointsCircle22;
@@ -39,6 +39,7 @@ public class CloudSnowView extends View {
     private double count;
 
 
+    // Initial declaration of the coordinates.
     public CloudSnowView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -57,22 +58,22 @@ public class CloudSnowView extends View {
     private void init() {
         count = 0;
 
-        paint = new Paint();
-        paint1 = new Paint();
+        paintCloud = new Paint();
+        paintSnow = new Paint();
 
-        paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(10);
-        paint.setAntiAlias(true);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setShadowLayer(0, 0, 0, Color.BLACK);
+        paintCloud.setColor(Color.BLACK);
+        paintCloud.setStrokeWidth(10);
+        paintCloud.setAntiAlias(true);
+        paintCloud.setStrokeCap(Paint.Cap.ROUND);
+        paintCloud.setStrokeJoin(Paint.Join.ROUND);
+        paintCloud.setStyle(Paint.Style.STROKE);
+        paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
-        paint1.setColor(Color.BLACK);
-        paint1.setStrokeWidth((int)(screenW/2*0.035));
-        paint1.setAntiAlias(true);
-        paint1.setStrokeCap(Paint.Cap.ROUND);
-        paint1.setStyle(Paint.Style.STROKE);
+        paintSnow.setColor(Color.BLACK);
+        paintSnow.setStrokeWidth((int) (screenW / 2 * 0.035));
+        paintSnow.setAntiAlias(true);
+        paintSnow.setStrokeCap(Paint.Cap.ROUND);
+        paintSnow.setStyle(Paint.Style.STROKE);
 
         cloudPath = new Path();
         pathCircle1 = new Path();
@@ -145,6 +146,7 @@ public class CloudSnowView extends View {
 
         if(!pointsStored) {
 
+            // Store path coordinates for snow fall 1
             cubicPath11 = new Path();
             int height = screenH - y1;
             cubicPath11.moveTo(x1, y1);
@@ -152,6 +154,7 @@ public class CloudSnowView extends View {
                     y1+height*0.7f, x1-screenW*0.18f, y1+height*1.1f);
             pathPoints11 = getPoints(cubicPath11);
 
+            // Store path coordinates for snow fall 2
             cubicPath12 = new Path();
             int x = x1-5;
             cubicPath12.moveTo(x, y1);
@@ -159,12 +162,14 @@ public class CloudSnowView extends View {
                     y1+height*0.7f, x-screenW*0.03f, y1+height*1.1f);
             pathPoints12 = getPoints(cubicPath12);
 
+            // Store path coordinates for snow fall 3
             cubicPath21 = new Path();
             cubicPath21.moveTo(x2, y2);
             cubicPath21.cubicTo(x2+screenW*0.06f, y2+height*0.3f, x2+screenW*0.12f,
                     y2+height*0.7f, x2+screenW*0.18f, y2+height*1.1f);
             pathPoints21 = getPoints(cubicPath21);
 
+            // Store path coordinates for snow fall 4
             cubicPath22 = new Path();
             int xx= x2+5;
             cubicPath22.moveTo(xx, y2);
@@ -204,19 +209,19 @@ public class CloudSnowView extends View {
             path12.lineTo(pointsCircle11[b].getX(), (pointsCircle11[b].getY()));
             path13.lineTo(pointsCircle11[c].getX(), (pointsCircle11[c].getY()));
 
-            canvas.drawPath(path11, paint1);
-            canvas.drawPath(path12, paint1);
-            canvas.drawPath(path13, paint1);
+            canvas.drawPath(path11, paintSnow);
+            canvas.drawPath(path12, paintSnow);
+            canvas.drawPath(path13, paintSnow);
 
             //fill cloud with white color
-            paint.setColor(Color.WHITE);
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawPath(cloudPath, paint);
+            paintCloud.setColor(Color.WHITE);
+            paintCloud.setStyle(Paint.Style.FILL);
+            canvas.drawPath(cloudPath, paintCloud);
 
             //draw stroke with back color
-            paint.setColor(Color.BLACK);
-            paint.setStyle(Paint.Style.STROKE);
-            canvas.drawPath(cloudPath, paint);
+            paintCloud.setColor(Color.BLACK);
+            paintCloud.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(cloudPath, paintCloud);
 
             m = m+1;
 
@@ -248,20 +253,20 @@ public class CloudSnowView extends View {
                 path22.lineTo(pointsCircle12[b].getX(), (pointsCircle12[b].getY()));
                 path23.lineTo(pointsCircle12[c].getX(), (pointsCircle12[c].getY()));
 
-                canvas.drawPath(path21, paint1);
-                canvas.drawPath(path22, paint1);
-                canvas.drawPath(path23, paint1);
+                canvas.drawPath(path21, paintSnow);
+                canvas.drawPath(path22, paintSnow);
+                canvas.drawPath(path23, paintSnow);
 
                 //fill cloud with white color
-                paint.setColor(Color.WHITE);
-                paint.setStyle(Paint.Style.FILL);
-                canvas.drawPath(cloudPath, paint);
+                paintCloud.setColor(Color.WHITE);
+                paintCloud.setStyle(Paint.Style.FILL);
+                canvas.drawPath(cloudPath, paintCloud);
 
 
                 //draw stroke with back color
-                paint.setColor(Color.BLACK);
-                paint.setStyle(Paint.Style.STROKE);
-                canvas.drawPath(cloudPath, paint);
+                paintCloud.setColor(Color.BLACK);
+                paintCloud.setStyle(Paint.Style.STROKE);
+                canvas.drawPath(cloudPath, paintCloud);
 
                 n = n+1;
 
@@ -317,20 +322,20 @@ public class CloudSnowView extends View {
             path22.lineTo(pointsCircle12[b].getX(), (pointsCircle12[b].getY()));
             path23.lineTo(pointsCircle12[c].getX(), (pointsCircle12[c].getY()));
 
-            canvas.drawPath(path21, paint1);
-            canvas.drawPath(path22, paint1);
-            canvas.drawPath(path23, paint1);
+            canvas.drawPath(path21, paintSnow);
+            canvas.drawPath(path22, paintSnow);
+            canvas.drawPath(path23, paintSnow);
 
             //fill cloud with white color
-            paint.setColor(Color.WHITE);
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawPath(cloudPath, paint);
+            paintCloud.setColor(Color.WHITE);
+            paintCloud.setStyle(Paint.Style.FILL);
+            canvas.drawPath(cloudPath, paintCloud);
 
 
             //draw stroke with back color
-            paint.setColor(Color.BLACK);
-            paint.setStyle(Paint.Style.STROKE);
-            canvas.drawPath(cloudPath, paint);
+            paintCloud.setColor(Color.BLACK);
+            paintCloud.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(cloudPath, paintCloud);
 
             n = n+1;
 
@@ -383,20 +388,20 @@ public class CloudSnowView extends View {
             path12.lineTo(pointsCircle21[b].getX(), (pointsCircle21[b].getY()));
             path13.lineTo(pointsCircle21[c].getX(), (pointsCircle21[c].getY()));
 
-            canvas.drawPath(path11, paint1);
-            canvas.drawPath(path12, paint1);
-            canvas.drawPath(path13, paint1);
+            canvas.drawPath(path11, paintSnow);
+            canvas.drawPath(path12, paintSnow);
+            canvas.drawPath(path13, paintSnow);
 
             //fill cloud with white color
-            paint.setColor(Color.WHITE);
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawPath(cloudPath, paint);
+            paintCloud.setColor(Color.WHITE);
+            paintCloud.setStyle(Paint.Style.FILL);
+            canvas.drawPath(cloudPath, paintCloud);
 
 
             //draw stroke with back color
-            paint.setColor(Color.BLACK);
-            paint.setStyle(Paint.Style.STROKE);
-            canvas.drawPath(cloudPath, paint);
+            paintCloud.setColor(Color.BLACK);
+            paintCloud.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(cloudPath, paintCloud);
 
             m = m+1;
 
@@ -428,20 +433,20 @@ public class CloudSnowView extends View {
                 path22.lineTo(pointsCircle22[b].getX(), (pointsCircle22[b].getY()));
                 path23.lineTo(pointsCircle22[c].getX(), (pointsCircle22[c].getY()));
 
-                canvas.drawPath(path21, paint1);
-                canvas.drawPath(path22, paint1);
-                canvas.drawPath(path23, paint1);
+                canvas.drawPath(path21, paintSnow);
+                canvas.drawPath(path22, paintSnow);
+                canvas.drawPath(path23, paintSnow);
 
                 //fill cloud with white color
-                paint.setColor(Color.WHITE);
-                paint.setStyle(Paint.Style.FILL);
-                canvas.drawPath(cloudPath, paint);
+                paintCloud.setColor(Color.WHITE);
+                paintCloud.setStyle(Paint.Style.FILL);
+                canvas.drawPath(cloudPath, paintCloud);
 
 
                 //draw stroke with back color
-                paint.setColor(Color.BLACK);
-                paint.setStyle(Paint.Style.STROKE);
-                canvas.drawPath(cloudPath, paint);
+                paintCloud.setColor(Color.BLACK);
+                paintCloud.setStyle(Paint.Style.STROKE);
+                canvas.drawPath(cloudPath, paintCloud);
 
                 n = n+1;
 
@@ -493,20 +498,20 @@ public class CloudSnowView extends View {
             path22.lineTo(pointsCircle22[b].getX(), (pointsCircle22[b].getY()));
             path23.lineTo(pointsCircle22[c].getX(), (pointsCircle22[c].getY()));
 
-            canvas.drawPath(path21, paint1);
-            canvas.drawPath(path22, paint1);
-            canvas.drawPath(path23, paint1);
+            canvas.drawPath(path21, paintSnow);
+            canvas.drawPath(path22, paintSnow);
+            canvas.drawPath(path23, paintSnow);
 
             //fill cloud with white color
-            paint.setColor(Color.WHITE);
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawPath(cloudPath, paint);
+            paintCloud.setColor(Color.WHITE);
+            paintCloud.setStyle(Paint.Style.FILL);
+            canvas.drawPath(cloudPath, paintCloud);
 
 
             //draw stroke with back color
-            paint.setColor(Color.BLACK);
-            paint.setStyle(Paint.Style.STROKE);
-            canvas.drawPath(cloudPath, paint);
+            paintCloud.setColor(Color.BLACK);
+            paintCloud.setStyle(Paint.Style.STROKE);
+            canvas.drawPath(cloudPath, paintCloud);
 
             n = n+1;
 
@@ -540,21 +545,31 @@ public class CloudSnowView extends View {
                                      boolean left, double count) {
 
         PointF result = new PointF(0,0);
+        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
+        // calculating angle and the distance between center and the two points
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
+
         if (left){
+            //point from center to the left
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
+
         }else{
+            //point from center to the right
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
         return result;
     }
 
+    // Used to fetch points from given path.
     private PathPoints[] getPoints(Path path) {
+
+        //Size of 100 indicates that, 100 points
+        // would be extracted from the path
         PathPoints[] pointArray = new PathPoints[100];
         PathMeasure pm = new PathMeasure(path, false);
         float length = pm.getLength();
@@ -573,6 +588,7 @@ public class CloudSnowView extends View {
         return pointArray;
     }
 
+    // Class for fetching path coordinates.
     class PathPoints {
 
         float x, y;

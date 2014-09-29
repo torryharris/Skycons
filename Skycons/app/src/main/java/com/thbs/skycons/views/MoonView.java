@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by administrator on 17/09/14.
+ * This view draws the Moon.
  */
 public class MoonView extends View {
 
@@ -44,6 +44,7 @@ public class MoonView extends View {
     }
 
     private void init() {
+        //Paint for drawing Moon
         paint = new Paint();
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(10);
@@ -52,6 +53,7 @@ public class MoonView extends View {
         paint.setStrokeCap(Paint.Cap.ROUND);
     }
 
+    // Initial declaration of the coordinates.
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -74,7 +76,7 @@ public class MoonView extends View {
         RectF rectF1 = new RectF();
 
         if(!clockwise) {
-
+            // First arc of the Moon.
             rectF1.set(X-radius, Y-radius, X+radius, Y+radius);
             path.addArc(rectF1, 65-(m/2), 275);
 
@@ -85,9 +87,10 @@ public class MoonView extends View {
             c = pathPoints[0].getX();
             d = pathPoints[0].getY();
 
-            PointF P1c1 = calculateTriangle(a, b, c, d, true);
-            PointF P1c2 = calculateTriangle(a, b, c, d, false);
+            PointF P1c1 = cubic2Points(a, b, c, d, true);
+            PointF P1c2 = cubic2Points(a, b, c, d, false);
 
+            // Second arc of the Moon in opposite face.
             path.moveTo(a, b);
             path.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
@@ -101,7 +104,7 @@ public class MoonView extends View {
             }
 
         } else {
-
+            // First arc of the Moon.
             rectF1.set(X-radius, Y-radius, X+radius, Y+radius);
             path.addArc(rectF1, 15+(m/2), 275);
 
@@ -112,9 +115,10 @@ public class MoonView extends View {
             c = pathPoints[0].getX();
             d = pathPoints[0].getY();
 
-            PointF P1c1 = calculateTriangle(a, b , c, d, true);
-            PointF P1c2 = calculateTriangle(a, b, c, d, false);
+            PointF P1c1 = cubic2Points(a, b , c, d, true);
+            PointF P1c2 = cubic2Points(a, b, c, d, false);
 
+            // Second arc of the Moon in opposite face.
             path.moveTo(a, b);
             path.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
@@ -133,8 +137,11 @@ public class MoonView extends View {
 
     }
 
+    // Used to fetch points from given path.
     private PathPoints[] getPoints(Path path) {
 
+        //Size of 1000 indicates that, 1000 points
+        // would be extracted from the path
         PathPoints[] pointArray = new PathPoints[1000];
         PathMeasure pm = new PathMeasure(path, false);
         float length = pm.getLength();
@@ -153,6 +160,7 @@ public class MoonView extends View {
         return pointArray;
     }
 
+    // Class for fetching path coordinates.
     class PathPoints {
 
         float x, y;
@@ -172,19 +180,23 @@ public class MoonView extends View {
 
     }
 
-    private PointF calculateTriangle(float x1, float y1, float x2, float y2, boolean left) {
+    private PointF cubic2Points(float x1, float y1, float x2, float y2, boolean left) {
 
         PointF result = new PointF(0,0);
+        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
+        // calculating angle and the distance between center and the two points
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)  - 0.6 * (float) Math.sqrt(dx * dx + dy * dy); //square
 
         if (left){
+            //point from center to the left
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
         } else {
+            //point from center to the right
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }

@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by administrator on 11/09/14.
+ * This view draws cloud with Moon.
  */
 public class CloudMoonView extends View {
 
@@ -36,6 +36,7 @@ public class CloudMoonView extends View {
 
 
     private void init() {
+        //Paint for drawing cloud
         paintCloud = new Paint();
         paintCloud.setStrokeWidth(10);
         paintCloud.setStrokeCap(Paint.Cap.ROUND);
@@ -44,6 +45,7 @@ public class CloudMoonView extends View {
         paintCloud.setAntiAlias(true);
         paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
+        //Paint for drawing Moon
         paintMoon = new Paint();
         paintMoon.setColor(Color.BLACK);
         paintMoon.setAntiAlias(true);
@@ -55,7 +57,7 @@ public class CloudMoonView extends View {
 
     }
 
-
+    // Initial declaration of the coordinates.
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -82,6 +84,7 @@ public class CloudMoonView extends View {
 
         if(!clockwise) {
 
+            // First arc of the Moon.
             rectF1.set(X2-radius, Y2-radius, X2+radius, Y2+radius);
             pathMoon.addArc(rectF1, 65 - (m / 2), 275);
 
@@ -92,9 +95,10 @@ public class CloudMoonView extends View {
             c = pathPoints[0].getX();
             d = pathPoints[0].getY();
 
-            PointF P1c1 = calculateTriangle(a, b, c, d, true);
-            PointF P1c2 = calculateTriangle(a, b, c, d, false);
+            PointF P1c1 = cubic2Points(a, b, c, d, true);
+            PointF P1c2 = cubic2Points(a, b, c, d, false);
 
+            // Second arc of the Moon in opposite face.
             pathMoon.moveTo(a, b);
             pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
@@ -109,6 +113,7 @@ public class CloudMoonView extends View {
 
         } else {
 
+            // First arc of the Moon.
             rectF1.set(X2-radius, Y2-radius, X2+radius, Y2+radius);
             pathMoon.addArc(rectF1, 15 + (m / 2), 275);
 
@@ -119,9 +124,10 @@ public class CloudMoonView extends View {
             c = pathPoints[0].getX();
             d = pathPoints[0].getY();
 
-            PointF P1c1 = calculateTriangle(a, b, c, d, true);
-            PointF P1c2 = calculateTriangle(a, b, c, d, false);
+            PointF P1c1 = cubic2Points(a, b, c, d, true);
+            PointF P1c2 = cubic2Points(a, b, c, d, false);
 
+            // Second arc of the Moon in opposite face.
             pathMoon.moveTo(a, b);
             pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
 
@@ -198,36 +204,45 @@ public class CloudMoonView extends View {
                                      float y2, boolean left, double count) {
 
         PointF result = new PointF(0,0);
+        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
+        // calculating angle and the distance between center and the two points
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
 
         if (left){
+            //point from center to the left
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
         }else{
+            //point from center to the right
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
         return result;
     }
 
-    private PointF calculateTriangle(float x1, float y1, float x2,
+    // Used to get cubic 2 points between staring & end coordinates.
+    private PointF cubic2Points(float x1, float y1, float x2,
                                      float y2, boolean left) {
 
         PointF result = new PointF(0,0);
+        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
+        // calculating angle and the distance between center and the two points
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)  - 0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
 
         if (left){
+            //point from center to the left
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
         } else {
+            //point from center to the right
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
@@ -235,8 +250,12 @@ public class CloudMoonView extends View {
         return result;
     }
 
+
+    // Used to fetch points from given path.
     private PathPoints[] getPoints(Path path) {
 
+        //Size of 1000 indicates that, 1000 points
+        // would be extracted from the path
         PathPoints[] pointArray = new PathPoints[1000];
         PathMeasure pm = new PathMeasure(path, false);
         float length = pm.getLength();
@@ -255,6 +274,7 @@ public class CloudMoonView extends View {
         return pointArray;
     }
 
+    // Class for fetching path coordinates.
     class PathPoints {
 
         float x, y;

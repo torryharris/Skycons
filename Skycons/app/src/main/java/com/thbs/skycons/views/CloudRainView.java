@@ -11,14 +11,14 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by administrator on 09/09/14.
+ * This view draws cloud with rain.
  */
 public class CloudRainView extends View {
 
     private static Paint paint, paint1;
     private int screenW, screenH;
     private float X, Y;
-    private Path path, path1, path2, path3;
+    private Path pathCloud, pathRain;
     int x1=0, y1=0, x2=0, y2=0, x3=0, y3=0;
     float m = 0;
     boolean drop1 = true, drop2 = false, drop3 = false;
@@ -45,6 +45,7 @@ public class CloudRainView extends View {
         paint = new Paint();
         paint1 = new Paint();
 
+        //Paint for drawing cloud
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(10);
         paint.setAntiAlias(true);
@@ -53,15 +54,17 @@ public class CloudRainView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
+        //Paint for drawing rain drops
         paint1.setColor(Color.BLACK);
         paint1.setStrokeWidth(8);
         paint1.setAntiAlias(true);
         paint1.setStrokeCap(Paint.Cap.ROUND);
         paint1.setStyle(Paint.Style.FILL);
 
-        path = new Path();
+        pathCloud = new Path();
     }
 
+    // Initial declaration of the coordinates.
     @Override
     public void onSizeChanged (int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -78,10 +81,8 @@ public class CloudRainView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        path = new Path();
-        path1 = new Path();
-        path2 = new Path();
-        path3 = new Path();
+        pathCloud = new Path(); // pathCloud for cloud
+        pathRain = new Path(); // pathCloud for drop
 
         count = count+0.5;
 
@@ -108,7 +109,7 @@ public class CloudRainView extends View {
         float P4X =(float)(90 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
         float P4Y = ((float)(90 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
 
-        path.moveTo(X1,Y1);
+        pathCloud.moveTo(X1,Y1);
         PointF P1c1 = calculateTriangle(X1, Y1, P1X, P1Y, true, count);
         PointF P1c2 = calculateTriangle(X1, Y1, P1X, P1Y, false, count);
         PointF P2c1 = calculateTriangle(P1X, P1Y, P2X, P2Y, true, count);
@@ -120,26 +121,26 @@ public class CloudRainView extends View {
         PointF P5c1 = calculateTriangle(P4X, P4Y, X1, Y1, true, count);
         PointF P5c2 = calculateTriangle(P4X, P4Y, X1,Y1, false, count);
 
-        path.moveTo(X1,Y1);
-        path.cubicTo(P1c1.x,P1c1.y,P1c2.x,P1c2.y,P1X,P1Y);
-        path.cubicTo(P2c1.x,P2c1.y,P2c2.x,P2c2.y,P2X,P2Y);
-        path.cubicTo(P3c1.x,P3c1.y,P3c2.x,P3c2.y,P3X,P3Y);
-        path.cubicTo(P4c1.x,P4c1.y,P4c2.x,P4c2.y,P4X,P4Y);
-        path.cubicTo(P5c1.x,P5c1.y,P5c2.x,P5c2.y,X1,Y1);
+        pathCloud.moveTo(X1,Y1);
+        pathCloud.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, P1X, P1Y);
+        pathCloud.cubicTo(P2c1.x, P2c1.y, P2c2.x, P2c2.y, P2X, P2Y);
+        pathCloud.cubicTo(P3c1.x, P3c1.y, P3c2.x, P3c2.y, P3X, P3Y);
+        pathCloud.cubicTo(P4c1.x, P4c1.y, P4c2.x, P4c2.y, P4X, P4Y);
+        pathCloud.cubicTo(P5c1.x, P5c1.y, P5c2.x, P5c2.y, X1, Y1);
 
         //fill cloud with white color
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawPath(path, paint);
+        canvas.drawPath(pathCloud, paint);
 
         //draw stroke with back color
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
-        canvas.drawPath(path, paint);
+        canvas.drawPath(pathCloud, paint);
 
-        if(drop1) {
+        if(drop1) { // Drop 1 of the rain
 
-            path1 = new Path();
+            pathRain = new Path();
 
             if(x1==0) {
                 x1 = (int) P1c2.x + 10;
@@ -149,31 +150,34 @@ public class CloudRainView extends View {
                 y1 = (int) (P1c2.y-value/2) + 15;
             }
 
-            path1.moveTo(x1, y1);
-            path1.addArc(new RectF(x1-5, (y1-5)+m, x1+5, y1+5+m), 180, -180);
-            path1.lineTo(x1, (y1-10)+m);
-            path1.close();
+            // Shape for rain drop
+            pathRain.moveTo(x1, y1);
+            pathRain.addArc(new RectF(x1 - 5, (y1 - 5) + m, x1 + 5, y1 + 5 + m), 180, -180);
+            pathRain.lineTo(x1, (y1 - 10) + m);
+            pathRain.close();
 
+            // First fill the shape with paint
             paint1.setStyle(Paint.Style.FILL);
-            canvas.drawPath(path1, paint1);
+            canvas.drawPath(pathRain, paint1);
 
+            // Then, draw the same pathCloud with paint stroke
             paint1.setStyle(Paint.Style.STROKE);
-            canvas.drawPath(path1, paint1);
+            canvas.drawPath(pathRain, paint1);
 
             m = m+2.5f;
 
             if(m==100) {
                 m=0;
-                path1.reset();
-                path1.moveTo(0, 0);
+                pathRain.reset();
+                pathRain.moveTo(0, 0);
                 drop2 = true;
                 drop1 = false;
                 drop3 = false;
             }
         }
 
-        if(drop2) {
-            path1 = new Path();
+        if(drop2) { // Drop 2 of the rain
+            pathRain = new Path();
 
             if(x2==0) {
                 x2 = (int) P2c2.x + 10;
@@ -183,31 +187,33 @@ public class CloudRainView extends View {
                 y2 = (int) (P2c2.y-value/2) + 10;
             }
 
-            path1.moveTo(x2, y2);
-            path1.addArc(new RectF(x2-5, (y2-5)+m, x2+5, y2+5+m), 180, -180);
-            path1.lineTo(x2, (y2-10)+m);
-            path1.close();
+            pathRain.moveTo(x2, y2);
+            pathRain.addArc(new RectF(x2 - 5, (y2 - 5) + m, x2 + 5, y2 + 5 + m), 180, -180);
+            pathRain.lineTo(x2, (y2 - 10) + m);
+            pathRain.close();
 
+            // First fill the shape with paint
             paint1.setStyle(Paint.Style.FILL);
-            canvas.drawPath(path1, paint1);
+            canvas.drawPath(pathRain, paint1);
 
+            // Then, draw the same pathCloud with paint stroke
             paint1.setStyle(Paint.Style.STROKE);
-            canvas.drawPath(path1, paint1);
+            canvas.drawPath(pathRain, paint1);
 
             m = m+2.5f;
 
             if(m==100) {
                 m=0;
-                path1.reset();
-                path1.moveTo(0, 0);
+                pathRain.reset();
+                pathRain.moveTo(0, 0);
                 drop1 = false;
                 drop2 = false;
                 drop3 = true;
             }
         }
 
-        if(drop3) {
-            path1 = new Path();
+        if(drop3) { // Drop 3 of the rain
+            pathRain = new Path();
 
             if(x3==0) {
                 x3 = (x1+x2)/2 + 10;
@@ -216,23 +222,25 @@ public class CloudRainView extends View {
                 y3 = (y1+y2)/2 + 10;
             }
 
-            path1.moveTo(x3, y3);
-            path1.addArc(new RectF(x3-5, (y3-5)+m, x3+5, y3+5+m), 180, -180);
-            path1.lineTo(x3, (y3-10)+m);
-            path1.close();
+            pathRain.moveTo(x3, y3);
+            pathRain.addArc(new RectF(x3 - 5, (y3 - 5) + m, x3 + 5, y3 + 5 + m), 180, -180);
+            pathRain.lineTo(x3, (y3 - 10) + m);
+            pathRain.close();
 
+            // First fill the shape with paint
             paint1.setStyle(Paint.Style.FILL);
-            canvas.drawPath(path1, paint1);
+            canvas.drawPath(pathRain, paint1);
 
+            // Then, draw the same pathCloud with paint stroke
             paint1.setStyle(Paint.Style.STROKE);
-            canvas.drawPath(path1, paint1);
+            canvas.drawPath(pathRain, paint1);
 
             m = m+2.5f;
 
             if(m==100) {
                 m=0;
-                path1.reset();
-                path1.moveTo(0, 0);
+                pathRain.reset();
+                pathRain.moveTo(0, 0);
                 drop1 = true;
                 drop2 = false;
                 drop3 = false;
@@ -246,16 +254,20 @@ public class CloudRainView extends View {
     private PointF calculateTriangle(float x1, float y1, float x2,
                                      float y2, boolean left, double count) {
         PointF result = new PointF(0,0);
+        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
+        // calculating angle and the distance between center and the two points
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
 
         if(left) {
+            //point from center to the left
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
         } else {
+            //point from center to the right
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
