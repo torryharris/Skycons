@@ -108,7 +108,6 @@ public class WindView extends View {
 
         } else {
 
-
             X = 0;
             Y = (float) (screenH / 1.5);
             X2 = (float) (screenW / 2);
@@ -117,25 +116,14 @@ public class WindView extends View {
             Y4 = (float) ((screenH / 3)- (0.0417*screenW));
             X3 = (float) ((screenW / 2) - (0.0834*screenW));
             Y3 = (float) (screenH / 3);
-            X1 = (float) (screenW + 50);
-            Y1 = (float) (screenH / 2);
 
-            tracePath.moveTo(X,Y);
-            PointF P1c1 = calculateTriangle(X, Y, X2, Y2, true, 0.2,"CCW");
-            PointF P1c2 = calculateTriangle(X, Y, X2, Y2, false, 0.2,"CCW");
-            PointF P3c1 = calculateTriangle(X2, Y2, X4, Y4, true, 0.1,"CCW");
-            PointF P3c2 = calculateTriangle(X2, Y2, X4, Y4, false, 0.1,"CCW");
-            PointF P4c1 = calculateTriangle(X4, Y4, X3, Y3, true, 0.1,"CCW");
-            PointF P4c2 = calculateTriangle(X4, Y4, X3, Y3, false, 0.1,"CCW");
-            PointF P2c1 = calculateTriangle(X3, Y3, X1, Y1, true, 0.4,"CCW");
-            PointF P2c2 = calculateTriangle(X3, Y3, X1, Y1, false, 0.4,"CCW");
-            tracePath.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, X2, Y2);
-            //tracePath.cubicTo(P3c1.x, P3c1.y, P3c2.x, P3c2.y, X4, Y4);
+            Xc = (float) (screenW + 10);
+            Yc = (float) (screenH / 2);
 
-            //tracePath.cubicTo(P4c1.x, P4c1.y, P4c2.x, P4c2.y, X3, Y3);
-            tracePath.quadTo(X4,Y4,X3,Y3);
-            tracePath.cubicTo(P2c1.x, P2c1.y, P2c2.x, P2c2.y, X1, Y1);
-
+            tracePath.moveTo(X - 5, Y);
+            tracePath.cubicTo(X + (screenW/2.5f), Y + 40, X + (screenW/1.5f), Y - 140, X + (screenW/2.4f), Y - 175);
+            tracePath.cubicTo(X + (screenW/3f), Y - 168, X + (screenW/2.8f), Y - 50, X + (screenW/1.7f), Y - 20);
+            tracePath.cubicTo(X + (screenW/1.4f), Y, X + (screenW/1.2f), Y - 100, Xc, Y);
 
             points = getPoints(tracePath);
 
@@ -173,8 +161,6 @@ public class WindView extends View {
             }
 
         }
-
-
 
         canvas.drawPath(windPath, paint);
 
