@@ -11,68 +11,38 @@ import android.view.View;
 
 public class CloudView extends View {
 
-    private static Paint paint, paint1;
+    private Paint paint;
     private int screenW, screenH;
     private float X, Y;
     private Path path;
     private double count;
+    double radius1, radius2;
 
-    public CloudView(Context context) {
-        super(context);
-        init();
-    }
 
     public CloudView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        String num[] = attrs.getAttributeValue(0).split(".dip");
-        System.out.println(num[0]);
+        String num1[] = attrs.getAttributeValue(0).split("\\.");
+        String num2[] = attrs.getAttributeValue(1).split("\\.");
 
-       // screenW = Integer.valueOf(attrs.getAttributeValue(0).split("dp""));
-        //screenH = Integer.valueOf(attrs.getAttributeValue(1));
+        screenW = Integer.valueOf(num1[0]);
+        screenH = Integer.valueOf(num2[0]);
 
         X = screenW/2;
         Y = (screenH/2);
 
-        path.moveTo(X, Y);
+        radius1 = 90;
+        radius2 = 50;
 
         init();
     }
 
-    public CloudView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-
-        //screenW = Integer.valueOf(attrs.getAttributeValue(0));
-        //screenH = Integer.valueOf(attrs.getAttributeValue(1));
-
-        X = screenW/2;
-        Y = (screenH/2);
-
-        path.moveTo(X, Y);
-
-        init();
-    }
-
-
-    @Override
-    public void onSizeChanged (int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        screenW = w;
-        screenH = h;
-
-        X = screenW/2;
-        Y = (screenH/2);
-
-    }
 
     private void init() {
 
         count = 0;
 
         paint = new Paint();
-        paint1 = new Paint();
-
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(10);
         paint.setAntiAlias(true);
@@ -81,17 +51,7 @@ public class CloudView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
-        paint1.setColor(Color.BLACK);
-        paint1.setStrokeWidth(5);
-        paint1.setAntiAlias(true);
-        paint1.setStrokeCap(Paint.Cap.ROUND);
-        paint1.setStrokeJoin(Paint.Join.ROUND);
-        paint1.setStyle(Paint.Style.STROKE);
-        paint1.setShadowLayer(0, 0, 0, Color.BLACK);
-
-        path = new Path();
     }
-
 
     @Override
     public void onDraw(Canvas canvas) {
@@ -103,26 +63,20 @@ public class CloudView extends View {
 
         int retval = Double.compare(count, 360.00);
 
-        if(retval > 0) {
-
-        }
-        else if(retval < 0) {
-
-        }
-        else {
+        if(retval == 0) {
             count = 0;
         }
 
-        float X1 = (float)(90 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
-        float Y1 = ((float)(50 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
-        float P1X = (float)(90 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
-        float P1Y = ((float)(50 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
-        float P2X = (float)(90 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
-        float P2Y = ((float)((50+(0.111*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
-        float P3X = (float)(90 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
-        float P3Y = ((float)(90 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
-        float P4X =(float)(90 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
-        float P4Y = ((float)(90 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
+        float X1 = (float)(radius1 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
+        float Y1 = ((float)(radius2 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
+        float P1X = (float)(radius1 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
+        float P1Y = ((float)(radius2 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
+        float P2X = (float)(radius1 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
+        float P2Y = ((float)((radius2+(0.111*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
+        float P3X = (float)(radius1 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
+        float P3Y = ((float)(radius1 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
+        float P4X =(float)(radius1 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
+        float P4Y = ((float)(radius1 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
 
         path.moveTo(X1,Y1);
 
@@ -159,15 +113,17 @@ public class CloudView extends View {
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
 
-        if (left){
+        if (left) {
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
-        }else{
+        } else {
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
+
         return result;
+
     }
 
 }

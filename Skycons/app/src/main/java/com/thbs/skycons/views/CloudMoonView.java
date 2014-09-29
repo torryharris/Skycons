@@ -19,7 +19,7 @@ public class CloudMoonView extends View {
     Paint paintCloud, paintMoon;
     Path pathCloud, pathMoon;
     private int screenW, screenH;
-    private float X, Y, X1, Y1;
+    private float X, Y, X2, Y2;
     PathPoints[] pathPoints;
     float m = 0;
     float radius;
@@ -27,20 +27,27 @@ public class CloudMoonView extends View {
     float a=0, b=0, c=0, d=0;
     private double count;
 
-    public CloudMoonView(Context context) {
-        super(context);
-        init();
-    }
 
     public CloudMoonView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        String num1[] = attrs.getAttributeValue(0).split("\\.");
+        String num2[] = attrs.getAttributeValue(1).split("\\.");
+
+        screenW = Integer.valueOf(num1[0]);
+        screenH = Integer.valueOf(num2[0]);
+
+        X = screenW/2;
+        Y = (screenH/2);
+
+        X2 = screenW*0.75f;
+        Y2 = (screenH*0.2f);
+
+        radius = screenW/7;
+
         init();
     }
 
-    public CloudMoonView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init();
-    }
 
     private void init() {
         paintCloud = new Paint();
@@ -59,25 +66,7 @@ public class CloudMoonView extends View {
         paintMoon.setStyle(Paint.Style.STROKE);
 
         count = 0;
-        pathCloud = new Path();
 
-    }
-
-    @Override
-    public void onSizeChanged (int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        screenW = w;
-        screenH = h;
-        X = screenW/2;
-        Y = (screenH/2);
-
-        X1 = screenW*0.7f;
-        Y1 = (screenH*0.23f);
-
-        radius = screenW/7;
-
-        pathCloud.moveTo(X, Y);
     }
 
     @Override
@@ -90,7 +79,7 @@ public class CloudMoonView extends View {
 
         if(!clockwise) {
 
-            rectF1.set(X1-radius, Y1-radius, X1+radius, Y1+radius);
+            rectF1.set(X2-radius, Y2-radius, X2+radius, Y2+radius);
             pathMoon.addArc(rectF1, 65 - (m / 2), 275);
 
             pathPoints = getPoints(pathMoon);
@@ -117,7 +106,7 @@ public class CloudMoonView extends View {
 
         } else {
 
-            rectF1.set(X1-radius, Y1-radius, X1+radius, Y1+radius);
+            rectF1.set(X2-radius, Y2-radius, X2+radius, Y2+radius);
             pathMoon.addArc(rectF1, 15 + (m / 2), 275);
 
             pathPoints = getPoints(pathMoon);

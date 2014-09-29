@@ -23,24 +23,27 @@ public class CloudRainView extends View {
     float m = 0;
     boolean drop1 = true, drop2 = false, drop3 = false;
     private double count;
-
-    public CloudRainView(Context context) {
-        super(context);
-        init();
-    }
+    double radius1, radius2;
 
     public CloudRainView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
 
-    public CloudRainView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        String num1[] = attrs.getAttributeValue(0).split("\\.");
+        String num2[] = attrs.getAttributeValue(1).split("\\.");
+
+        screenW = Integer.valueOf(num1[0]);
+        screenH = Integer.valueOf(num2[0]);
+
+        X = screenW/2;
+        Y = (screenH/2);
+
+        radius1 = 90;
+        radius2 = 50;
+
         init();
     }
 
     private void init() {
-
         count = 0;
 
         paint = new Paint();
@@ -61,19 +64,6 @@ public class CloudRainView extends View {
         paint1.setStyle(Paint.Style.FILL_AND_STROKE);
 
         path = new Path();
-    }
-
-    @Override
-    public void onSizeChanged (int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        screenW = w;
-        screenH = h;
-        X = screenW/2;
-        Y = (screenH/2);
-
-        path.moveTo(X, Y);
-
     }
 
 
@@ -153,19 +143,17 @@ public class CloudRainView extends View {
             }
 
             path1.moveTo(x1, y1);
-
             path1.addArc(new RectF(x1-5, (y1-5)+m, x1+5, y1+5+m), 180, -180);
             path1.lineTo(x1, (y1-10)+m);
             path1.close();
-
             canvas.drawPath(path1, paint1);
 
             m = m+2.5f;
+
             if(m==100) {
                 m=0;
                 path1.reset();
                 path1.moveTo(0, 0);
-                canvas.clipPath(path1);
                 drop2 = true;
                 drop1 = false;
                 drop3 = false;
@@ -184,11 +172,9 @@ public class CloudRainView extends View {
             }
 
             path1.moveTo(x2, y2);
-
             path1.addArc(new RectF(x2-5, (y2-5)+m, x2+5, y2+5+m), 180, -180);
             path1.lineTo(x2, (y2-10)+m);
             path1.close();
-
             canvas.drawPath(path1, paint1);
 
             m = m+2.5f;
@@ -197,7 +183,6 @@ public class CloudRainView extends View {
                 m=0;
                 path1.reset();
                 path1.moveTo(0, 0);
-                canvas.clipPath(path1);
                 drop1 = false;
                 drop2 = false;
                 drop3 = true;
@@ -215,15 +200,13 @@ public class CloudRainView extends View {
             }
 
             path1.moveTo(x3, y3);
-
             path1.addArc(new RectF(x3-5, (y3-5)+m, x3+5, y3+5+m), 180, -180);
             path1.lineTo(x3, (y3-10)+m);
             path1.close();
-
             canvas.drawPath(path1, paint1);
 
-
             m = m+2.5f;
+
             if(m==100) {
                 m=0;
                 path1.reset();
@@ -238,19 +221,23 @@ public class CloudRainView extends View {
 
     }
 
-    private PointF calculateTriangle(float x1, float y1, float x2, float y2, boolean left, double count) {
+    private PointF calculateTriangle(float x1, float y1, float x2,
+                                     float y2, boolean left, double count) {
         PointF result = new PointF(0,0);
         float dy = y2 - y1;
         float dx = x2 - x1;
         float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
-        if (left){
+
+        if(left) {
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
-        }else{
+
+        } else {
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
+
         return result;
     }
 
