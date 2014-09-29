@@ -129,11 +129,11 @@ public class WindView extends View {
 //
             X6 = (float) (screenW + 50);
            Y6 = (float) (screenH / 2);
-
-            tracePath.moveTo(X - 5, Y);
-            tracePath.cubicTo(X + 70, Y + 10, X + 110, Y - 40, X + 80, Y - 70);
-            tracePath.cubicTo(X + 50, Y - 80, X + 30, Y - 40, X + 100, Y);
-            tracePath.cubicTo(X + 140, Y + 25, X + 190, Y - 25, X6, Y6);
+//
+//            tracePath.moveTo(X - 5, Y);
+//            tracePath.cubicTo(X + 70, Y + 10, X + 110, Y - 40, X + 80, Y - 70);
+//            tracePath.cubicTo(X + 50, Y - 80, X + 30, Y - 40, X + 100, Y);
+//            tracePath.cubicTo(X + 140, Y + 25, X + 190, Y - 25, X6, Y6);
 
 //            tracePath.moveTo(X,Y);
 //            PointF P1c1 = calculateTriangle(X, Y, X1, Y1, true, 0.2,"CCW");
@@ -153,6 +153,14 @@ public class WindView extends View {
 //            tracePath.cubicTo(P2c1.x, P2c1.y, P2c2.x, P2c2.y, X6, Y6);
 //
 //            tracePath.lineTo(X6,Y6);
+
+
+
+
+            tracePath.moveTo((float)12.972973,(float)383.31335);
+            tracePath.cubicTo((float)91.80873,(float)362.3396,(float)195.59251,(float)315.39825,(float)259.45947,(float)271.4532);
+            tracePath.cubicTo((float)264.44907,(float)241.49063,(float)264.44907,(float)212.52686,(float)229.52182,(float)252.4769);
+            tracePath.cubicTo((float)308.35757,(float)285.4357,(float)420.12473,(float)278.44446,(float)464.03326,(float)261.46567);
             points = getPoints(tracePath);
 
         }
