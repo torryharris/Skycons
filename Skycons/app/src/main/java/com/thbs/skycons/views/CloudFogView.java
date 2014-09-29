@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,7 +16,18 @@ import android.view.View;
 public class CloudFogView extends View {
 
     private static Paint paintCloud, paintFog;
+    Path npth1,npth,secpath1,secpath2;
+    static int midPt = 49;
+    boolean expanding = false;
+    boolean moving = true;
+    boolean secMove = false;
+
+    static float ctr = 0;
+    static int ctr2 = 99;
+    static float i,j;
     private int screenW, screenH;
+    PathPoints[] ppts,ppts2;
+    Boolean check;
     private float X, Y, L1=0, H1=0, L2=0, H2=0;
     private Path pathCloud, path1, path2;
     private double count;
@@ -41,10 +53,18 @@ public class CloudFogView extends View {
     private void init() {
 
         count = 0;
-
+        i=0f;
+        j=(int)0.5;
+        check = false;
+        npth1 = new Path();
+        npth = new Path();
+        secpath1 = new Path();
+        secpath2 = new Path();
         paintCloud = new Paint();
         paintFog = new Paint();
 
+
+        //Setting paint for cloud
         paintCloud.setColor(Color.BLACK);
         paintCloud.setStrokeWidth(10);
         paintCloud.setAntiAlias(true);
@@ -53,12 +73,13 @@ public class CloudFogView extends View {
         paintCloud.setStyle(Paint.Style.STROKE);
         paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
+        //Setting paint for fog
         paintFog.setColor(Color.BLACK);
         paintFog.setStrokeWidth(10);
         paintFog.setAntiAlias(true);
         paintFog.setStrokeCap(Paint.Cap.ROUND);
         paintFog.setStrokeJoin(Paint.Join.ROUND);
-        paintFog.setStyle(Paint.Style.STROKE);
+        paintFog.setStyle(Paint.Style.FILL_AND_STROKE);
         paintFog.setShadowLayer(0, 0, 0, Color.BLACK);
 
         pathCloud = new Path();
@@ -74,14 +95,7 @@ public class CloudFogView extends View {
         X = screenW/2;
         Y = (screenH/2);
 
-        if(L2 == 0) {
-            L1 =  screenW * 0.2f;
-            H1 =  screenH * 0.88f;
 
-            L2 =  screenW * 0.78f;
-            H2 =  screenH * 0.98f;
-
-        }
 
         pathCloud.moveTo(X, Y);
 
@@ -140,82 +154,126 @@ public class CloudFogView extends View {
 
         canvas.drawPath(pathCloud, paintCloud);
 
+
         path1 = new Path();
         path2 = new Path();
 
-        if(move) {
 
-            path1.moveTo((L1+25)+m*0.15f, H1);
-            path1.lineTo((L2-25)+m*0.15f, H1);
-            canvas.drawPath(path1, paintFog);
+        float line1Y = (float) (Y+ Y*70.0/100.0);   //Calculating Y coordinate for foglines.
+        float line2Y = (float) (Y+Y*85.0/100.0);
 
-            path2.moveTo((L1+25)-m*0.15f, H2);
-            path2.lineTo((L2-25)-m*0.15f, H2);
-            canvas.drawPath(path2, paintFog);
+        float lineStartX = (float)(X-X*50.0/100.0);  //Calculating X coordinate for foglines.
+        float lineEndX = (float) (X+X*50.0/100);
 
-            if(m==50) {
-               compress = true;
-               move = false;
 
-               backupL11 = (L1+25)+m*0.15f;
-               backupL12 = (L2-25)+m*0.15f;
 
-               backupL21 = (L1+25)-m*0.15f;
-               backupL22 = (L2-25)-m*0.15f;
+        float temp = (lineEndX-lineStartX)*(float)95.0/(float)100; //Calculating fogline length
 
-               m=0;
+
+
+
+        path1.moveTo(lineStartX,line1Y);
+        path1.lineTo(lineStartX+temp,line1Y);
+
+        path2.moveTo(lineEndX,line2Y);
+        path2.lineTo(lineEndX-temp,line2Y);
+
+        //Code to move foglines from one point to another
+
+        if(moving&&(lineStartX+temp+ctr)<=lineEndX)
+        {
+
+            path1.reset();
+            path1.moveTo(lineStartX+ctr+i,line1Y);
+            path1.lineTo(lineStartX+ctr+temp+i,line1Y);
+
+            path2.reset();
+            path2.moveTo(lineEndX-ctr+i+i,line2Y);
+            path2.lineTo(lineEndX-ctr-temp+i-i,line2Y);
+
+            ctr = ctr+(float)0.1;
+            if((lineStartX+temp+ctr)>lineEndX)
+            {
+                expanding = true;
+                moving = false;
             }
-
         }
 
-        if(compress) {
 
-            path1.moveTo(backupL11+m*0.1f, H1);
-            path1.lineTo(backupL12-m*0.3f, H1);
-            canvas.drawPath(path1, paintFog);
+        //Code to expand foglines
 
-            path2.moveTo(backupL21-m*0.3f, H2);
-            path2.lineTo(backupL22+m*0.1f, H2);
-            canvas.drawPath(path2, paintFog);
+        if(expanding)
+        {
 
-            if(m==50) {
-                expand = true;
-                move = false;
+            if(i<=5f)
+            {
+                i=i+0.1f;
+                path1.reset();
+                path1.moveTo(lineStartX+ctr+temp+i,line1Y);
+                path1.lineTo(lineStartX+ctr-i,line1Y);
+
+                path2.reset();
+                path2.moveTo(lineEndX-ctr-temp+i,line2Y);
+                path2.lineTo(lineEndX-ctr-i,line2Y);
+
+
+            }
+            else
+            {
+                //Moving the fogline to the other end after expanding
+
+                path1.reset();
+                path1.moveTo(lineStartX + ctr +temp + i, line1Y);
+                path1.lineTo(lineStartX + ctr - i , line1Y);
+
+                path2.reset();
+                path2.moveTo(lineEndX-ctr-temp+i,line2Y);
+                path2.lineTo(lineEndX-ctr-i,line2Y);
+
+                ctr = ctr - 0.1f;
+                if (lineStartX + ctr <= lineStartX) {
+                    expanding = false;
+                    compress = true;
+                    ctr = 0.0f;
+                }
+            }
+        }
+
+
+        //Compressing the fogline to normal length
+        if(compress)
+        {
+
+
+            if(i>0.0f) {
+                i = i - 0.1f;
+                path1.reset();
+                path1.moveTo(lineStartX + ctr - i, line1Y);
+                path1.lineTo(lineStartX + ctr + temp + i, line1Y);
+
+                path2.reset();
+                path2.moveTo(lineEndX-ctr-i,line2Y);
+                path2.lineTo(lineEndX-ctr-temp+i,line2Y);
+
+            }
+            else {
                 compress = false;
-
-                backupL11 = backupL11+m*0.1f;
-                backupL12 = backupL12-m*0.3f;
-
-                backupL21 = backupL21-m*0.3f;
-                backupL22 = backupL22+m*0.1f;
-
-                m=0;
-            }
-
-        }
-
-        if(expand) {
-
-            path1.moveTo(backupL11-m*0.15f-m/10, H1);
-            path1.lineTo(backupL12+m*0.3f-m/10, H1);
-            canvas.drawPath(path1, paintFog);
-
-            path2.moveTo(backupL21+m*0.3f-m/10, H2);
-            path2.lineTo(backupL22, H2);
-            canvas.drawPath(path2, paintFog);
-
-            if(m==50) {
-                move = true;
-                compress = false;
-                expand = false;
-
-                m=0;
+                moving = true;
             }
 
         }
 
 
-        m = m + 0.5f;
+
+
+
+
+
+
+
+        canvas.drawPath(path1,paintFog);
+        canvas.drawPath(path2,paintFog);
+
 
         invalidate();
 
@@ -239,6 +297,45 @@ public class CloudFogView extends View {
         }
 
         return result;
+
+    }
+
+    private PathPoints[] getPoints(Path path) {
+        PathPoints[] pointArray = new PathPoints[100];
+        PathMeasure pm = new PathMeasure(path, false);
+        float length = pm.getLength();
+        float distance = 0f;
+        float speed = length / 100;
+        int counter = 0;
+        float[] aCoordinates = new float[2];
+
+        while ((distance < length) && (counter < 100)) {
+            // get point from the pathMoon
+            pm.getPosTan(distance, aCoordinates, null);
+            pointArray[counter] = new PathPoints(aCoordinates[0], aCoordinates[1]);
+            counter++;
+            distance = distance + speed;
+        }
+
+        return pointArray;
+    }
+
+    class PathPoints {
+
+        float x, y;
+
+        public PathPoints(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public float getX() {
+            return x;
+        }
+
+        public float getY() {
+            return y;
+        }
 
     }
 
