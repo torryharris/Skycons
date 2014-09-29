@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-    Button btnCloud, btnCloudRain, btnCloudHvRain, btnCloudSnow,
+    Button btnSun, btnCloudSun,btnCloud, btnCloudRain, btnCloudHvRain, btnCloudSnow,
            btnCloudFog, btnMoon, btnCloudMoon, btnWind;
 
     @Override
@@ -17,6 +17,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btnSun = (Button) findViewById(R.id.sun);
+        btnCloudSun = (Button) findViewById(R.id.cloud_sun);
         btnCloud = (Button) findViewById(R.id.cloud);
         btnCloudRain = (Button) findViewById(R.id.cloud_rain);
         btnCloudHvRain = (Button) findViewById(R.id.cloud_hvrain);
@@ -25,6 +27,24 @@ public class MainActivity extends Activity {
         btnMoon = (Button) findViewById(R.id.moon);
         btnCloudMoon = (Button) findViewById(R.id.cloud_moon);
         btnWind = (Button) findViewById(R.id.wind);
+
+        btnSun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, SunActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+
+        btnCloudSun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, CloudSunActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
 
         btnCloud.setOnClickListener(new View.OnClickListener() {
             @Override

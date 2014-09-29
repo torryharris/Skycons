@@ -19,6 +19,16 @@
         </activity>
 
         <activity
+            android:name=".SunActivity"
+            android:label="Cloud" >
+        </activity>
+
+        <activity
+            android:name=".CloudSunActivity"
+            android:label="Cloud" >
+        </activity>
+
+        <activity
             android:name=".CloudActivity"
             android:label="Cloud" >
         </activity>
