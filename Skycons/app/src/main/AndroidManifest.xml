@@ -20,25 +20,14 @@
 
         <activity
             android:name=".SunActivity"
-<<<<<<< HEAD
             android:label="Sun" >
-=======
-            android:label="Cloud" >
->>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
         </activity>
 
         <activity
             android:name=".CloudSunActivity"
-<<<<<<< HEAD
             android:label="Sun+Cloud" >
         </activity>
 
-
-=======
-            android:label="Cloud" >
-        </activity>
-
->>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
         <activity
             android:name=".CloudActivity"
             android:label="Cloud" >

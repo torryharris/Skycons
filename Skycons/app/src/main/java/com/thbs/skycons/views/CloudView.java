@@ -31,18 +31,12 @@ public class CloudView extends View {
         X = screenW/2;
         Y = (screenH/2);
 
-<<<<<<< HEAD
         radius1 = 90;
         radius2 = 50;
-=======
-//        path.moveTo(X, Y);
->>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
 
         init();
     }
 
-<<<<<<< HEAD
-=======
     public CloudView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
@@ -69,7 +63,6 @@ public class CloudView extends View {
         Y = (screenH/2);
 
     }
->>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
 
     private void init() {
 
