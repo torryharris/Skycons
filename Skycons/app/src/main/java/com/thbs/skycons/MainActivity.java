@@ -10,7 +10,7 @@ import android.widget.Button;
 public class MainActivity extends Activity {
 
     Button btnSun, btnCloudSun,btnCloud, btnCloudRain, btnCloudHvRain, btnCloudSnow,
-            btnCloudFog, btnMoon, btnCloudMoon, btnWind;
+           btnCloudFog, btnMoon, btnCloudMoon, btnWind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

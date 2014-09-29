@@ -5,13 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Point;
+import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by administrator on 18/09/14.
@@ -21,12 +18,12 @@ public class WindView extends View {
 
     private static Paint paint;
     private int screenW, screenH;
-    private float X, Y, X1, Y1, X2, Y2;
-    private Path path, path1;
+    private float X, Y, X1, Y1, X2, Y2, X3, Y3,X4,Y4, X11, Y11, Y21, X21, Xc, Yc;
+    private Path tracePath, windPath, leafPath;
     private double count;
-    double degrees;
-    boolean isDrawn;
-    List<Point> points;
+    int degrees;
+    boolean isFirstPath;
+    PathPoints[] points;
 
 
     public WindView(Context context) {
@@ -44,23 +41,22 @@ public class WindView extends View {
         init();
     }
 
-    public void init() {
-        isDrawn=false;
-        path1 = new Path();
-        degrees = 0;
-        count = 0;
-        paint = new Paint();
-        points = new ArrayList<Point>();
+    private void init() {
 
+        isFirstPath = true;
+        windPath = new Path();
+        leafPath = new Path();
+        tracePath = new Path();
+        count = 0;
+        degrees = 200;
+        paint = new Paint();
 
         paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(screenW/25);
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setShadowLayer(0, 0, 0, Color.BLACK);
-        path = new Path();
 
     }
 
@@ -71,9 +67,9 @@ public class WindView extends View {
         screenW = w;
         screenH = h;
 
-        X=0;
-        Y = (float) (screenH /1.5);
-        path.moveTo(X, Y);
+        X = 0;
+        Y = (float) (screenH / 1.5);
+        tracePath.moveTo(X, Y);
 
     }
 
@@ -82,121 +78,190 @@ public class WindView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        count = (float) (count + 1);
-       // System.out.println("count: "+count);
-        int retval = Double.compare(count, 270.00);
+        paint.setStrokeWidth(screenW/50);
+        count+=1;
+        windPath = new Path();
+        leafPath = new Path();
+
+        int retval = Double.compare(count, 250.00);
 
         if (retval > 0) {
-            X=0;
-            Y=(float)(screenH/1.5);
-            path1 = new Path();
-            points = new ArrayList<Point>();
-            count = 0;
-            isDrawn = !isDrawn;
+            tracePath= new Path();
+            count =0 ;
+            degrees = 200;
+            isFirstPath = !isFirstPath;
         }
 
-        if(!isDrawn){
-            X += (screenW / 135);
-            Y -= 0.5;
-            X1 = (float) (20 * Math.cos(Math.toRadians(count-30)) + X );
-            Y1 = (float) (20 * Math.sin(Math.toRadians(count-30)) + Y);
-            X2 = (float) (50 * Math.cos(Math.toRadians(count)) + X);
-            Y2 = (float) (50 * Math.sin(Math.toRadians(count)) + Y);
+        if (isFirstPath) {
+            X = 0;
+            Y = (float) (screenH / 1.5);
+            X2 = (float) (screenW + 50);
+            Y2 = (float) (screenH/4);
+
+            tracePath.moveTo(X,Y);
+            PointF P1c1 = calculateTriangle(X, Y, X2, Y2, true, 0.2,"CCW");
+            PointF P1c2 = calculateTriangle(X, Y, X2, Y2, false, 0.2,"CCW");
+
+            tracePath.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, X2, Y2);
+
+            points = getPoints(tracePath);
 
         } else {
 
-            if((count >= 70) && (count <= 94)){
 
-                degrees+=10;
+            X = 0;
+            Y = (float) (screenH / 1.5);
+            X2 = (float) (screenW / 2);
+            Y2 = (float) (screenH / 3);
+            X4 = (float) ((screenW / 2) - (0.03125 * screenW));
+            Y4 = (float) ((screenH / 3)- (0.0417*screenW));
+            X3 = (float) ((screenW / 2) - (0.0834*screenW));
+            Y3 = (float) (screenH / 3);
+            X1 = (float) (screenW + 50);
+            Y1 = (float) (screenH / 2);
 
-                X = (float) (Math.cos(Math.toRadians(-((count/70) + ( degrees)))) + (X+(screenW/135)));
-                Y = (float) (Math.sin(Math.toRadians(-((count/70) + (degrees)))) +(Y+0.5));
-                X1 = (float) (20 * Math.cos(Math.toRadians(-(((count/70) + ( degrees)))-30)) + (X));
-                Y1 = (float) (20 * Math.sin(Math.toRadians(-(((count/70) + (degrees)))-30)) + (Y));
-                X2 = (float) (50 * Math.cos(Math.toRadians(-((count/70) + ( degrees)))) + (X));
-                Y2 = (float) (50 * Math.sin(Math.toRadians(-((count/70) + (degrees)))) + (Y));
+            tracePath.moveTo(X,Y);
+            PointF P1c1 = calculateTriangle(X, Y, X2, Y2, true, 0.2,"CCW");
+            PointF P1c2 = calculateTriangle(X, Y, X2, Y2, false, 0.2,"CCW");
+            PointF P3c1 = calculateTriangle(X2, Y2, X4, Y4, true, 0.1,"CCW");
+            PointF P3c2 = calculateTriangle(X2, Y2, X4, Y4, false, 0.1,"CCW");
+            PointF P4c1 = calculateTriangle(X4, Y4, X3, Y3, true, 0.1,"CCW");
+            PointF P4c2 = calculateTriangle(X4, Y4, X3, Y3, false, 0.1,"CCW");
+            PointF P2c1 = calculateTriangle(X3, Y3, X1, Y1, true, 0.4,"CCW");
+            PointF P2c2 = calculateTriangle(X3, Y3, X1, Y1, false, 0.4,"CCW");
+            tracePath.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, X2, Y2);
+            //tracePath.cubicTo(P3c1.x, P3c1.y, P3c2.x, P3c2.y, X4, Y4);
 
-               // System.out.println("X, Y in if , "+X+":"+Y);
+            //tracePath.cubicTo(P4c1.x, P4c1.y, P4c2.x, P4c2.y, X3, Y3);
+            tracePath.quadTo(X4,Y4,X3,Y3);
+            tracePath.cubicTo(P2c1.x, P2c1.y, P2c2.x, P2c2.y, X1, Y1);
 
-            } else {
-                degrees=0;
-                //System.out.println("X, Y in else , "+X+":"+Y);
-                X += (screenW / 135);
-                Y -= 0.5;
-                X1 = (float) (20 * Math.cos(Math.toRadians(count-30)) + X );
-                Y1 = (float) (20 * Math.sin(Math.toRadians(count-30)) + Y);
-                X2 = (float) (50 * Math.cos(Math.toRadians(count)) + X);
-                Y2 = (float) (50 * Math.sin(Math.toRadians(count)) + Y);
+
+            points = getPoints(tracePath);
+
+        }
+
+        if (count <= 20) {
+
+
+
+        } else if ((count >20)&&(count <= 80)) {
+
+
+            for (int i = 0; i < (count - 20); i++) {
+
+                windPath.moveTo(points[i].getX(), points[i].getY());
+                windPath.lineTo(points[i + 1].getX(), points[i + 1].getY());
+
+            }
+        } else if (count >= 249) {
+
+            for (int i = (int) (count - 20); i <= 248; i++) {
+
+                windPath.moveTo(points[i].getX(), points[i].getY());
+                windPath.lineTo(points[i + 1].getX(), points[i + 1].getY());
+
+            }
+
+        } else {
+
+            for (int i = (int) (count - 80); i < (count - 20); i++) {
+
+                windPath.moveTo(points[i].getX(), points[i].getY());
+                windPath.lineTo(points[i + 1].getX(), points[i + 1].getY());
+
             }
 
         }
 
-        PointF P1c1 = calculateTriangle(X, Y, X2, Y2, true, 0);
-        PointF P1c2 = calculateTriangle(X, Y, X2, Y2, false, 0);
-        PointF P2c1 = calculateTriangle(X2, Y2, X1, Y1, true, 1);
-        PointF P2c2 = calculateTriangle(X2, Y2, X1, Y1, false, 1);
-        PointF P3c1 = calculateTriangle(X1, Y1, X, Y, true, 2);
-        PointF P3c2 = calculateTriangle(X1, Y1, X, Y, false, 2);
 
-        path = new Path();
-        path.moveTo(X,Y);
-        path.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, X2, Y2);
-        path.cubicTo(P2c1.x,P2c1.y,P2c2.x,P2c2.y,X1,Y1);
-        path.cubicTo(P3c1.x,P3c1.y,P3c2.x,P3c2.y,X,Y);
 
-        points.add(new Point(Math.round(X2), Math.round(Y2)));
+        canvas.drawPath(windPath, paint);
 
-        if(points.size() ==20) {
-            path1.moveTo(0, (float) (screenH / 1.5));
-            path1.lineTo(points.get(points.size() - 20).x, points.get(points.size() - 20).y);
+        if((int) count <250 ) {
+            Xc = points[(int) (count)].getX();
+            Yc = points[(int) (count)].getY();
+            X11 = (float) (((screenW * 8) / 100) * Math.cos(Math.toRadians((degrees + count) - 30)) + Xc);
+            Y11 = (float) (((screenW * 8) / 100) * Math.sin(Math.toRadians((degrees + count) - 30)) + Yc);
+            X21 = (float) (((screenW * 20) / 100) * Math.cos(Math.toRadians((degrees + count))) + Xc);
+            Y21 = (float) (((screenW * 20) / 100) * Math.sin(Math.toRadians((degrees + count))) + Yc);
+
+
+            PointF P11c1 = calculateTriangle(Xc, Yc, X21, Y21, true, 0.7,"CW");
+            PointF P11c2 = calculateTriangle(Xc, Yc, X21, Y21, false, 0.7,"CW");
+            PointF P21c1 = calculateTriangle(X21, Y21, X11, Y11, true, 0.8,"CW");
+            PointF P21c2 = calculateTriangle(X21, Y21, X11, Y11, false, 0.8,"CW");
+            PointF P31c1 = calculateTriangle(X11, Y11, Xc, Yc, true, 0.2,"CCW");
+            PointF P31c2 = calculateTriangle(X11, Y11, Xc, Yc, false, 0.2,"CCW");
+
+            leafPath.moveTo(Xc, Yc);
+            leafPath.cubicTo(P11c1.x, P11c1.y, P11c2.x, P11c2.y, X21, Y21);
+            leafPath.cubicTo(P21c1.x, P21c1.y, P21c2.x, P21c2.y, X11, Y11);
+            leafPath.cubicTo(P31c1.x, P31c1.y, P31c2.x, P31c2.y, Xc, Yc);
+
+            paint.setColor(Color.WHITE);
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawPath(leafPath, paint);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.BLACK);
+            canvas.drawPath(leafPath, paint);
         }
-
-        if((points.size() >20 ) && (points.size())<60) {
-            path1.moveTo(points.get(points.size() - 20).x, points.get(points.size() - 20).y);
-            path1.lineTo(points.get(points.size() - 19).x, points.get(points.size() - 19).y);
-        }
-
-        if(points.size()== 60 ) {
-            path1.moveTo(points.get(points.size() - 20).x, points.get(points.size() - 20).y);
-            path1.lineTo(points.get(points.size() - 19).x, points.get(points.size() - 19).y);
-        }
-
-        if(points.size() > 60 ) {
-
-            path1 = new Path();
-
-            for(int i=20;i<60;i++) {
-
-                path1.moveTo(points.get(points.size() - i).x, points.get(points.size() - i).y);
-                path1.lineTo(points.get(points.size() - (i-1)).x, points.get(points.size() - (i-1)).y);
-
-            }
-
-        }
-
-        canvas.drawPath(path, paint);
-        canvas.drawPath(path1, paint);
 
         invalidate();
+    }
 
+    private PathPoints[] getPoints(Path path) {
+
+        PathPoints[] pointArray = new PathPoints[250];
+        PathMeasure pm = new PathMeasure(path, false);
+        float length = pm.getLength();
+        float distance = 0f;
+        float speed = length / 250;
+        int counter = 0;
+        float[] aCoordinates = new float[2];
+
+        while ((distance < length) && (counter < 250)) {
+            pm.getPosTan(distance, aCoordinates, null);
+            pointArray[counter] = new PathPoints(aCoordinates[0], aCoordinates[1]);
+            counter++;
+            distance = distance + speed;
+        }
+
+        return pointArray;
     }
 
 
-    private PointF calculateTriangle(float x1, float y1, float x2, float y2, boolean left, double count) {
+    class PathPoints {
+
+        float x, y;
+
+        public PathPoints(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public float getX() {
+            return x;
+        }
+
+        public float getY() {
+            return y;
+        }
+
+    }
+    private PointF calculateTriangle(float x1, float y1, float x2, float y2, boolean left, double distOffset,String dir) {
         PointF result = new PointF(0, 0);
         float dy = y2 - y1;
         float dx = x2 - x1;
-        float dangle ;
+        float dangle = 0;
         float sideDist = 0;
-        if(count ==0 ) {
+
+        if (dir == "CW") {
             dangle = (float) ((Math.atan2(dy, dx) - Math.PI / 2f));
-            sideDist = (float) 0.7 * (float) Math.sqrt(dx * dx + dy * dy); //square
-        } else if(count == 1){
-            dangle = (float) ((Math.atan2(dy, dx) - Math.PI / 2f));
-            sideDist = (float) 0.8 * (float) Math.sqrt(dx * dx + dy * dy); //square
-        }else {
+            sideDist = (float) distOffset * (float) Math.sqrt(dx * dx + dy * dy); //square
+        } else if (dir == "CCW") {
             dangle = (float) ((Math.atan2(dy, dx) + Math.PI / 2f));
-            sideDist = (float) 0.2 * (float) Math.sqrt(dx * dx + dy * dy); //square
+            sideDist = (float) distOffset * (float) Math.sqrt(dx * dx + dy * dy); //square
         }
 
         if (left) {
@@ -208,6 +273,5 @@ public class WindView extends View {
         }
         return result;
     }
-
 
 }

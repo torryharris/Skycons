@@ -10,7 +10,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
+<<<<<<< HEAD
  * Created by administrator on 29/09/14.
+=======
+ * Created by administrator on 9/29/14.
+>>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
  */
 public class CloudSunView extends View {
 
@@ -40,7 +44,11 @@ public class CloudSunView extends View {
         X = screenW/2;
         Y = (screenH/2);
 
+<<<<<<< HEAD
         // path.moveTo(X, Y);
+=======
+       // path.moveTo(X, Y);
+>>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
 
         init();
     }
@@ -213,3 +221,10 @@ public class CloudSunView extends View {
     }
 
 }
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
