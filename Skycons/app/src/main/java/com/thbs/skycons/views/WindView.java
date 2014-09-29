@@ -18,7 +18,7 @@ public class WindView extends View {
 
     private static Paint paint;
     private int screenW, screenH;
-    private float X, Y, X1, Y1, X2, Y2, X3, Y3,X4,Y4, X11, Y11, Y21, X21, Xc, Yc;
+    private float X, Y, X1, Y1, X2, Y2, X3, Y3,X4,Y4,X5,Y5,X6,Y6, X11, Y11, Y21, X21, Xc, Yc;
     private Path tracePath, windPath, leafPath;
     private double count;
     int degrees;
@@ -83,7 +83,7 @@ public class WindView extends View {
         windPath = new Path();
         leafPath = new Path();
 
-        int retval = Double.compare(count, 250.00);
+        int retval = Double.compare(count, 270.00);
 
         if (retval > 0) {
             tracePath= new Path();
@@ -125,6 +125,47 @@ public class WindView extends View {
             tracePath.cubicTo(X + (screenW/3f), Y - 168, X + (screenW/2.8f), Y - 50, X + (screenW/1.7f), Y - 20);
             tracePath.cubicTo(X + (screenW/1.4f), Y, X + (screenW/1.2f), Y - 100, Xc, Y);
 
+//            X1 = (float) (screenW / 2);
+//            Y1 = (float) (screenH / 3);
+//
+//            X2 = (float) ((screenW / 2) -20);
+//            Y2 = (float) ((screenH / 3)- 40);
+//
+//            X3 = (float) ((screenW / 2)-40 );
+//            Y3 = (float) ((screenH / 3)+10);
+//
+////            X4 = (float) ((screenW / 2) +30);
+////            Y4 = (float) ((screenH / 3 ) -40);
+////
+////            X5 = (float) ((screenW / 2)+50);
+////            Y5 = (float) ((screenH / 3)-40);
+////
+//            X6 = (float) (screenW + 50);
+//           Y6 = (float) (screenH / 2);
+//
+//            tracePath.moveTo(X - 5, Y);
+//            tracePath.cubicTo(X + 70, Y + 10, X + 110, Y - 40, X + 80, Y - 70);
+//            tracePath.cubicTo(X + 50, Y - 80, X + 30, Y - 40, X + 100, Y);
+//            tracePath.cubicTo(X + 140, Y + 25, X + 190, Y - 25, X6, Y6);
+
+//            tracePath.moveTo(X,Y);
+//            PointF P1c1 = calculateTriangle(X, Y, X1, Y1, true, 0.2,"CCW");
+//            PointF P1c2 = calculateTriangle(X, Y, X1, Y1, false, 0.2,"CCW");
+//            PointF P3c1 = calculateTriangle(X1, Y1, X2, Y2, true, 0.1,"CCW");
+//            PointF P3c2 = calculateTriangle(X1, Y1, X2, Y2, false, 0.1,"CCW");
+//            PointF P4c1 = calculateTriangle(X2, Y2, X3, Y3, true, 0.1,"CCW");
+//            PointF P4c2 = calculateTriangle(X2, Y2, X3, Y3, false, 0.1,"CCW");
+//            PointF P2c1 = calculateTriangle(X3, Y3, X6, Y6, true, 0.4,"CCW");
+//            PointF P2c2 = calculateTriangle(X3, Y3, X6, Y6, false, 0.4,"CCW");
+//            tracePath.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, X1, Y1);
+//            //tracePath.cubicTo(P3c1.x, P3c1.y, P3c2.x, P3c2.y, X4, Y4);
+//
+//            //tracePath.cubicTo(P4c1.x, P4c1.y, P4c2.x, P4c2.y, X3, Y3);
+//            tracePath.quadTo(X2,Y2,X3,Y3);
+////            tracePath.quadTo(X4,Y4,X5,Y5);
+//            tracePath.cubicTo(P2c1.x, P2c1.y, P2c2.x, P2c2.y, X6, Y6);
+//
+//            tracePath.lineTo(X6,Y6);
             points = getPoints(tracePath);
 
         }
@@ -144,8 +185,12 @@ public class WindView extends View {
             }
         } else if (count >= 249) {
 
-            for (int i = (int) (count - 20); i <= 248; i++) {
+           // int i = (int)count - 20;
 
+            System.out.println("count value:"+count);
+            for (int i = (int)count - 20 ; i <= 248; i++) {
+
+                System.out.println("i value:"+i);
                 windPath.moveTo(points[i].getX(), points[i].getY());
                 windPath.lineTo(points[i + 1].getX(), points[i + 1].getY());
 
