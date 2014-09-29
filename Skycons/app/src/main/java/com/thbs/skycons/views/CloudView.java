@@ -74,7 +74,7 @@ public class CloudView extends View {
         paint1 = new Paint();
 
         paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth((screenW/25));
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStrokeJoin(Paint.Join.ROUND);
@@ -82,7 +82,7 @@ public class CloudView extends View {
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
         paint1.setColor(Color.BLACK);
-        paint1.setStrokeWidth(5);
+        paint1.setStrokeWidth((screenW/25));
         paint1.setAntiAlias(true);
         paint1.setStrokeCap(Paint.Cap.ROUND);
         paint1.setStrokeJoin(Paint.Join.ROUND);
@@ -97,6 +97,7 @@ public class CloudView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        paint.setStrokeWidth((float)(0.02083*screenW));
         path = new Path();
 
         count = count+0.5;
@@ -113,16 +114,20 @@ public class CloudView extends View {
             count = 0;
         }
 
-        float X1 = (float)(90 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
-        float Y1 = ((float)(50 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
-        float P1X = (float)(90 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
-        float P1Y = ((float)(50 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
-        float P2X = (float)(90 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
-        float P2Y = ((float)((50+(0.111*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
-        float P3X = (float)(90 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
-        float P3Y = ((float)(90 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
-        float P4X =(float)(90 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
-        float P4Y = ((float)(90 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
+        int r1 = (int)(0.1875 * screenW);
+        int r2 = (int)(0.1041667 * screenW);
+        double offset = 0.00023125 * screenW;
+
+        float X1 = (float)(r1 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
+        float Y1 = ((float)(r2 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
+        float P1X = (float)(r1 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
+        float P1Y = ((float)(r2 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
+        float P2X = (float)(r1 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
+        float P2Y = ((float)((r2+(offset*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
+        float P3X = (float)(r1 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
+        float P3Y = ((float)(r1 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
+        float P4X =(float)(r1 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
+        float P4Y = ((float)(r1 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
 
         path.moveTo(X1,Y1);
 
