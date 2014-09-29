@@ -63,6 +63,8 @@ public class CloudFogView extends View {
         paintCloud = new Paint();
         paintFog = new Paint();
 
+
+        //Setting paint for cloud
         paintCloud.setColor(Color.BLACK);
         paintCloud.setStrokeWidth(10);
         paintCloud.setAntiAlias(true);
@@ -71,6 +73,7 @@ public class CloudFogView extends View {
         paintCloud.setStyle(Paint.Style.STROKE);
         paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
+        //Setting paint for fog
         paintFog.setColor(Color.BLACK);
         paintFog.setStrokeWidth(10);
         paintFog.setAntiAlias(true);
@@ -156,17 +159,16 @@ public class CloudFogView extends View {
         path2 = new Path();
 
 
-        float line1Y = (float) (Y+ Y*70.0/100.0);
+        float line1Y = (float) (Y+ Y*70.0/100.0);   //Calculating Y coordinate for foglines.
         float line2Y = (float) (Y+Y*85.0/100.0);
 
-        float lineStartX = (float)(X-X*50.0/100.0);
-
+        float lineStartX = (float)(X-X*50.0/100.0);  //Calculating X coordinate for foglines.
         float lineEndX = (float) (X+X*50.0/100);
 
-        float tempLength =  lineEndX - lineStartX;
-        float fogLength = tempLength * (float)80.0/(float)100.0;
-        float temp = (lineEndX-lineStartX)*(float)95.0/(float)100;
-        float temp2 = lineEndX - (float)100.0;
+
+
+        float temp = (lineEndX-lineStartX)*(float)95.0/(float)100; //Calculating fogline length
+
 
 
 
@@ -175,6 +177,8 @@ public class CloudFogView extends View {
 
         path2.moveTo(lineEndX,line2Y);
         path2.lineTo(lineEndX-temp,line2Y);
+
+        //Code to move foglines from one point to another
 
         if(moving&&(lineStartX+temp+ctr)<=lineEndX)
         {
@@ -195,6 +199,9 @@ public class CloudFogView extends View {
             }
         }
 
+
+        //Code to expand foglines
+
         if(expanding)
         {
 
@@ -213,6 +220,7 @@ public class CloudFogView extends View {
             }
             else
             {
+                //Moving the fogline to the other end after expanding
 
                 path1.reset();
                 path1.moveTo(lineStartX + ctr +temp + i, line1Y);
@@ -231,25 +239,27 @@ public class CloudFogView extends View {
             }
         }
 
+
+        //Compressing the fogline to normal length
         if(compress)
         {
 
-            System.out.println("In compress");
-             if(i>0.0f) {
-                 i = i - 0.1f;
-                 path1.reset();
-                 path1.moveTo(lineStartX + ctr - i, line1Y);
-                 path1.lineTo(lineStartX + ctr + temp + i, line1Y);
 
-                 path2.reset();
-                 path2.moveTo(lineEndX-ctr-i,line2Y);
-                 path2.lineTo(lineEndX-ctr-temp+i,line2Y);
+            if(i>0.0f) {
+                i = i - 0.1f;
+                path1.reset();
+                path1.moveTo(lineStartX + ctr - i, line1Y);
+                path1.lineTo(lineStartX + ctr + temp + i, line1Y);
 
-             }
+                path2.reset();
+                path2.moveTo(lineEndX-ctr-i,line2Y);
+                path2.lineTo(lineEndX-ctr-temp+i,line2Y);
+
+            }
             else {
-                 compress = false;
-                 moving = true;
-             }
+                compress = false;
+                moving = true;
+            }
 
         }
 
@@ -259,94 +269,6 @@ public class CloudFogView extends View {
 
 
 
-
-        PathPoints[] path1ppts = getPoints(path1);
-        PathPoints[] path2ppts = getPoints(path2);
-
-
-
-       // npth.moveTo(path1ppts[0].getX(),path1ppts[0].getY());
-
-
-//        if(ctr+20+i<path1ppts.length&&ctr-i>=0&&expanding)
-//        {
-//            if(ctr+20+i<=path1ppts.length&&ctr-i>=0||exp1)
-//            {
-//                i = i+1;
-//
-//           }
-//            else
-//            {
-//
-//                i = 0;
-//                if(ctr+20+i<=ctr+21)
-//                {
-//                    exp1=true;
-//                }
-//            }
-//            npth.reset();
-//            if(ctr-1>0)
-//            {
-//                npth.moveTo(path1ppts[ctr-1].getX(),path1ppts[ctr-1].getY());
-//            }
-//           else{
-//                npth.moveTo(path1ppts[ctr].getX(),path1ppts[ctr].getY());
-//            }
-//            npth.lineTo(path1ppts[ctr+20+i].getX(),path1ppts[ctr+20+i].getY());
-//            ctr++;
-//            ctr2=99;
-//        }
-//        else
-//        {
-//            expanding = false;
-//            if(ctr2-20-i>=0) {
-//                i=i+1;
-//                npth.reset();
-//                npth.moveTo(path1ppts[ctr2].getX(), path1ppts[ctr2].getY());
-//                npth.lineTo(path1ppts[ctr2-20-i].getX(), path1ppts[ctr2-20-i].getY());
-//                ctr2--;
-//            }
-//            else
-//            {
-//                expanding = true;
-//                ctr=0;
-//                //i=0;
-//            }
-//        }
-
-//        if(ctr==0) {
-//            npth.lineTo(path1ppts[midPt].getX(), path1ppts[midPt].getY());
-//            npth1.lineTo(path2ppts[midPt].getX(), path2ppts[midPt].getY());
-//            ctr++;
-//        }
-//        else if(ctr>0&&ctr<49&&expanding)
-//        {
-//
-//                npth.moveTo(path1ppts[ctr].getX(),path1ppts[0].getY());
-//                npth1.moveTo(path2ppts[path2ppts.length -ctr].getX(),path2ppts[path2ppts.length -1].getY());
-//                npth.lineTo(path1ppts[midPt + ctr].getX(), path1ppts[midPt].getY());
-//                npth1.lineTo(path2ppts[midPt - ctr].getX(), path2ppts[midPt].getY());
-//                ctr++;
-//                if (ctr == 48) {
-//                    expanding = false;
-//                    System.out.println("Value of Counter is 48");
-//                }
-//
-//        }
-//        else if(!expanding)
-//        {
-//
-//
-//
-//                System.out.println("In not expanding code " + ctr);
-//                ctr--;
-//                npth.lineTo(path1ppts[midPt - ctr].getX(), path1ppts[midPt].getY());
-//                npth1.lineTo(path2ppts[midPt + ctr].getX(), path2ppts[midPt].getY());
-//           if(ctr==0)
-//            {
-//                expanding = true;
-//            }
-//        }
 
 
         canvas.drawPath(path1,paintFog);
