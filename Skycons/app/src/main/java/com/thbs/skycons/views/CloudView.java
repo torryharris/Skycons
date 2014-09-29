@@ -22,31 +22,23 @@ public class CloudView extends View {
     public CloudView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        String num1[] = attrs.getAttributeValue(0).split("\\.");
-        String num2[] = attrs.getAttributeValue(1).split("\\.");
-
-        screenW = Integer.valueOf(num1[0]);
-        screenH = Integer.valueOf(num2[0]);
-
-        X = screenW/2;
-        Y = (screenH/2);
-
-        radius1 = 90;
-        radius2 = 50;
+//        String num1[] = attrs.getAttributeValue(0).split("\\.");
+//        String num2[] = attrs.getAttributeValue(1).split("\\.");
+//
+//        screenW = Integer.valueOf(num1[0]);
+//        screenH = Integer.valueOf(num2[0]);
+//
+//        X = screenW/2;
+//        Y = (screenH/2);
+//
+//        radius1 = 90;
+//        radius2 = 50;
 
         init();
     }
 
     public CloudView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
-        //screenW = Integer.valueOf(attrs.getAttributeValue(0));
-        //screenH = Integer.valueOf(attrs.getAttributeValue(1));
-
-        X = screenW/2;
-        Y = (screenH/2);
-
-        //path.moveTo(X, Y);
 
         init();
     }
@@ -61,6 +53,8 @@ public class CloudView extends View {
 
         X = screenW/2;
         Y = (screenH/2);
+        radius1 = 90;
+        radius2 = 50;
 
     }
 

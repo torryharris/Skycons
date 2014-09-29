@@ -23,7 +23,6 @@ public class CloudRainView extends View {
     float m = 0;
     boolean drop1 = true, drop2 = false, drop3 = false;
     private double count;
-    double radius1, radius2;
 
     public CloudRainView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,9 +35,6 @@ public class CloudRainView extends View {
 
         X = screenW/2;
         Y = (screenH/2);
-
-        radius1 = 90;
-        radius2 = 50;
 
         init();
     }
@@ -61,9 +57,20 @@ public class CloudRainView extends View {
         paint1.setStrokeWidth(8);
         paint1.setAntiAlias(true);
         paint1.setStrokeCap(Paint.Cap.ROUND);
-        paint1.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint1.setStyle(Paint.Style.FILL);
 
         path = new Path();
+    }
+
+    @Override
+    public void onSizeChanged (int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        screenW = w;
+        screenH = h;
+        X = screenW/2;
+        Y = (screenH/2);
+
     }
 
 
@@ -146,6 +153,11 @@ public class CloudRainView extends View {
             path1.addArc(new RectF(x1-5, (y1-5)+m, x1+5, y1+5+m), 180, -180);
             path1.lineTo(x1, (y1-10)+m);
             path1.close();
+
+            paint1.setStyle(Paint.Style.FILL);
+            canvas.drawPath(path1, paint1);
+
+            paint1.setStyle(Paint.Style.STROKE);
             canvas.drawPath(path1, paint1);
 
             m = m+2.5f;
@@ -175,6 +187,11 @@ public class CloudRainView extends View {
             path1.addArc(new RectF(x2-5, (y2-5)+m, x2+5, y2+5+m), 180, -180);
             path1.lineTo(x2, (y2-10)+m);
             path1.close();
+
+            paint1.setStyle(Paint.Style.FILL);
+            canvas.drawPath(path1, paint1);
+
+            paint1.setStyle(Paint.Style.STROKE);
             canvas.drawPath(path1, paint1);
 
             m = m+2.5f;
@@ -203,6 +220,11 @@ public class CloudRainView extends View {
             path1.addArc(new RectF(x3-5, (y3-5)+m, x3+5, y3+5+m), 180, -180);
             path1.lineTo(x3, (y3-10)+m);
             path1.close();
+
+            paint1.setStyle(Paint.Style.FILL);
+            canvas.drawPath(path1, paint1);
+
+            paint1.setStyle(Paint.Style.STROKE);
             canvas.drawPath(path1, paint1);
 
             m = m+2.5f;

@@ -9,13 +9,6 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
-<<<<<<< HEAD
- * Created by administrator on 29/09/14.
-=======
- * Created by administrator on 9/29/14.
->>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
- */
 public class CloudSunView extends View {
 
     private static Paint paint;
@@ -91,8 +84,6 @@ public class CloudSunView extends View {
         XSun= X+70;
         YSun= Y-100;
 
-
-
     }
 
 
@@ -100,8 +91,6 @@ public class CloudSunView extends View {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-
 
         path = new Path();
         path1 = new Path();
@@ -198,7 +187,8 @@ public class CloudSunView extends View {
 
     }
 
-    private PointF calculateTriangle(float x1, float y1, float x2, float y2, boolean left, double count) {
+    private PointF calculateTriangle(float x1, float y1, float x2,
+                                     float y2, boolean left, double count) {
         PointF result = new PointF(0,0);
         float dy = y2 - y1;
         float dx = x2 - x1;

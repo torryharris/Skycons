@@ -8,13 +8,6 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
-<<<<<<< HEAD
- * Created by administrator on 29/09/14.
-=======
- * Created by administrator on 9/29/14.
->>>>>>> 31ecf11b87fdd0f58ca31eb3b2754003debca09f
- */
 public class SunView extends View {
 
     private static Paint paint;

@@ -5,26 +5,38 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
 import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by administrator on 25/09/14.
+ * Created by administrator on 29/09/14.
  */
 public class Exp extends View {
 
-    Paint paint;
-    Path path, path1, spath1, spath2;
+    private static Paint paint, paint1;
     private int screenW, screenH;
-    PathPoints[] pathPoints1, pathPoints2;
-    int m = 0;
-
+    private float X, Y;
+    private Path path;
+    int x1=0, y1=0, x2=0, y2=0, x3=0, y3=0;
+    float m = 0;
+    boolean drop1 = true, drop2 = false, drop3 = false;
+    private double count;
 
     public Exp(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init();
+    }
+
+    private void init() {
+        paint1 = new Paint();
+        paint1.setColor(Color.BLACK);
+        paint1.setStrokeWidth(8);
+        paint1.setAntiAlias(true);
+        paint1.setStrokeCap(Paint.Cap.ROUND);
+        paint1.setStyle(Paint.Style.FILL);
+
+        path = new Path();
     }
 
     @Override
@@ -34,101 +46,43 @@ public class Exp extends View {
         screenW = w;
         screenH = h;
 
+        X = screenW/2;
+        Y = (screenH/2);
+
+        x1 = 100;
+        y1 = 100;
 
     }
 
-    private void init() {
-        paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(10);
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        paint.setAntiAlias(true);
-        paint.setStrokeCap(Paint.Cap.BUTT);
-
-        path = new Path();
-        path1 = new Path();
-
-        spath1 = new Path();
-        spath2 = new Path();
-
-        path.moveTo(50, 50);
-        path.lineTo(20, 100);
-        path.lineTo(70, 150);
-        path.lineTo(30, 200);
-
-        path1.moveTo(70, 50);
-        path1.lineTo(40, 100);
-        path1.lineTo(90, 150);
-        path1.lineTo(30, 200);
-
-        pathPoints1 = getPoints(path);
-        pathPoints2 = getPoints(path1);
-    }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-       if(m<148) {
-           spath1.moveTo(pathPoints1[m].getX(), pathPoints1[m].getY());
-           spath1.lineTo(pathPoints1[m+1].getX(), pathPoints1[m+1].getY());
-           spath1.lineTo(pathPoints2[m+1].getX(), pathPoints2[m+1].getY());
-           spath1.lineTo(pathPoints2[m].getX(), pathPoints2[m].getY());
-           spath1.close();
+        path = new Path();
 
-       }
+//        path.moveTo(x1, y1);
+//        path.addArc(new RectF(x1-5, (y1-5)+m, x1+5, y1+5+m), 180, -180);
+//        path.lineTo(x1, (y1-10)+m);
+//        path.close();
+//        canvas.drawPath(path, paint1);
 
-        if(m==148) {
-            m = 0;
+        path.moveTo(x1, y1);
+        path.lineTo(x1, y1+50+m);
+        path.lineTo(x1+30, y1+20+m);
+        path.close();
+
+        canvas.drawPath(path, paint1);
+
+        m = m+2.5f;
+
+        if(m==100) {
+            m=0;
+            path.reset();
+            path.moveTo(0, 0);
         }
 
-        m = m +2;
-
-
-        canvas.drawPath(spath1, paint);
-       // canvas.drawPath(path1, paint);
-
-
-        invalidate();
-
-    }
-
-    private PathPoints[] getPoints(Path path) {
-
-        PathPoints[] pointArray = new PathPoints[150];
-        PathMeasure pm = new PathMeasure(path, false);
-        float length = pm.getLength();
-        float distance = 0f;
-        float speed = length / 150;
-        int counter = 0;
-        float[] aCoordinates = new float[2];
-
-        while ((distance < length) && (counter < 150)) {
-            pm.getPosTan(distance, aCoordinates, null);
-            pointArray[counter] = new PathPoints(aCoordinates[0], aCoordinates[1]);
-            counter++;
-            distance = distance + speed;
-        }
-
-        return pointArray;
-    }
-
-    class PathPoints {
-
-        float x, y;
-
-        public PathPoints(float x, float y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public float getX() {
-            return x;
-        }
-
-        public float getY() {
-            return y;
-        }
+       // invalidate();
 
     }
 

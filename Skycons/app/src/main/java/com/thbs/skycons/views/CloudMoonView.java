@@ -31,20 +31,6 @@ public class CloudMoonView extends View {
     public CloudMoonView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        String num1[] = attrs.getAttributeValue(0).split("\\.");
-        String num2[] = attrs.getAttributeValue(1).split("\\.");
-
-        screenW = Integer.valueOf(num1[0]);
-        screenH = Integer.valueOf(num2[0]);
-
-        X = screenW/2;
-        Y = (screenH/2);
-
-        X2 = screenW*0.75f;
-        Y2 = (screenH*0.2f);
-
-        radius = screenW/7;
-
         init();
     }
 
@@ -66,6 +52,23 @@ public class CloudMoonView extends View {
         paintMoon.setStyle(Paint.Style.STROKE);
 
         count = 0;
+
+    }
+
+
+    @Override
+    public void onSizeChanged (int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        screenW = w;
+        screenH = h;
+        X = screenW/2;
+        Y = (screenH/2);
+
+        X2 = X + 70;
+        Y2 = Y - 100;
+
+        radius = 50;
 
     }
 

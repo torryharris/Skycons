@@ -29,16 +29,16 @@ public class MoonView extends View {
     public MoonView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        String num1[] = attrs.getAttributeValue(0).split("\\.");
-        String num2[] = attrs.getAttributeValue(1).split("\\.");
-
-        screenW = Integer.valueOf(num1[0]);
-        screenH = Integer.valueOf(num2[0]);
-
-        X = screenW/2;
-        Y = (screenH/2);
-
-        radius = screenW/3;
+//        String num1[] = attrs.getAttributeValue(0).split("\\.");
+//        String num2[] = attrs.getAttributeValue(1).split("\\.");
+//
+//        screenW = Integer.valueOf(num1[0]);
+//        screenH = Integer.valueOf(num2[0]);
+//
+//        X = screenW/2;
+//        Y = (screenH/2);
+//
+//        radius = screenW/3;
 
         init();
     }
@@ -50,6 +50,19 @@ public class MoonView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
+    }
+
+    @Override
+    public void onSizeChanged (int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        screenW = w;
+        screenH = h;
+        X = screenW/2;
+        Y = (screenH/2);
+
+        radius = 70;
+
     }
 
     @Override
