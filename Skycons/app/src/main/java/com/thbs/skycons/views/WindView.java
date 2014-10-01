@@ -80,18 +80,14 @@ public class WindView extends View {
 
         paint.setStrokeWidth((float)(0.02083*screenW));
 
-        //incrementing counter for rotation
-        count+=1;
-
         //initializing the paths
         windPath = new Path();
         leafPath = new Path();
 
         //comparison to check 360 degrees rotation
-        int retval = Double.compare(count, 270.00);
+        int retval = Double.compare(count, 310.00);
 
         if (retval > 0) {
-
             //resetting counter and initializing values on completion of a rotation
 
             tracePath= new Path(); //reinitializing tracepath
@@ -101,7 +97,8 @@ public class WindView extends View {
         }
 
         if (isFirstPath) {
-
+            //incrementing counter for rotation
+            count+=1;
             //drawing path is First path
 
             //initializing Values
@@ -121,9 +118,14 @@ public class WindView extends View {
 
         } else {
 
-            //drawing path is Second path
+            //drawing Second path
+            if(count <150){
+                count+=1.5;
 
-            //initializing Values
+            }else{
+                count+=1;
+            }
+
             X = 0;
             Y = (float) (screenH / 1.5);
             X2 = (float) (screenW / 2);
@@ -131,11 +133,10 @@ public class WindView extends View {
             Xc = (float) (screenW + 10);
             Yc = (float) (screenH / 2);
 
-            //drawing the trace path
             tracePath.moveTo(X - 5, Y);
-            tracePath.cubicTo(X + (screenW/2.5f), Y + 40, X + (screenW/1.5f), Y - 140, X + (screenW/2.4f), Y - 175);
-            tracePath.cubicTo(X + (screenW/3f), Y - 168, X + (screenW/2.8f), Y - 50, X + (screenW/1.7f), Y - 20);
-            tracePath.cubicTo(X + (screenW/1.4f), Y, X + (screenW/1.2f), Y - 100, Xc, Y);
+            tracePath.cubicTo(X + (screenW/3.2f), Y + (screenW/12), X + (screenW/2.0f), Y - (screenW/3.2f), X + (screenW/2.5f), Y - (screenW/2.8235f));
+            tracePath.cubicTo(X + (screenW/2.7f), Y - (screenW/2.7428f), X + (screenW/3.2f), Y - (screenW/3f), X + (screenW/3.0f), Y - (screenW/3.6923f));
+            tracePath.cubicTo(X + (screenW/2.6f), Y - (screenW/6), X + (screenW/1.5f), Y - (screenW/9.6f), screenW+50, Y - (screenW/2.4f));
 
             //getting points from the trace path
             points = getPoints(tracePath);
@@ -143,11 +144,9 @@ public class WindView extends View {
         }
 
         if (count <= 20) {
-
             // draw nothing
 
-        } else if ((count >20)&&(count <= 80)) {
-
+        } else if ((count >20)&&(count <= 60)) {
             // draw initial path of length 60
             for (int i = 0; i < (count - 20); i++) {
 
@@ -156,20 +155,20 @@ public class WindView extends View {
 
             }
         } else if (count >= 249) {
-
             // draw path of decrementing length from last
+           // System.out.println("path count:"+count);
 
-            for (int i = (int)count - 20 ; i <= 248; i++) {
+            for (int i = (int)count - 60 ; i <= 248; i++) {
 
+                //System.out.println("path drawn between "+i+" and "+(i+1));
                 windPath.moveTo(points[i].getX(), points[i].getY());
                 windPath.lineTo(points[i + 1].getX(), points[i + 1].getY());
 
             }
 
         } else {
-
             // move initial path of length 60
-            for (int i = (int) (count - 80); i < (count - 20); i++) {
+            for (int i = (int) (count - 60); i < (count - 20); i++) {
 
                 windPath.moveTo(points[i].getX(), points[i].getY());
                 windPath.lineTo(points[i + 1].getX(), points[i + 1].getY());
@@ -186,10 +185,11 @@ public class WindView extends View {
             // initialize coordinates for leaf
             Xc = points[(int) (count)].getX();
             Yc = points[(int) (count)].getY();
-            X11 = (float) (((screenW * 8) / 100) * Math.cos(Math.toRadians((degrees + count) - 30)) + Xc);
-            Y11 = (float) (((screenW * 8) / 100) * Math.sin(Math.toRadians((degrees + count) - 30)) + Yc);
-            X21 = (float) (((screenW * 20) / 100) * Math.cos(Math.toRadians((degrees + count))) + Xc);
-            Y21 = (float) (((screenW * 20) / 100) * Math.sin(Math.toRadians((degrees + count))) + Yc);
+            X11 = (float) (((screenW * 4) / 100) * Math.cos(Math.toRadians
+                    ((degrees + count) - 30)) + Xc);
+            Y11 = (float) (((screenW * 4) / 100) * Math.sin(Math.toRadians((degrees + count) - 30)) + Yc);
+            X21 = (float) (((screenW * 12) / 100) * Math.cos(Math.toRadians((degrees + count))) + Xc);
+            Y21 = (float) (((screenW * 12) / 100) * Math.sin(Math.toRadians((degrees + count))) + Yc);
 
             // getting points in between coordinates for leaf shape
             PointF P11c1 = calculateTriangle(Xc, Yc, X21, Y21, true, 0.7,"CW");

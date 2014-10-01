@@ -1,0 +1,93 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="#ffffff"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+        <com.thbs.skycons.views.SunView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/sun_view"/>
+
+        <com.thbs.skycons.views.MoonView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/moon_view"
+            android:layout_toRightOf="@+id/sun_view"
+            android:layout_marginLeft="10dp"/>
+
+        <com.thbs.skycons.views.CloudSunView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/cloud_sun_view"
+            android:layout_toRightOf="@+id/moon_view"/>
+
+        <com.thbs.skycons.views.CloudMoonView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/cloud_moon_view"
+            android:layout_below="@+id/sun_view"/>
+
+        <com.thbs.skycons.views.CloudView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/cloud_view"
+            android:layout_below="@+id/sun_view"
+            android:layout_toRightOf="@+id/cloud_moon_view"/>
+
+        <com.thbs.skycons.views.CloudRainView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/cloud_rain_view"
+            android:layout_below="@+id/sun_view"
+            android:layout_toRightOf="@+id/cloud_view"/>
+
+        <com.thbs.skycons.views.CloudHvRainView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/cloud_hvrain_view"
+            android:layout_below="@+id/cloud_moon_view"/>
+
+
+        <com.thbs.skycons.views.CloudSnowView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/cloud_snow_view"
+            android:layout_toRightOf="@+id/cloud_hvrain_view"
+            android:layout_below="@+id/cloud_moon_view"/>
+
+        <com.thbs.skycons.views.WindView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="20dp"
+            android:id="@+id/wind_view"
+            android:layout_toRightOf="@+id/cloud_snow_view"
+            android:layout_below="@+id/cloud_moon_view" />
+
+
+        <com.thbs.skycons.views.CloudFogView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/cloud_fog_view"
+            android:layout_below="@+id/cloud_hvrain_view" />
+
+        <com.thbs.skycons.views.CloudThunderView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/thunder_view"
+            android:layout_toRightOf="@+id/cloud_fog_view"
+            android:layout_below="@+id/cloud_hvrain_view" />
+
+    </RelativeLayout>
+</ScrollView>

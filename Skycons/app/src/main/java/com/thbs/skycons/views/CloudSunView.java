@@ -53,7 +53,6 @@ public class CloudSunView extends View {
         sweepAngle = 165;
         paint = new Paint();
 
-
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(10);
         paint.setAntiAlias(true);
@@ -75,9 +74,7 @@ public class CloudSunView extends View {
         X = screenW/2;
         Y = (screenH/2);
 
-        // center point for Sun
-        XSun = X + 70;
-        YSun = Y - 100;
+
 
     }
 
@@ -87,50 +84,17 @@ public class CloudSunView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        paint.setStrokeWidth((float) (0.02083 * screenW));
+
         // initializing paths
         path = new Path();
         path1 = new Path();
         path2 = new Path();
 
-        //incrementing counter for rotation
-        count = count+0.5;
-
-        //comparison to check 360 degrees rotation
-        int retval = Double.compare(count, 360.00);
-        if(retval > 0) {
-
-        }
-        else if(retval < 0) {
-
-        }
-        else {
-            //resetting counter on completion of a rotation
-            count = 0;
-        }
-
-        // drawing center circle
-        path.addCircle(XSun,YSun,30, Path.Direction.CW);
-
-        // drawing arms of sun
-        for(int i=0;i<360;i+=45){
-            path1.moveTo(XSun,YSun);
-            float X1 = (float)(50 * Math.cos(Math.toRadians(i+count)) + XSun); //arm pointX at radius 50 with incrementing angle from center of sun
-            float Y1 = (float)(50 * Math.sin(Math.toRadians(i+count))+YSun);//arm pointY at radius 50 with incrementing angle from center of sun
-            float X2 = (float)(65 * Math.cos(Math.toRadians(i+count))+XSun);//arm pointX at radius 65 with incrementing angle from center of sun
-            float Y2 = (float)(65 * Math.sin(Math.toRadians(i+count))+YSun);//arm pointY at radius 65 with incrementing angle from center of sun
-            path1.moveTo(X1,Y1); // draw arms of sun
-            path1.lineTo(X2,Y2);
-
-        }
-
-        // drawing cloud
-
         //different radius values for the cloud coordinates
-//        int r1 = (int)(0.1875 * screenW);
-//        int r2 = (int)(0.1041667 * screenW);
-        int r1 = 90;
-        int r2 = 50;
-        double offset = 0.111;
+        int r1 = (int)(0.1875 * screenW);
+        int r2 = (int)(0.1041667 * screenW);
+        double offset = 0.00023125 * screenW;
 
         // cloud coordinates from the center of the screen
         float X1 = (float)(r1 * Math.cos(Math.toRadians(0+(0.222*count))) + X); //x value of coordinate 1 at radius r1 from center of Screen and angle incremented with counter
@@ -145,8 +109,8 @@ public class CloudSunView extends View {
         float P4Y = ((float)(r1 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));//y value of coordinate 5 at radius r1 from center of Screen and angle incremented with counter
 
 
-
         path2.moveTo(X1,Y1);
+
         // getting points in between coordinates for drawing arc between them
         PointF P1c1 = calculateTriangle(X1, Y1, P1X, P1Y, true);
         PointF P1c2 = calculateTriangle(X1, Y1, P1X, P1Y, false);
@@ -159,6 +123,39 @@ public class CloudSunView extends View {
         PointF P5c1 = calculateTriangle(P4X, P4Y, X1, Y1, true);
         PointF P5c2 = calculateTriangle(P4X, P4Y, X1,Y1, false);
 
+        if(XSun==0) {
+            // center point for Sun
+            XSun = P5c1.x;
+            YSun = P5c1.y + (int)(0.042 * screenW);
+        }
+
+        //incrementing counter for rotation
+        count = count+0.5;
+
+        //comparison to check 360 degrees rotation
+        int retval = Double.compare(count, 360.00);
+
+        if(retval == 0) {
+            //resetting counter on completion of a rotation
+            count = 0;
+        }
+
+        // drawing center circle
+        path.addCircle(XSun,YSun, (int)(0.083 * screenW), Path.Direction.CW);
+
+        // drawing arms of sun
+        for(int i=0;i<360;i+=45){
+            path1.moveTo(XSun,YSun);
+            float x1 = (float)((int)(0.1146 * screenW) * Math.cos(Math.toRadians(i+count/4))+XSun); //arm pointX at radius 50 with incrementing angle from center of sun
+            float y1 = (float)((int)(0.1146 * screenW) * Math.sin(Math.toRadians(i+count/4))+YSun);//arm pointY at radius 50 with incrementing angle from center of sun
+            float X2 = (float)((int)(0.1563 * screenW) * Math.cos(Math.toRadians(i+count/4))+XSun);//arm pointX at radius 65 with incrementing angle from center of sun
+            float Y2 = (float)((int)(0.1563 * screenW) * Math.sin(Math.toRadians(i+count/4))+YSun);//arm pointY at radius 65 with incrementing angle from center of sun
+            path1.moveTo(x1,y1); // draw arms of sun
+            path1.lineTo(X2,Y2);
+
+        }
+
+        // drawing cloud
         // drawing arcs between coordinates
         path2.moveTo(X1,Y1);
         path2.cubicTo(P1c1.x,P1c1.y,P1c2.x,P1c2.y,P1X,P1Y);
@@ -169,21 +166,16 @@ public class CloudSunView extends View {
 
 
         // drawing cloud with fill
-        canvas.drawColor(Color.WHITE);
         canvas.drawPath(path, paint);
         canvas.drawPath(path1, paint);
 
         paint.setColor(Color.WHITE);
-        paint.setStrokeWidth(1);
         paint.setStyle(Paint.Style.FILL);
-
         canvas.drawPath(path2, paint);
 
         // drawing cloud with stroke
         paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
-
         canvas.drawPath(path2, paint);
 
 
@@ -195,21 +187,18 @@ public class CloudSunView extends View {
     private PointF calculateTriangle(float x1, float y1, float x2,
                                      float y2, boolean left) {
         PointF result = new PointF(0,0);
-        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
-
-        // calculating angle and the distance between center and the two points
-        float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
-        float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
+        float dangle;
+        float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy);
 
         if (left) {
-            //point from center to the left
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /3f));
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
         } else {
-            //point from center to the right
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /1.5f));
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }

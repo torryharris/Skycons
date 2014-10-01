@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,25 +14,20 @@ import android.view.View;
  */
 public class CloudFogView extends View {
 
-    private static Paint paintCloud, paintFog;
+    Paint paintCloud, paintFog;
     Path npth1,npth,secpath1,secpath2;
-    static int midPt = 49;
     boolean expanding = false;
     boolean moving = true;
-    boolean secMove = false;
 
-    static float ctr = 0;
-    static int ctr2 = 99;
-    static float i,j;
+    float ctr = 0;
+    float i,j;
     private int screenW, screenH;
-    PathPoints[] ppts,ppts2;
     Boolean check;
-    private float X, Y, L1=0, H1=0, L2=0, H2=0;
+    private float X, Y;
     private Path pathCloud, path1, path2;
     private double count;
-    boolean move = true, compress = false, expand = false;
-    float m=0;
-    float backupL11, backupL12, backupL21, backupL22;
+    boolean compress = false;
+    float line1Y = 0, line2Y = 0,lineStartX, lineEndX;
 
     public CloudFogView(Context context) {
         super(context);
@@ -63,10 +57,8 @@ public class CloudFogView extends View {
         paintCloud = new Paint();
         paintFog = new Paint();
 
-
         //Setting paint for cloud
         paintCloud.setColor(Color.BLACK);
-        paintCloud.setStrokeWidth(10);
         paintCloud.setAntiAlias(true);
         paintCloud.setStrokeCap(Paint.Cap.ROUND);
         paintCloud.setStrokeJoin(Paint.Join.ROUND);
@@ -75,7 +67,6 @@ public class CloudFogView extends View {
 
         //Setting paint for fog
         paintFog.setColor(Color.BLACK);
-        paintFog.setStrokeWidth(10);
         paintFog.setAntiAlias(true);
         paintFog.setStrokeCap(Paint.Cap.ROUND);
         paintFog.setStrokeJoin(Paint.Join.ROUND);
@@ -95,8 +86,6 @@ public class CloudFogView extends View {
         X = screenW/2;
         Y = (screenH/2);
 
-
-
         pathCloud.moveTo(X, Y);
 
     }
@@ -106,6 +95,9 @@ public class CloudFogView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        paintCloud.setStrokeWidth((float)(0.02083*screenW));
+        paintFog.setStrokeWidth((float)(0.02083*screenW));
+
         pathCloud = new Path();
         path1 = new Path();
         path2 = new Path();
@@ -114,26 +106,29 @@ public class CloudFogView extends View {
 
         int retval = Double.compare(count, 360.00);
 
-        if(retval > 0) {
-
-        } else if(retval < 0) {
-
-        } else {
+        if(retval == 0) {
             count = 0;
         }
 
-        float X1 = (float)(90 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
-        float Y1 = ((float)(50 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
-        float P1X = (float)(90 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
-        float P1Y = ((float)(50 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
-        float P2X = (float)(90 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
-        float P2Y = ((float)((50+(0.111*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
-        float P3X = (float)(90 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
-        float P3Y = ((float)(90 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
-        float P4X =(float)(90 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
-        float P4Y = ((float)(90 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
+        //different radius values for the cloud coordinates
+        int r1 = (int)(0.1875 * screenW);
+        int r2 = (int)(0.1041667 * screenW);
+        double offset = 0.00023125 * screenW;
+
+        // cloud coordinates from the center of the screen
+        float X1 = (float)(r1 * Math.cos(Math.toRadians(0+(0.222*count))) + X); //x value of coordinate 1 at radius r1 from center of Screen and angle incremented with counter
+        float Y1 = ((float)(r2 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));//y value of coordinate 1 at radius r2 from center of Screen and angle incremented with counter
+        float P1X = (float)(r1 * Math.cos(Math.toRadians(80+(0.111*count))) + X);//x value of coordinate 2 at radius r1 from center of Screen and angle incremented with counter
+        float P1Y = ((float)(r2 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));//y value of coordinate 2 at radius r2 from center of Screen and angle incremented with counter
+        float P2X = (float)(r1 * Math.cos(Math.toRadians(120+(0.222*count))) + X);//x value of coordinate 3 at radius r1 from center of Screen and angle incremented with counter
+        float P2Y = ((float)((r2+(offset*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));//y value of coordinate 3 at varying radius from center of Screen and angle incremented with counter
+        float P3X = (float)(r1 * Math.cos(Math.toRadians(200+(0.222*count))) + X);//x value of coordinate 4 at radius r1 from center of Screen and angle incremented with counter
+        float P3Y = ((float)(r1 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));//y value of coordinate 4 at radius r1 from center of Screen and angle incremented with counter
+        float P4X =(float)(r1 * Math.cos(Math.toRadians(280+(0.222*count))) + X);//x value of coordinate 5 at radius r1 from center of Screen and angle incremented with counter
+        float P4Y = ((float)(r1 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));//y value of coordinate 5 at radius r1 from center of Screen and angle incremented with counter
 
         pathCloud.moveTo(X1,Y1);
+
         PointF P1c1 = calculateTriangle(X1, Y1, P1X, P1Y, true);
         PointF P1c2 = calculateTriangle(X1, Y1, P1X, P1Y, false);
         PointF P2c1 = calculateTriangle(P1X, P1Y, P2X, P2Y, true);
@@ -154,23 +149,19 @@ public class CloudFogView extends View {
 
         canvas.drawPath(pathCloud, paintCloud);
 
-
         path1 = new Path();
         path2 = new Path();
 
+        if(line1Y == 0) {
+            line1Y = P1c2.y + (float)(0.1042 * screenW);   //Calculating Y coordinate for foglines.
+            line2Y = P1c2.y + (float)(0.15625 * screenW);
 
-        float line1Y = (float) (Y+ Y*70.0/100.0);   //Calculating Y coordinate for foglines.
-        float line2Y = (float) (Y+Y*85.0/100.0);
-
-        float lineStartX = (float)(X-X*50.0/100.0);  //Calculating X coordinate for foglines.
-        float lineEndX = (float) (X+X*50.0/100);
-
+            lineStartX = (float)(X-X*50.0/100.0);  //Calculating X coordinate for foglines.
+            lineEndX = (float) (X+X*50.0/100);
+        }
 
 
         float temp = (lineEndX-lineStartX)*(float)95.0/(float)100; //Calculating fogline length
-
-
-
 
         path1.moveTo(lineStartX,line1Y);
         path1.lineTo(lineStartX+temp,line1Y);
@@ -180,8 +171,7 @@ public class CloudFogView extends View {
 
         //Code to move foglines from one point to another
 
-        if(moving&&(lineStartX+temp+ctr)<=lineEndX)
-        {
+        if(moving&&(lineStartX+temp+ctr)<=lineEndX) {
 
             path1.reset();
             path1.moveTo(lineStartX+ctr+i,line1Y);
@@ -191,9 +181,8 @@ public class CloudFogView extends View {
             path2.moveTo(lineEndX-ctr+i+i,line2Y);
             path2.lineTo(lineEndX-ctr-temp+i-i,line2Y);
 
-            ctr = ctr+(float)0.1;
-            if((lineStartX+temp+ctr)>lineEndX)
-            {
+            ctr = ctr+(float)0.5;
+            if((lineStartX+temp+ctr)>lineEndX) {
                 expanding = true;
                 moving = false;
             }
@@ -202,11 +191,9 @@ public class CloudFogView extends View {
 
         //Code to expand foglines
 
-        if(expanding)
-        {
+        if(expanding) {
 
-            if(i<=5f)
-            {
+            if(i<=5f) {
                 i=i+0.1f;
                 path1.reset();
                 path1.moveTo(lineStartX+ctr+temp+i,line1Y);
@@ -217,9 +204,7 @@ public class CloudFogView extends View {
                 path2.lineTo(lineEndX-ctr-i,line2Y);
 
 
-            }
-            else
-            {
+            } else {
                 //Moving the fogline to the other end after expanding
 
                 path1.reset();
@@ -230,7 +215,7 @@ public class CloudFogView extends View {
                 path2.moveTo(lineEndX-ctr-temp+i,line2Y);
                 path2.lineTo(lineEndX-ctr-i,line2Y);
 
-                ctr = ctr - 0.1f;
+                ctr = ctr - 0.2f;
                 if (lineStartX + ctr <= lineStartX) {
                     expanding = false;
                     compress = true;
@@ -241,9 +226,7 @@ public class CloudFogView extends View {
 
 
         //Compressing the fogline to normal length
-        if(compress)
-        {
-
+        if(compress) {
 
             if(i>0.0f) {
                 i = i - 0.1f;
@@ -255,20 +238,12 @@ public class CloudFogView extends View {
                 path2.moveTo(lineEndX-ctr-i,line2Y);
                 path2.lineTo(lineEndX-ctr-temp+i,line2Y);
 
-            }
-            else {
+            } else {
                 compress = false;
                 moving = true;
             }
 
         }
-
-
-
-
-
-
-
 
 
         canvas.drawPath(path1,paintFog);
@@ -284,14 +259,16 @@ public class CloudFogView extends View {
         PointF result = new PointF(0,0);
         float dy = y2 - y1;
         float dx = x2 - x1;
-        float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
+        float dangle;
         float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy);
 
         if (left) {
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /3f));
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
         } else {
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /1.5f));
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
@@ -300,43 +277,5 @@ public class CloudFogView extends View {
 
     }
 
-    private PathPoints[] getPoints(Path path) {
-        PathPoints[] pointArray = new PathPoints[100];
-        PathMeasure pm = new PathMeasure(path, false);
-        float length = pm.getLength();
-        float distance = 0f;
-        float speed = length / 100;
-        int counter = 0;
-        float[] aCoordinates = new float[2];
-
-        while ((distance < length) && (counter < 100)) {
-            // get point from the pathMoon
-            pm.getPosTan(distance, aCoordinates, null);
-            pointArray[counter] = new PathPoints(aCoordinates[0], aCoordinates[1]);
-            counter++;
-            distance = distance + speed;
-        }
-
-        return pointArray;
-    }
-
-    class PathPoints {
-
-        float x, y;
-
-        public PathPoints(float x, float y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public float getX() {
-            return x;
-        }
-
-        public float getY() {
-            return y;
-        }
-
-    }
 
 }

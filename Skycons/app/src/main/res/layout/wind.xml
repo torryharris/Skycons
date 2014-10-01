@@ -6,10 +6,11 @@
     tools:context=".MainActivity">
 
     <com.thbs.skycons.views.WindView
-        android:id="@+id/wind1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
+
 
 </RelativeLayout>

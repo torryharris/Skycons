@@ -13,8 +13,17 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="View All"
+            android:id="@+id/all"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Sun"
             android:id="@+id/sun"
+            android:layout_below="@+id/all"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"/>
@@ -109,6 +118,17 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cloud_fog"
+            android:text="Thunder"
+            android:id="@+id/thunder"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp" />
+
 
     </RelativeLayout>
 </ScrollView>

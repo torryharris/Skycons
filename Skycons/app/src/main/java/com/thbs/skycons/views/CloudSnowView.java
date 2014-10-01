@@ -18,18 +18,18 @@ public class CloudSnowView extends View {
     private Paint paintCloud, paintSnow;
 
     PathPoints[] pathPoints11, pathPoints12, pathPoints21, pathPoints22,
-                 pointsCircle11, pointsCircle12, pointsCircle21, pointsCircle22;
+            pointsCircle11, pointsCircle12, pointsCircle21, pointsCircle22;
 
     private int screenW, screenH;
     private float X, Y;
 
     private Path cloudPath, path11, path12, path13,
-                 path21, path22, path23, //visible drawn paths
+            path21, path22, path23, //visible drawn paths
 
-                 cubicPath11, cubicPath12,
-                 cubicPath21, cubicPath22, //Invisible paths for drop movement
+    cubicPath11, cubicPath12,
+            cubicPath21, cubicPath22, //Invisible paths for drop movement
 
-                 pathCircle1, pathCircle2; //Invisible paths for rotate operation
+    pathCircle1, pathCircle2; //Invisible paths for rotate operation
 
     int m=0, n=0, x1=0, y1=0, x2=0, y2=0;
 
@@ -43,15 +43,6 @@ public class CloudSnowView extends View {
     public CloudSnowView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        String num1[] = attrs.getAttributeValue(0).split("\\.");
-        String num2[] = attrs.getAttributeValue(1).split("\\.");
-
-        screenW = Integer.valueOf(num1[0]);
-        screenH = Integer.valueOf(num2[0]);
-
-        X = screenW/2;
-        Y = (screenH/2);
-
         init();
     }
 
@@ -62,7 +53,6 @@ public class CloudSnowView extends View {
         paintSnow = new Paint();
 
         paintCloud.setColor(Color.BLACK);
-        paintCloud.setStrokeWidth(10);
         paintCloud.setAntiAlias(true);
         paintCloud.setStrokeCap(Paint.Cap.ROUND);
         paintCloud.setStrokeJoin(Paint.Join.ROUND);
@@ -70,7 +60,6 @@ public class CloudSnowView extends View {
         paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
         paintSnow.setColor(Color.BLACK);
-        paintSnow.setStrokeWidth((int) (screenW / 2 * 0.035));
         paintSnow.setAntiAlias(true);
         paintSnow.setStrokeCap(Paint.Cap.ROUND);
         paintSnow.setStyle(Paint.Style.STROKE);
@@ -79,12 +68,28 @@ public class CloudSnowView extends View {
         pathCircle1 = new Path();
     }
 
+    // Initial declaration of the coordinates.
+    @Override
+    public void onSizeChanged (int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        screenW = w;
+        screenH = h;
+
+        X = screenW/2;
+        Y = (screenH/2);
+
+    }
+
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         cloudPath = new Path();
         count = count+0.5;
+
+        paintCloud.setStrokeWidth((float)(0.02083*screenW));
+        paintSnow.setStrokeWidth((float) (0.01*screenW));
 
         int retval = Double.compare(count, 360.00);
 
@@ -98,18 +103,26 @@ public class CloudSnowView extends View {
             count = 0;
         }
 
-        float X1 = (float)(90 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
-        float Y1 = ((float)(50 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
-        float P1X = (float)(90 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
-        float P1Y = ((float)(50 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
-        float P2X = (float)(90 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
-        float P2Y = ((float)((50+(0.111*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
-        float P3X = (float)(90 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
-        float P3Y = ((float)(90 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
-        float P4X =(float)(90 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
-        float P4Y = ((float)(90 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
+        //different radius values for the cloud coordinates
+        int r1 = (int)(0.1875 * screenW);
+        int r2 = (int)(0.1041667 * screenW);
+        double offset = 0.00023125 * screenW;
+
+        // cloud coordinates from the center of the screen
+        float X1 = (float)(r1 * Math.cos(Math.toRadians(0+(0.222*count))) + X); //x value of coordinate 1 at radius r1 from center of Screen and angle incremented with counter
+        float Y1 = ((float)(r2 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));//y value of coordinate 1 at radius r2 from center of Screen and angle incremented with counter
+        float P1X = (float)(r1 * Math.cos(Math.toRadians(80+(0.111*count))) + X);//x value of coordinate 2 at radius r1 from center of Screen and angle incremented with counter
+        float P1Y = ((float)(r2 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));//y value of coordinate 2 at radius r2 from center of Screen and angle incremented with counter
+        float P2X = (float)(r1 * Math.cos(Math.toRadians(120+(0.222*count))) + X);//x value of coordinate 3 at radius r1 from center of Screen and angle incremented with counter
+        float P2Y = ((float)((r2+(offset*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));//y value of coordinate 3 at varying radius from center of Screen and angle incremented with counter
+        float P3X = (float)(r1 * Math.cos(Math.toRadians(200+(0.222*count))) + X);//x value of coordinate 4 at radius r1 from center of Screen and angle incremented with counter
+        float P3Y = ((float)(r1 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));//y value of coordinate 4 at radius r1 from center of Screen and angle incremented with counter
+        float P4X =(float)(r1 * Math.cos(Math.toRadians(280+(0.222*count))) + X);//x value of coordinate 5 at radius r1 from center of Screen and angle incremented with counter
+        float P4Y = ((float)(r1 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));//y value of coordinate 5 at radius r1 from center of Screen and angle incremented with counter
+
 
         cloudPath.moveTo(X1,Y1);
+
         PointF P1c1 = calculateTriangle(X1, Y1, P1X, P1Y, true, count);
         PointF P1c2 = calculateTriangle(X1, Y1, P1X, P1Y, false, count);
         PointF P2c1 = calculateTriangle(P1X, P1Y, P2X, P2Y, true, count);
@@ -185,7 +198,7 @@ public class CloudSnowView extends View {
 
             pathCircle1 = new Path();
             pathCircle1.addCircle(pathPoints11[m].getX(), pathPoints11[m].getY(),
-                    screenW*0.04f, Path.Direction.CW);
+                    screenW*0.03f, Path.Direction.CW);
             pointsCircle11 = getPoints(pathCircle1);
 
             //1st drop
@@ -229,7 +242,7 @@ public class CloudSnowView extends View {
 
                 pathCircle2 = new Path();
                 pathCircle2.addCircle(pathPoints12[n].getX(), pathPoints12[n].getY(),
-                        screenW*0.04f, Path.Direction.CW);
+                        screenW*0.03f, Path.Direction.CW);
                 pointsCircle12 = getPoints(pathCircle2);
 
                 //2nd drop
@@ -298,7 +311,7 @@ public class CloudSnowView extends View {
 
             pathCircle2 = new Path();
             pathCircle2.addCircle(pathPoints12[n].getX(), pathPoints12[n].getY(),
-                    screenW*0.04f, Path.Direction.CW);
+                    screenW*0.03f, Path.Direction.CW);
             pointsCircle12 = getPoints(pathCircle2);
 
             //2nd drop
@@ -364,7 +377,7 @@ public class CloudSnowView extends View {
 
             pathCircle1 = new Path();
             pathCircle1.addCircle(pathPoints21[m].getX(), pathPoints21[m].getY(),
-                    screenW*0.04f, Path.Direction.CW);
+                    screenW*0.03f, Path.Direction.CW);
             pointsCircle21 = getPoints(pathCircle1);
 
             //1st drop
@@ -409,7 +422,7 @@ public class CloudSnowView extends View {
 
                 pathCircle2 = new Path();
                 pathCircle2.addCircle(pathPoints22[n].getX(), pathPoints22[n].getY(),
-                        screenW*0.04f, Path.Direction.CW);
+                        screenW*0.03f, Path.Direction.CW);
                 pointsCircle22 = getPoints(pathCircle2);
 
                 //2nd drop
@@ -474,7 +487,7 @@ public class CloudSnowView extends View {
 
             pathCircle2 = new Path();
             pathCircle2.addCircle(pathPoints22[n].getX(), pathPoints22[n].getY(),
-                    screenW*0.04f, Path.Direction.CW);
+                    screenW*0.03f, Path.Direction.CW);
             pointsCircle22 = getPoints(pathCircle2);
 
             //2nd drop
@@ -545,24 +558,24 @@ public class CloudSnowView extends View {
                                      boolean left, double count) {
 
         PointF result = new PointF(0,0);
-        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
-        // calculating angle and the distance between center and the two points
-        float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
-        float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
+        float dangle;
+        float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy);
 
-        if (left){
-            //point from center to the left
+        if (left) {
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /3f));
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
-        }else{
-            //point from center to the right
+        } else {
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /1.5f));
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
+
         return result;
+
     }
 
     // Used to fetch points from given path.
@@ -609,5 +622,3 @@ public class CloudSnowView extends View {
     }
 
 }
-
-

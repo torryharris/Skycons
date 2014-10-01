@@ -20,7 +20,6 @@ public class CloudView extends View {
     public CloudView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-
         init();
     }
 
@@ -39,7 +38,6 @@ public class CloudView extends View {
         screenH = h; // getting Screen Height
 
         // center point  of Screen
-
         X = screenW/2;
         Y = (screenH/2);
 
@@ -57,7 +55,6 @@ public class CloudView extends View {
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setShadowLayer(0, 0, 0, Color.BLACK);
-
 
         path = new Path();
 
@@ -131,21 +128,18 @@ public class CloudView extends View {
                                      float y2, boolean left) {
 
         PointF result = new PointF(0,0);
-        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
-
-        // calculating angle and the distance between center and the two points
-        float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
-        float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
+        float dangle;
+        float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy);
 
         if (left) {
-            //point from center to the left
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /3f));
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
         } else {
-            //point from center to the right
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /1.5f));
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }

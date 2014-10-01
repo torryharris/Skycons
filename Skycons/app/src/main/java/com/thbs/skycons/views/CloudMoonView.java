@@ -38,7 +38,6 @@ public class CloudMoonView extends View {
     private void init() {
         //Paint for drawing cloud
         paintCloud = new Paint();
-        paintCloud.setStrokeWidth(10);
         paintCloud.setStrokeCap(Paint.Cap.ROUND);
         paintCloud.setStrokeJoin(Paint.Join.ROUND);
         paintCloud.setStyle(Paint.Style.STROKE);
@@ -49,7 +48,6 @@ public class CloudMoonView extends View {
         paintMoon = new Paint();
         paintMoon.setColor(Color.BLACK);
         paintMoon.setAntiAlias(true);
-        paintMoon.setStrokeWidth(10);
         paintMoon.setStrokeCap(Paint.Cap.ROUND);
         paintMoon.setStyle(Paint.Style.STROKE);
 
@@ -64,13 +62,9 @@ public class CloudMoonView extends View {
 
         screenW = w;
         screenH = h;
+
         X = screenW/2;
         Y = (screenH/2);
-
-        X2 = X + 70;
-        Y2 = Y - 100;
-
-        radius = 50;
 
     }
 
@@ -78,95 +72,36 @@ public class CloudMoonView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // Moon shape
-        pathMoon = new Path();
-        RectF rectF1 = new RectF();
-
-        if(!clockwise) {
-
-            // First arc of the Moon.
-            rectF1.set(X2-radius, Y2-radius, X2+radius, Y2+radius);
-            pathMoon.addArc(rectF1, 65 - (m / 2), 275);
-
-            pathPoints = getPoints(pathMoon);
-
-            a = pathPoints[999].getX();
-            b = pathPoints[999].getY();
-            c = pathPoints[0].getX();
-            d = pathPoints[0].getY();
-
-            PointF P1c1 = cubic2Points(a, b, c, d, true);
-            PointF P1c2 = cubic2Points(a, b, c, d, false);
-
-            // Second arc of the Moon in opposite face.
-            pathMoon.moveTo(a, b);
-            pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
-
-            canvas.drawPath(pathMoon, paintMoon);
-
-            m = m + 0.5f;
-
-            if(m == 100) {
-                m = 0;
-                clockwise = !clockwise;
-            }
-
-        } else {
-
-            // First arc of the Moon.
-            rectF1.set(X2-radius, Y2-radius, X2+radius, Y2+radius);
-            pathMoon.addArc(rectF1, 15 + (m / 2), 275);
-
-            pathPoints = getPoints(pathMoon);
-
-            a = pathPoints[999].getX();
-            b = pathPoints[999].getY();
-            c = pathPoints[0].getX();
-            d = pathPoints[0].getY();
-
-            PointF P1c1 = cubic2Points(a, b, c, d, true);
-            PointF P1c2 = cubic2Points(a, b, c, d, false);
-
-            // Second arc of the Moon in opposite face.
-            pathMoon.moveTo(a, b);
-            pathMoon.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, c, d);
-
-            canvas.drawPath(pathMoon, paintMoon);
-
-            m = m + 0.5f;
-
-            if(m == 100) {
-                m = 0;
-                clockwise = !clockwise;
-            }
-
-        }
+        paintCloud.setStrokeWidth((float)(0.02083*screenW));
+        paintMoon.setStrokeWidth((float)(0.02083*screenW));
 
         // Cloud shape
         pathCloud = new Path();
         count = count+0.5;
         int retval = Double.compare(count, 360.00);
 
-        if(retval > 0) {
-
-        } else if(retval < 0) {
-
-        } else {
+        if(retval == 0) {
             count = 0;
         }
 
-        float X1 = (float)(90 * Math.cos(Math.toRadians(0+(0.222*count))) + X);
-        float Y1 = ((float)(50 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));
-        float P1X = (float)(90 * Math.cos(Math.toRadians(80+(0.111*count))) + X);
-        float P1Y = ((float)(50 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));
-        float P2X = (float)(90 * Math.cos(Math.toRadians(120+(0.222*count))) + X);
-        float P2Y = ((float)((50+(0.111*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));
-        float P3X = (float)(90 * Math.cos(Math.toRadians(200+(0.222*count))) + X);
-        float P3Y = ((float)(90 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));
-        float P4X =(float)(90 * Math.cos(Math.toRadians(280+(0.222*count))) + X);
-        float P4Y = ((float)(90 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));
+        //different radius values for the cloud coordinates
+        int r1 = (int)(0.1875 * screenW);
+        int r2 = (int)(0.1041667 * screenW);
+        double offset = 0.00023125 * screenW;
 
-        pathCloud.moveTo(X1, Y1);
+        // cloud coordinates from the center of the screen
+        float X1 = (float)(r1 * Math.cos(Math.toRadians(0+(0.222*count))) + X); //x value of coordinate 1 at radius r1 from center of Screen and angle incremented with counter
+        float Y1 = ((float)(r2 * Math.sin(Math.toRadians(0+(0.222*count))) + Y));//y value of coordinate 1 at radius r2 from center of Screen and angle incremented with counter
+        float P1X = (float)(r1 * Math.cos(Math.toRadians(80+(0.111*count))) + X);//x value of coordinate 2 at radius r1 from center of Screen and angle incremented with counter
+        float P1Y = ((float)(r2 * Math.sin(Math.toRadians(80+(0.111*count))) + Y));//y value of coordinate 2 at radius r2 from center of Screen and angle incremented with counter
+        float P2X = (float)(r1 * Math.cos(Math.toRadians(120+(0.222*count))) + X);//x value of coordinate 3 at radius r1 from center of Screen and angle incremented with counter
+        float P2Y = ((float)((r2+(offset*count)) * Math.sin(Math.toRadians(120+(0.222*count))) + Y));//y value of coordinate 3 at varying radius from center of Screen and angle incremented with counter
+        float P3X = (float)(r1 * Math.cos(Math.toRadians(200+(0.222*count))) + X);//x value of coordinate 4 at radius r1 from center of Screen and angle incremented with counter
+        float P3Y = ((float)(r1 * Math.sin(Math.toRadians(200+(0.222*count))) + Y));//y value of coordinate 4 at radius r1 from center of Screen and angle incremented with counter
+        float P4X =(float)(r1 * Math.cos(Math.toRadians(280+(0.222*count))) + X);//x value of coordinate 5 at radius r1 from center of Screen and angle incremented with counter
+        float P4Y = ((float)(r1 * Math.sin(Math.toRadians(280+(0.222*count))) + Y));//y value of coordinate 5 at radius r1 from center of Screen and angle incremented with counter
+
+        pathCloud.moveTo(X1,Y1);
 
         PointF P1c1 = calculateTriangle(X1, Y1, P1X, P1Y, true, count);
         PointF P1c2 = calculateTriangle(X1, Y1, P1X, P1Y, false, count);
@@ -179,6 +114,78 @@ public class CloudMoonView extends View {
         PointF P5c1 = calculateTriangle(P4X, P4Y, X1, Y1, true, count);
         PointF P5c2 = calculateTriangle(P4X, P4Y, X1,Y1, false, count);
 
+        // Moon shape
+        pathMoon = new Path();
+        RectF rectF1 = new RectF();
+
+        if(X2 == 0) {
+            X2 = P5c1.x;
+            Y2 = P5c1.y + (int)(0.042 * screenW);
+
+            radius = (int)(0.1042 * screenW);
+        }
+
+        if(!clockwise) { //Anticlockwise rotation
+
+            // First arc of the Moon.
+            rectF1.set(X2-radius, Y2-radius, X2+radius, Y2+radius);
+            pathMoon.addArc(rectF1, 65 - (m / 2), 275);
+
+            pathPoints = getPoints(pathMoon);
+
+            a = pathPoints[999].getX();
+            b = pathPoints[999].getY();
+            c = pathPoints[0].getX();
+            d = pathPoints[0].getY();
+
+            PointF p1 = cubic2Points(a, b, c, d, true);
+            PointF p2 = cubic2Points(a, b, c, d, false);
+
+            // Second arc of the Moon in opposite face.
+            pathMoon.moveTo(a, b);
+            pathMoon.cubicTo(p1.x, p1.y, p2.x, p2.y, c, d);
+
+            canvas.drawPath(pathMoon, paintMoon);
+
+            m = m + 0.5f;
+
+            if(m == 100) {
+                m = 0;
+                clockwise = !clockwise;
+            }
+
+        } else { //Clockwise rotation
+
+            // First arc of the Moon.
+            rectF1.set(X2-radius, Y2-radius, X2+radius, Y2+radius);
+            pathMoon.addArc(rectF1, 15 + (m / 2), 275);
+
+            pathPoints = getPoints(pathMoon);
+
+            a = pathPoints[999].getX();
+            b = pathPoints[999].getY();
+            c = pathPoints[0].getX();
+            d = pathPoints[0].getY();
+
+            PointF p1 = cubic2Points(a, b, c, d, true);
+            PointF p2 = cubic2Points(a, b, c, d, false);
+
+            // Second arc of the Moon in opposite face.
+            pathMoon.moveTo(a, b);
+            pathMoon.cubicTo(p1.x, p1.y, p2.x, p2.y, c, d);
+
+            canvas.drawPath(pathMoon, paintMoon);
+
+            m = m + 0.5f;
+
+            if(m == 100) {
+                m = 0;
+                clockwise = !clockwise;
+            }
+
+        }
+
+        // Draw cloud
         pathCloud.moveTo(X1, Y1);
         pathCloud.cubicTo(P1c1.x, P1c1.y, P1c2.x, P1c2.y, P1X, P1Y);
         pathCloud.cubicTo(P2c1.x, P2c1.y, P2c2.x, P2c2.y, P2X, P2Y);
@@ -197,30 +204,28 @@ public class CloudMoonView extends View {
         canvas.drawPath(pathCloud, paintCloud);
 
         invalidate();
-
     }
 
     private PointF calculateTriangle(float x1, float y1, float x2,
                                      float y2, boolean left, double count) {
 
         PointF result = new PointF(0,0);
-        // finding center point between the coordinates
         float dy = y2 - y1;
         float dx = x2 - x1;
-        // calculating angle and the distance between center and the two points
-        float dangle = (float) ((Math.atan2(dy, dx) - Math.PI /2f));
-        float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy); //square
+        float dangle;
+        float sideDist = (float)0.5 * (float) Math.sqrt(dx * dx + dy * dy);
 
-        if (left){
-            //point from center to the left
+        if (left) {
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /3f));
             result.x = (int) (Math.cos(dangle) * sideDist + x1);
             result.y = (int) (Math.sin(dangle) * sideDist + y1);
 
-        }else{
-            //point from center to the right
+        } else {
+            dangle = (float) ((Math.atan2(dy, dx) - Math.PI /1.5f));
             result.x = (int) (Math.cos(dangle) * sideDist + x2);
             result.y = (int) (Math.sin(dangle) * sideDist + y2);
         }
+
         return result;
     }
 

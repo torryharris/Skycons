@@ -7,6 +7,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -15,6 +16,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ViewAllActivity"
+            android:label="All Views" >
         </activity>
 
         <activity
@@ -35,18 +41,17 @@
         <activity
             android:name=".CloudRainActivity"
             android:label="Cloud+Rain" >
+
         </activity>
 
         <activity
             android:name=".CloudHvRainActivity"
             android:label="Cloud+Rain" >
-
         </activity>
 
         <activity
             android:name=".CloudSnowActivity"
             android:label="Cloud+Snow" >
-
         </activity>
 
         <activity
@@ -57,8 +62,6 @@
         <activity
             android:name=".MoonActivity"
             android:label="Moon" >
-
-
         </activity>
 
         <activity
@@ -69,11 +72,12 @@
         <activity
             android:name=".WindActivity"
             android:label="Wind" >
-
-
-
         </activity>
 
+        <activity
+            android:name=".ThunderActivity"
+            android:label="Thunder" >
+        </activity>
     </application>
 
 </manifest>

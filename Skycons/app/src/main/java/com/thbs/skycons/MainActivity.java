@@ -9,14 +9,15 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-    Button btnSun, btnCloudSun,btnCloud, btnCloudRain, btnCloudHvRain, btnCloudSnow,
-           btnCloudFog, btnMoon, btnCloudMoon, btnWind;
+    Button btnViewAll, btnSun, btnCloudSun,btnCloud, btnCloudRain, btnCloudHvRain, btnCloudSnow,
+           btnCloudFog, btnMoon, btnCloudMoon, btnWind, btnThunder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btnViewAll = (Button) findViewById(R.id.all);
         btnSun = (Button) findViewById(R.id.sun);
         btnCloudSun = (Button) findViewById(R.id.cloud_sun);
         btnCloud = (Button) findViewById(R.id.cloud);
@@ -27,6 +28,16 @@ public class MainActivity extends Activity {
         btnMoon = (Button) findViewById(R.id.moon);
         btnCloudMoon = (Button) findViewById(R.id.cloud_moon);
         btnWind = (Button) findViewById(R.id.wind);
+        btnThunder = (Button) findViewById(R.id.thunder);
+
+        btnViewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, ViewAllActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
 
         btnSun.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +124,15 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, WindActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+
+        btnThunder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, ThunderActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }

@@ -47,7 +47,7 @@ public class MoonView extends View {
         //Paint for drawing Moon
         paint = new Paint();
         paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(10);
+
         paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
@@ -60,10 +60,11 @@ public class MoonView extends View {
 
         screenW = w;
         screenH = h;
+
         X = screenW/2;
         Y = (screenH/2);
 
-        radius = 70;
+        radius = (int)(0.1458 * screenW);
 
     }
 
@@ -71,11 +72,14 @@ public class MoonView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        paint.setStrokeWidth((float) (0.02083 * screenW));
+
         path = new Path();
 
         RectF rectF1 = new RectF();
 
-        if(!clockwise) {
+        if(!clockwise) {//Anticlockwise rotation
+
             // First arc of the Moon.
             rectF1.set(X-radius, Y-radius, X+radius, Y+radius);
             path.addArc(rectF1, 65-(m/2), 275);
@@ -103,7 +107,8 @@ public class MoonView extends View {
                 clockwise = !clockwise;
             }
 
-        } else {
+        } else {//Clockwise rotation
+
             // First arc of the Moon.
             rectF1.set(X-radius, Y-radius, X+radius, Y+radius);
             path.addArc(rectF1, 15+(m/2), 275);

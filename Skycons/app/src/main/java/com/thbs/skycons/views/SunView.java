@@ -45,7 +45,7 @@ public class SunView extends View {
         count = 0;
         paint = new Paint();
         paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(10);
+
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStrokeJoin(Paint.Join.ROUND);
@@ -82,6 +82,8 @@ public class SunView extends View {
         path = new Path();
         path1 = new Path();
 
+        paint.setStrokeWidth((float) (0.02083 * screenW));
+
         //incrementing counter for rotation
         count = count+0.1;
 
@@ -94,15 +96,16 @@ public class SunView extends View {
         }
 
         // drawing center circle
-        path.addCircle(X,Y,30, Path.Direction.CW);
+        path.addCircle(X,Y, (int)(0.1042 * screenW), Path.Direction.CW);
 
+        // drawing arms of sun
         for(int i=0;i<360;i+=45){
             path1.moveTo(X,Y);
-            float X1 = (float)(50 * Math.cos(Math.toRadians(i+count)) + X);//arm pointX at radius 50 with incrementing angle from center of sun
-            float Y1 = (float)(50 * Math.sin(Math.toRadians(i+count))+Y);//arm pointY at radius 50 with incrementing angle from center of sun
-            float X2 = (float)(65 * Math.cos(Math.toRadians(i+count))+X);//arm pointX at radius 65 with incrementing angle from center of sun
-            float Y2 = (float)(65 * Math.sin(Math.toRadians(i+count))+Y);//arm pointY at radius 65 with incrementing angle from center of sun
-            path1.moveTo(X1,Y1);// drawing arms of sun
+            float x1 = (float)((int)(0.1458 * screenW) * Math.cos(Math.toRadians(i+count))+X); //arm pointX at radius 50 with incrementing angle from center of sun
+            float y1 = (float)((int)(0.1458 * screenW) * Math.sin(Math.toRadians(i+count))+Y);//arm pointY at radius 50 with incrementing angle from center of sun
+            float X2 = (float)((int)(0.1875 * screenW) * Math.cos(Math.toRadians(i+count))+X);//arm pointX at radius 65 with incrementing angle from center of sun
+            float Y2 = (float)((int)(0.1875 * screenW) * Math.sin(Math.toRadians(i+count))+Y);//arm pointY at radius 65 with incrementing angle from center of sun
+            path1.moveTo(x1,y1); // draw arms of sun
             path1.lineTo(X2,Y2);
 
         }
