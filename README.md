@@ -1,7 +1,9 @@
 Skycons for Android (Work-in-Progress)
 ======================================
 
-![alt text](https://github.com/torryharris/Skycons/blob/master/Skycons/skycons.gif "Skycons")
+<p align="center">
+  <img src="https://github.com/torryharris/Skycons/blob/master/Skycons/skycons.gif" alt="Skycons"/>
+</p>
 
 We set out to create a native weather app on Xamarin but we wanted to build something unique to differentiate ourselves amongst the plethora of weather apps avaialble out there. The [DarkSky](http://darkskyapp.com) app & [Forecast](http://forecast.io) did an excellent job with their [Skycons](http://darkskyapp.github.io/skycons/). 
 
