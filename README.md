@@ -5,6 +5,10 @@ We set out to create a native weather app on Xamarin but we wanted to build some
 
 We wanted to re-use the same icons for our app as well, however, we found that these animated icons don't exist natively on either platforms. This is currently a work-in-progress as the team is finetuning the animation & the performance itself. You can download the complete project 
 
+![alt text](https://github.com/torryharris/Skycons/blob/master/Skycons/skycons.gif "Skycons")
+
+
+
 License
 =======
 
