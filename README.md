@@ -1,5 +1,5 @@
-Skycons for Android (Work-in-Progress)
-======================================
+Skycons for Android
+===================
 
 <p align="center">
   <img src="https://github.com/torryharris/Skycons/blob/master/Skycons/skycons.gif" alt="Skycons"/>
