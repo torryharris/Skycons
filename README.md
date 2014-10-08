@@ -21,7 +21,7 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 - Wind
 - Thunder
 
-  ## How to use:
+## How to use:
  - Deployment target should be Api level 14 or above.
 
  - Import SkyconsLibrary as a library to your project.
@@ -29,21 +29,23 @@ We wanted to re-use the same icons for our app as well, however, we found that t
   
    ##Adding icons:
 
-    For eg: To add Cloud icon to the activity, add the CloudView xml.
-                       
-        <com.thbs.skycons.library.CloudView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            app:isStatic = "true"
-            app:strokeColor = "#000000"
-            app:bgColor = "#ffffff"/>
+    To add a skycon to the activity, add the following XML in your layout.
+                     
+           <com.thbs.skycons.library.<skycon>
+             android:layout_width="250dp"
+             android:layout_height="250dp"
+             android:layout_centerHorizontal="true"
+             android:layout_centerVertical="true"
+             app:isStatic = "true"
+             app:strokeColor = "#000000"
+             app:bgColor = "#ffffff"/>
+
+    where "skycon" represents the particular view/icon.
 
  -  For a better experience, keep 'layout_width' & 'layout_height' the same.
 
 
-   ##Customization
+ - Customization
     
     | Options | Value | Description |
     | :------: | :---: | :----------: |
