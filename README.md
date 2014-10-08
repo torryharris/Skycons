@@ -21,13 +21,13 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 - Wind
 - Thunder
 
-## How to use:
+## How to use
  - Deployment target should be Api level 14 or above.
 
  - Import SkyconsLibrary as a library to your project.
 
   
-   ##Adding icons:
+   ###Adding icons:
 
     To add a skycon to the activity, add the following XML in your layout.
                      
@@ -43,9 +43,9 @@ We wanted to re-use the same icons for our app as well, however, we found that t
     where "skycon" represents the particular view/icon.
 
  -  For a better experience, keep 'layout_width' & 'layout_height' the same.
+ 
+   ###Customization:
 
-
- - Customization
     
     | Options | Value | Description |
     | :------: | :---: | :----------: |
