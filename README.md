@@ -9,13 +9,25 @@ We set out to create a native weather app on Xamarin but we wanted to build some
 
 We wanted to re-use the same icons for our app as well, however, we found that these animated icons don't exist natively on either platforms. This is currently a work-in-progress as the team is finetuning the animation & the performance itself. You can download the complete project 
 
-##How to use:
-1. Deployment target should be Api level 14 or above.
+## Available Icons
+- Cloud
+- Clear Skies (Sunny)
+- Clear Night
+- Partly Cloudy (Day & Night)
+- Light Showers
+- Heavy Showers
+- Snow
+- Fog
+- Wind
+- Thunder
 
-2. Import SkyconsLibrary as a library to your project.
+  ## How to use:
+ - Deployment target should be Api level 14 or above.
+
+ - Import SkyconsLibrary as a library to your project.
 
   
-3. ##Adding icons:
+   ##Adding icons:
 
     For eg: To add Cloud icon to the activity, add the CloudView xml.
                        
@@ -28,33 +40,18 @@ We wanted to re-use the same icons for our app as well, however, we found that t
             app:strokeColor = "#000000"
             app:bgColor = "#ffffff"/>
 
-4. For a better experience, keep 'layout_width' & 'layout_height' the same.
+ -  For a better experience, keep 'layout_width' & 'layout_height' the same.
 
 
-5. ##Customization
+   ##Customization
     
-    - Basic customization can be done in the xml.
-    
-        
-        Static/Animating Icons:
-        
-                set "app:isStatic" to true, for static icons // PS. On touch, the icon animates once
-
-                set "app:isStatic" to false, for continuous animation.
-                
-              
-           
-           
-        Colour customization:
-        
-                app:strokeColor = "#000000";  // Edit this to change the brush color
-          
-                app:bgColor = "#ffffff";   // Edit this to change the background color
-        
-        
- 
-
-
+    | Options | Value | Description |
+    | :------: | :---: | :----------: |
+    | layout_width | 100dp (recommended min value) | Width of icon |
+    | layout_height | 100dp (recommended min value) | Height of the icon |
+    | isStatic | True / False | Boolean Value to enable on-touch animation |
+    | strokeColor | HEX | Customize the color of the icon |
+    | bgColor | HEX | Customize the background colour |
 
 License
 =======
