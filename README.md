@@ -7,7 +7,9 @@ Skycons for Android
 
 We set out to create a native weather app on Xamarin but we wanted to build something unique to differentiate ourselves amongst the plethora of weather apps avaialble out there. The [DarkSky](http://darkskyapp.com) app & [Forecast](http://forecast.io) did an excellent job with their [Skycons](http://darkskyapp.github.io/skycons/). 
 
-We wanted to re-use the same icons for our app as well, however, we found that these animated icons don't exist natively on either platforms. This is currently a work-in-progress as the team is finetuning the animation & the performance itself. You can download the complete project 
+We wanted to re-use the same icons for our app as well, however, we found that these animated icons don't exist natively on either platforms. This is currently a work-in-progress as the team is finetuning the animation & the performance itself. You can download the complete repository which also contains the sample project SkyconsDemo.
+
+*Built with Android Studio (0.8.9)*
 
 ## Available Icons
 - Cloud
@@ -22,12 +24,11 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 - Thunder
 
 ## How to use
- - Deployment target should be Api level 14 or above.
+ - Deployment target should be API level 14 or above.
+ - Import 'SkyconsLibrary' as a library to your project.
 
- - Import SkyconsLibrary as a library to your project.
 
-  
-   ###Adding icons:
+## Adding icons:
 
     To add a skycon to the activity, add the following XML in your layout.
                      
@@ -44,16 +45,15 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 
  -  For a better experience, keep 'layout_width' & 'layout_height' the same.
  
-   ###Customization:
+## Customization:
 
-    
-    | Options | Value | Description |
-    | :------: | :---: | :----------: |
-    | layout_width | 100dp (recommended min value) | Width of icon |
-    | layout_height | 100dp (recommended min value) | Height of the icon |
-    | isStatic | True / False | Boolean Value to enable on-touch animation |
-    | strokeColor | HEX | Customize the color of the icon |
-    | bgColor | HEX | Customize the background colour |
+| Options | Value | Description |
+| :------: | :---: | :----------: |
+| layout_width | 100dp (recommended min value) | Width of icon |
+| layout_height | 100dp (recommended min value) | Height of the icon |
+| isStatic | True / False | Boolean Value to enable on-touch animation |
+| strokeColor | HEX | Customize the color of the icon |
+| bgColor | HEX | Customize the background colour |
 
 License
 =======
