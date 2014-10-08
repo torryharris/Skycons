@@ -12,16 +12,20 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 *Built with Android Studio (0.8.9)*
 
 ## Available Icons
-- Cloud
-- Clear Skies (Sunny)
-- Clear Night
-- Partly Cloudy (Day & Night)
-- Light Showers
-- Heavy Showers
-- Snow
-- Fog
-- Wind
-- Thunder
+
+| Icon | View |
+| :------: | :---: |
+| Cloud | CloudView |
+| Clear Sky (Sunny) | SunView |
+| Clear Night | MoonView |
+| Partly Cloudy Day | CloudSunView |
+| Partly Cloudy Night | CloudMoonView |
+| Heavy Showers | CloudHvRainView |
+| Snow | CloudSnowView |
+| Light Showers | CloudRainView |
+| Fog | CloudFogView |
+| Wind | WindView |
+| Thunder | CloudThunderView |
 
 ## How to use
  - Deployment target should be API level 14 or above.
@@ -54,6 +58,15 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 | isStatic | True / False | Boolean Value to enable on-touch animation |
 | strokeColor | HEX | Customize the color of the icon |
 | bgColor | HEX | Customize the background colour |
+
+
+
+##Demo
+<a href="https://play.google.com/store/apps/details?id=com.thbs.skycons">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+</a>
+
 
 License
 =======
