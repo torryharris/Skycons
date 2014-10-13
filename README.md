@@ -61,6 +61,10 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 
 
 
+<B>Pull Requests</B> are welcomed. We are looking forward for your suggestions on new icons & animations.
+
+
+
 ##Demo
 <a href="https://play.google.com/store/apps/details?id=com.thbs.skycons">
   <img alt="Get it on Google Play"
