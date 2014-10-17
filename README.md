@@ -1,4 +1,4 @@
-Skycons for Android
+Skycons for Android [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Skycons-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1043)
 ===================
 
 <p align="center">
