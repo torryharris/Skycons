@@ -75,4 +75,4 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 License
 =======
 
-Skycons for Android is being made available in public domain under similar terms like the [original](http://darkskyapp.github.io)
+Skycons for Android is being made available in public domain under similar terms like the [original](https://github.com/darkskyapp/skycons)
