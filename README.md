@@ -34,7 +34,7 @@ We wanted to re-use the same icons for our app as well, however, we found that t
 
 ## Adding icons:
 
-    To add a skycon to the activity, add the following XML in your layout.
+    1) To add a skycon(icon) through the XML:
                      
            <com.thbs.skycons.library.<skycon>
              android:layout_width="250dp"
@@ -45,7 +45,26 @@ We wanted to re-use the same icons for our app as well, however, we found that t
              app:strokeColor = "#000000"
              app:bgColor = "#ffffff"/>
 
-    where "skycon" represents the particular view/icon.
+    where <skycon> represents the particular view/icon. For example "MoonView"
+    
+    
+    2) To add a skycon(For instance, WindView) through Java code, perform following in the activity:
+    
+          
+            LinearLayout layout = new LinearLayout(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layout.setLayoutParams(params);
+
+            WindView windView = new WindView(this);
+            //Using these params, you can control width & height of the icon
+            params.width = 200;
+            params.height = 200;
+            windView.setLayoutParams(params);
+          
+            layout.addView(windView);
+            this.setContentView(layout);
+          
 
  -  For a better experience, keep 'layout_width' & 'layout_height' the same.
  
