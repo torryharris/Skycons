@@ -37,6 +37,18 @@ public class CloudFogView extends View {
 
     public CloudFogView(Context context) {
         super(context);
+	TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
+
+        // get attributes from layout
+        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
+        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
+        if(strokeColor == 0){
+            strokeColor = Color.BLACK;
+        }
+        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
+        if(bgColor == 0){
+            bgColor = Color.WHITE;
+        }
         init();
     }
 

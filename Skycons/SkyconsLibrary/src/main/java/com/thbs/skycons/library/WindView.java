@@ -32,6 +32,24 @@ public class WindView extends View {
     int strokeColor;
     int bgColor;
 
+    public WindView(Context context) {
+        super(context);
+        TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
+
+        // get attributes from layout
+        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
+        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
+        if(strokeColor == 0){
+            strokeColor = Color.BLACK;
+        }
+        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
+        if(bgColor == 0){
+            bgColor = Color.WHITE;
+        }
+
+        init();
+    }
+
     public WindView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom_view);
@@ -49,7 +67,6 @@ public class WindView extends View {
 
         init();
     }
-
 
 
     private void init() {
