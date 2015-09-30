@@ -69,10 +69,6 @@ public class CloudFogView extends View {
         init();
     }
 
-    public CloudFogView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init();
-    }
 
     private void init() {
 
