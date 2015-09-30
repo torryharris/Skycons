@@ -1,7 +1,6 @@
 package com.thbs.skycons.library;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,12 +8,11 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 /**
  * Created by administrator on 12/09/14.
  */
-public class CloudFogView extends SkyConView {
+public class CloudFogView extends SkyconView {
 
     Paint paintCloud, paintFog;
     boolean expanding = false;

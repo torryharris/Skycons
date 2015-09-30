@@ -6,18 +6,18 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class SkyConView extends View {
+public class SkyconView extends View {
     protected boolean isStatic;
     boolean isAnimated;
     int strokeColor;
     int bgColor;
 
-    public SkyConView(Context context) {
+    public SkyconView(Context context) {
         super(context);
         extractAttributes(context);
     }
 
-    public SkyConView(Context context, AttributeSet attrs) {
+    public SkyconView(Context context, AttributeSet attrs) {
         super(context, attrs);
         extractAttributes(context);
     }

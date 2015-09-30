@@ -1,9 +1,7 @@
 package com.thbs.skycons.library;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
@@ -11,12 +9,11 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 /**
  * This view draws the Moon.
  */
-public class MoonView extends SkyConView {
+public class MoonView extends SkyconView {
 
     Paint paint;
     Path path;

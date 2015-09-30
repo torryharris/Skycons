@@ -1,16 +1,14 @@
 package com.thbs.skycons.library;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
-public class SunView extends SkyConView {
+public class SunView extends SkyconView {
 
     private static Paint paint;
     private int screenW, screenH;

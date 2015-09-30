@@ -2,20 +2,17 @@ package com.thbs.skycons.library;
 
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 /**
  * This view draws cloud with heavy rain.
  */
-public class CloudHvRainView extends SkyConView {
+public class CloudHvRainView extends SkyconView {
 
     private static Paint paintCloud, paintRain;
     private int screenW, screenH;
