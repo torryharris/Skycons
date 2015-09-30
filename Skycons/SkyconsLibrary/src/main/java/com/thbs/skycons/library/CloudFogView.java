@@ -14,15 +14,11 @@ import android.view.View;
 /**
  * Created by administrator on 12/09/14.
  */
-public class CloudFogView extends View {
+public class CloudFogView extends SkyConView {
 
     Paint paintCloud, paintFog;
     boolean expanding = false;
     boolean moving = true;
-    boolean isStatic;
-    boolean isAnimated;
-    int strokeColor;
-    int bgColor;
 
     float ctr = 0;
     float i,j;
@@ -37,35 +33,11 @@ public class CloudFogView extends View {
 
     public CloudFogView(Context context) {
         super(context);
-	TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
         init();
     }
 
     public CloudFogView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
         init();
     }
 

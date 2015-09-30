@@ -12,16 +12,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class CloudThunderView extends View {
+public class CloudThunderView extends SkyConView {
 
 
     int ctr = 0;
     int ctr2 = 0;
-    int strokeColor;
-    int bgColor;
     float thHeight;
-    boolean isStatic;
-    boolean isAnimated;
     PathPoints[] leftPoints;
     Boolean check;
     private Paint paintCloud,paintThunder;
@@ -34,39 +30,11 @@ public class CloudThunderView extends View {
 
     public CloudThunderView(Context context) {
         super(context);
-
-        TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
-
         init();
     }
 
     public CloudThunderView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
-
         init();
     }
 
