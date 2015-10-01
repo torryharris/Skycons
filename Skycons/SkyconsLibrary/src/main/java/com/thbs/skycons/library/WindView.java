@@ -1,22 +1,19 @@
 package com.thbs.skycons.library;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 /**
  * Created by administrator on 18/09/14.
  */
 
-public class WindView extends View {
+public class WindView extends SkyconView {
 
     private static Paint paint;
     private int screenW, screenH;
@@ -26,45 +23,15 @@ public class WindView extends View {
     int degrees;
     boolean isFirstPath;
     PathPoints[] points;
-    boolean isStatic;
-    boolean isAnimated;
     boolean isFirst;
-    int strokeColor;
-    int bgColor;
 
     public WindView(Context context) {
         super(context);
-        TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
-
         init();
     }
 
     public WindView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
-
         init();
     }
 

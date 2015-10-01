@@ -1,9 +1,7 @@
 package com.thbs.skycons.library;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
@@ -11,12 +9,11 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 /**
  * This view draws cloud with Moon.
  */
-public class CloudMoonView extends View {
+public class CloudMoonView extends SkyconView {
 
     Paint paintCloud, paintMoon;
     Path  pathMoon;
@@ -30,50 +27,13 @@ public class CloudMoonView extends View {
     private double count;
     Cloud cloud;
 
-    boolean isStatic;
-    boolean isAnimated;
-    int strokeColor;
-    int bgColor;
-
     public CloudMoonView(Context context) {
         super(context);
-
-        TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
-
         init();
     }
 
     public CloudMoonView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
-
         init();
     }
 

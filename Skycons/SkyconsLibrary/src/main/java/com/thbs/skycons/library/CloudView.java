@@ -1,57 +1,27 @@
 package com.thbs.skycons.library;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
-public class CloudView extends View {
+public class CloudView extends SkyconView {
 
     private Paint paint;
     private int screenW, screenH;
     private float X, Y;
     private double count;
     Cloud c;
-    boolean isStatic;
-    boolean isAnimated;
-    int strokeColor;
-    int bgColor;
 
     public CloudView(Context context) {
         super(context);
-        TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
         init();
     }
 
     public CloudView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom_view);
-
-        // get attributes from layout
-        isStatic =    a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
-        strokeColor =    a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
-        if(strokeColor == 0){
-            strokeColor = Color.BLACK;
-        }
-        bgColor =    a.getColor(R.styleable.custom_view_bgColor, this.bgColor);
-        if(bgColor == 0){
-            bgColor = Color.WHITE;
-        }
         init();
     }
 
