@@ -65,6 +65,7 @@ We wanted to re-use the same icons for our app as well, however, we found that t
             layout.addView(windView);
             this.setContentView(layout);
           
+          
 
  -  For a better experience, keep 'layout_width' & 'layout_height' the same.
  
