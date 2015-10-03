@@ -14,7 +14,7 @@ import android.view.MotionEvent;
  */
 public class CloudRainView extends SkyconView {
 
-    private static Paint paintCloud, paintRain;
+    private static Paint paintCloud;
     private int screenW, screenH;
     private float X, Y;
     private Path  pathRain;
@@ -38,7 +38,7 @@ public class CloudRainView extends SkyconView {
         count = 0;
 
         paintCloud = new Paint();
-        paintRain = new Paint();
+        paint = new Paint();
 
         //Paint for drawing cloud
         paintCloud.setColor(strokeColor);
@@ -50,10 +50,10 @@ public class CloudRainView extends SkyconView {
         paintCloud.setShadowLayer(0, 0, 0, strokeColor);
 
         //Paint for drawing rain drops
-        paintRain.setColor(strokeColor);
-        paintRain.setAntiAlias(true);
-        paintRain.setStrokeCap(Paint.Cap.ROUND);
-        paintRain.setStyle(Paint.Style.FILL);
+        paint.setColor(strokeColor);
+        paint.setAntiAlias(true);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.FILL);
 
         cloud = new Cloud();
 
@@ -79,11 +79,10 @@ public class CloudRainView extends SkyconView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // set canvas background color
-        canvas.drawColor(bgColor);
+        paintCloud.setColor(strokeColor);
 
         paintCloud.setStrokeWidth((float)(0.02083*screenW));
-        paintRain.setStrokeWidth((float)(0.015*screenW));
+        paint.setStrokeWidth((float) (0.015 * screenW));
 
         pathRain = new Path(); // pathCloud for drop
 
@@ -245,12 +244,12 @@ public class CloudRainView extends SkyconView {
         }
 
         // First fill the shape with paint
-        paintRain.setStyle(Paint.Style.FILL);
-        canvas.drawPath(pathRain, paintRain);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawPath(pathRain, paint);
 
         // Then, draw the same pathCloud with paint stroke
-        paintRain.setStyle(Paint.Style.STROKE);
-        canvas.drawPath(pathRain, paintRain);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(pathRain, paint);
 
         m = m+2.5f;
 

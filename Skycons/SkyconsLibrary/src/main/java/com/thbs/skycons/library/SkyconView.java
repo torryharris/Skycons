@@ -2,7 +2,9 @@ package com.thbs.skycons.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -11,19 +13,21 @@ public class SkyconView extends View {
     boolean isAnimated;
     int strokeColor;
     int bgColor;
+    Paint paint;
+
 
     public SkyconView(Context context) {
         super(context);
-        extractAttributes(context);
+        extractAttributes(context, null);
     }
 
     public SkyconView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        extractAttributes(context);
+        extractAttributes(context, attrs);
     }
 
-    private void extractAttributes(Context context) {
-        TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
+    private void extractAttributes(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom_view);
 
         // get attributes from layout
         isStatic = a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
@@ -40,6 +44,14 @@ public class SkyconView extends View {
         }
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        // set canvas background color
+        canvas.drawColor(bgColor);
+        paint.setColor(strokeColor);
+    }
 
     public boolean isStatic() {
         return isStatic;

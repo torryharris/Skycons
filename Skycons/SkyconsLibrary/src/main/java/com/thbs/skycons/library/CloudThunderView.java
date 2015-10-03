@@ -12,13 +12,12 @@ import android.view.MotionEvent;
 
 public class CloudThunderView extends SkyconView {
 
-
+    private Paint paintCloud;
     int ctr = 0;
     int ctr2 = 0;
     float thHeight;
     PathPoints[] leftPoints;
     Boolean check;
-    private Paint paintCloud,paintThunder;
     private int screenW, screenH;
     private float X, Y;
     private Path thPath,thFillPath;
@@ -76,14 +75,14 @@ public class CloudThunderView extends SkyconView {
         paintCloud.setStyle(Paint.Style.STROKE);
         paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
-        paintThunder = new Paint();
-        paintThunder.setColor(strokeColor);
-        paintThunder.setStrokeWidth(10);
-        paintThunder.setAntiAlias(true);
-        paintThunder.setStrokeCap(Paint.Cap.ROUND);
-        paintThunder.setStrokeJoin(Paint.Join.ROUND);
-        paintThunder.setStyle(Paint.Style.STROKE);
-        paintThunder.setShadowLayer(0, 0, 0, Color.BLACK);
+        paint = new Paint();
+        paint.setColor(strokeColor);
+        paint.setStrokeWidth(10);
+        paint.setAntiAlias(true);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
         cloud = new Cloud();
 
@@ -93,10 +92,10 @@ public class CloudThunderView extends SkyconView {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawColor(bgColor);
 
+        paintCloud.setColor(strokeColor);
         paintCloud.setStrokeWidth((float) (0.02083 * screenW));
-        paintThunder.setStrokeWidth((float)(0.02083*screenW));
+        paint.setStrokeWidth((float) (0.02083 * screenW));
 
         //incrementing counter for rotation
         count = count+0.5;
@@ -196,14 +195,16 @@ public class CloudThunderView extends SkyconView {
             }
         }
 
-        canvas.drawPath(thFillPath,paintThunder);
+        canvas.drawPath(thFillPath, paint);
 
+        // drawing cloud with fill
+        paintCloud.setColor(bgColor);
         paintCloud.setStyle(Paint.Style.FILL);
-        paintCloud.setColor(Color.WHITE);
         canvas.drawPath(cloud.getCloud(X,Y,screenW,count), paintCloud);
 
+        // drawing cloud with stroke
+        paintCloud.setColor(strokeColor);
         paintCloud.setStyle(Paint.Style.STROKE);
-        paintCloud.setColor(Color.BLACK);
         canvas.drawPath(cloud.getCloud(X,Y,screenW,count), paintCloud);
 
         if(isAnimated) {

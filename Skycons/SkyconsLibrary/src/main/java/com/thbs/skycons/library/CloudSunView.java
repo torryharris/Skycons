@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 
 public class CloudSunView extends SkyconView {
 
-    private static Paint paint;
     private int screenW, screenH;
     private float X,Y,XSun,YSun;
     private Path path, path1;
@@ -76,8 +75,6 @@ public class CloudSunView extends SkyconView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // set canvas background color
-        canvas.drawColor(bgColor);
         // set stroke width
         paint.setStrokeWidth((float) (0.02083 * screenW));
 

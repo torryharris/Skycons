@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 
 public class SunView extends SkyconView {
 
-    private static Paint paint;
     private int screenW, screenH;
     private float X, Y;
     private Path path, path1;
@@ -73,9 +72,6 @@ public class SunView extends SkyconView {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        // set canvas background color
-        canvas.drawColor(bgColor);
 
         // initializing paths
         path = new Path();
