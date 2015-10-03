@@ -14,7 +14,7 @@ import android.view.MotionEvent;
  */
 public class CloudHvRainView extends SkyconView {
 
-    private static Paint paintCloud, paintRain;
+    private static Paint paintCloud;
     private int screenW, screenH;
     private float X, Y;
     private Path  path1, path2, path3;
@@ -40,7 +40,7 @@ public class CloudHvRainView extends SkyconView {
         count = 0;
 
         paintCloud = new Paint();
-        paintRain = new Paint();
+        paint = new Paint();
 
         //Paint for drawing cloud
         paintCloud.setColor(strokeColor);
@@ -52,10 +52,10 @@ public class CloudHvRainView extends SkyconView {
         paintCloud.setShadowLayer(0, 0, 0, strokeColor);
 
         //Paint for drawing rain drops
-        paintRain.setColor(strokeColor);
-        paintRain.setAntiAlias(true);
-        paintRain.setStrokeCap(Paint.Cap.ROUND);
-        paintRain.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setColor(strokeColor);
+        paint.setAntiAlias(true);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         cloud = new Cloud();
 
@@ -84,8 +84,7 @@ public class CloudHvRainView extends SkyconView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // set canvas background color
-        canvas.drawColor(bgColor);
+        paintCloud.setColor(strokeColor);
 
         path1 = new Path();// pathCloud for drop 1
         path2 = new Path();// pathCloud for drop 2
@@ -94,7 +93,7 @@ public class CloudHvRainView extends SkyconView {
         count = count+0.5;
 
         paintCloud.setStrokeWidth((float) (0.02083 * screenW));
-        paintRain.setStrokeWidth((float) (0.015 * screenW));
+        paint.setStrokeWidth((float) (0.015 * screenW));
 
         int retval = Double.compare(count, 360.00);
 
@@ -135,15 +134,15 @@ public class CloudHvRainView extends SkyconView {
 
             path1.moveTo(x1, y1 + (m - 24));
             path1.lineTo(x1, y1 + m + (float)(Y*0.1));
-            canvas.drawPath(path1, paintRain);
+            canvas.drawPath(path1, paint);
 
             path2.moveTo(x2, y2 + (m - 24));
             path2.lineTo(x2, y2 + m + (float)(Y*0.1));
-            canvas.drawPath(path2, paintRain);
+            canvas.drawPath(path2, paint);
 
             path3.moveTo(x3, y3 + ((m-50) - 24));
             path3.lineTo(x3, y3 + (m-50) + (float)(Y*0.1));
-            canvas.drawPath(path3, paintRain);
+            canvas.drawPath(path3, paint);
 
         } else { // Animating view
 
@@ -161,7 +160,7 @@ public class CloudHvRainView extends SkyconView {
                     }
 
                     path1.lineTo(x1, y1 + m1 + (float)(Y*0.1));
-                    canvas.drawPath(path1, paintRain);
+                    canvas.drawPath(path1, paint);
 
                     m1 = m1 + 4;
 
@@ -182,7 +181,7 @@ public class CloudHvRainView extends SkyconView {
                         }
 
                         path2.lineTo(x2, y2+m2+(float)(Y*0.1));
-                        canvas.drawPath(path2, paintRain);
+                        canvas.drawPath(path2, paint);
 
                         m2 = m2 + 4;
 
@@ -207,7 +206,7 @@ public class CloudHvRainView extends SkyconView {
                     }
 
                     path3.lineTo(x3, y3+m3+(float)(Y*0.1));
-                    canvas.drawPath(path3, paintRain);
+                    canvas.drawPath(path3, paint);
 
                     m3 = m3 + 4;
 
@@ -228,7 +227,7 @@ public class CloudHvRainView extends SkyconView {
                         }
 
                         path2.lineTo(x2, y2+m2+(float)(Y*0.1));
-                        canvas.drawPath(path2, paintRain);
+                        canvas.drawPath(path2, paint);
 
                         m2 = m2 + 4;
 

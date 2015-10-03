@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 
 public class CloudView extends SkyconView {
 
-    private Paint paint;
     private int screenW, screenH;
     private float X, Y;
     private double count;
@@ -62,9 +61,6 @@ public class CloudView extends SkyconView {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        // set canvas background color
-        canvas.drawColor(bgColor);
 
         // set stroke width
         paint.setStrokeWidth((float)(0.02083*screenW));

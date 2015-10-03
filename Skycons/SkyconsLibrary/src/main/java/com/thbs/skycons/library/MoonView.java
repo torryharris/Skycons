@@ -15,7 +15,6 @@ import android.view.MotionEvent;
  */
 public class MoonView extends SkyconView {
 
-    Paint paint;
     Path path;
     private int screenW, screenH;
     private float X, Y;
@@ -66,9 +65,6 @@ public class MoonView extends SkyconView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        // set canvas background color
-        canvas.drawColor(bgColor);
 
         paint.setStrokeWidth((float) (0.02083 * screenW));
 

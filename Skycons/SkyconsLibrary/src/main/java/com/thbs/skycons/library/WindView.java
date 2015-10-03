@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 
 public class WindView extends SkyconView {
 
-    private static Paint paint;
     private int screenW, screenH;
     private float X, Y, X2, Y2,  X11, Y11, Y21, X21, Xc, Yc;
     private Path tracePath, windPath, leafPath;
@@ -77,8 +76,6 @@ public class WindView extends SkyconView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // set canvas background color
-        canvas.drawColor(bgColor);
         // set stroke width
         paint.setStrokeWidth((float)(0.02083*screenW));
 

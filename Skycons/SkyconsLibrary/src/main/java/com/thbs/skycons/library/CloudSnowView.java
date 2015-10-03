@@ -14,7 +14,7 @@ import android.view.MotionEvent;
  */
 public class CloudSnowView extends SkyconView {
 
-    private Paint paintCloud, paintSnow;
+    private Paint paintCloud;
 
     PathPoints[] pathPoints11, pathPoints12, pathPoints21, pathPoints22,
             pointsCircle11, pointsCircle12, pointsCircle21, pointsCircle22;
@@ -55,7 +55,7 @@ public class CloudSnowView extends SkyconView {
         count = 0;
 
         paintCloud = new Paint();
-        paintSnow = new Paint();
+        paint = new Paint();
 
         paintCloud.setColor(strokeColor);
         paintCloud.setAntiAlias(true);
@@ -64,10 +64,10 @@ public class CloudSnowView extends SkyconView {
         paintCloud.setStyle(Paint.Style.STROKE);
         paintCloud.setShadowLayer(0, 0, 0, strokeColor);
 
-        paintSnow.setColor(strokeColor);
-        paintSnow.setAntiAlias(true);
-        paintSnow.setStrokeCap(Paint.Cap.ROUND);
-        paintSnow.setStyle(Paint.Style.STROKE);
+        paint.setColor(strokeColor);
+        paint.setAntiAlias(true);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
 
         cloud =  new Cloud();
         pathCircle1 = new Path();
@@ -92,13 +92,12 @@ public class CloudSnowView extends SkyconView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // set canvas background color
-        canvas.drawColor(bgColor);
+        paintCloud.setColor(strokeColor);
 
         count = count+0.5;
 
         paintCloud.setStrokeWidth((float)(0.02083*screenW));
-        paintSnow.setStrokeWidth((float) (0.01*screenW));
+        paint.setStrokeWidth((float) (0.01 * screenW));
 
         int retval = Double.compare(count, 360.00);
 
@@ -207,9 +206,9 @@ public class CloudSnowView extends SkyconView {
             path22.lineTo(pointsCircle12[b].getX(), (pointsCircle12[b].getY()));
             path23.lineTo(pointsCircle12[c].getX(), (pointsCircle12[c].getY()));
 
-            canvas.drawPath(path21, paintSnow);
-            canvas.drawPath(path22, paintSnow);
-            canvas.drawPath(path23, paintSnow);
+            canvas.drawPath(path21, paint);
+            canvas.drawPath(path22, paint);
+            canvas.drawPath(path23, paint);
 
             // drawing cloud with fill
             paintCloud.setColor(bgColor);
@@ -249,9 +248,9 @@ public class CloudSnowView extends SkyconView {
             path22.lineTo(pointsCircle22[b].getX(), (pointsCircle22[b].getY()));
             path23.lineTo(pointsCircle22[c].getX(), (pointsCircle22[c].getY()));
 
-            canvas.drawPath(path21, paintSnow);
-            canvas.drawPath(path22, paintSnow);
-            canvas.drawPath(path23, paintSnow);
+            canvas.drawPath(path21, paint);
+            canvas.drawPath(path22, paint);
+            canvas.drawPath(path23, paint);
 
             // drawing cloud with fill
             paintCloud.setColor(bgColor);
@@ -294,9 +293,9 @@ public class CloudSnowView extends SkyconView {
                 path12.lineTo(pointsCircle11[b].getX(), (pointsCircle11[b].getY()));
                 path13.lineTo(pointsCircle11[c].getX(), (pointsCircle11[c].getY()));
 
-                canvas.drawPath(path11, paintSnow);
-                canvas.drawPath(path12, paintSnow);
-                canvas.drawPath(path13, paintSnow);
+                canvas.drawPath(path11, paint);
+                canvas.drawPath(path12, paint);
+                canvas.drawPath(path13, paint);
 
                 // drawing cloud with fill
                 paintCloud.setColor(bgColor);
@@ -338,9 +337,9 @@ public class CloudSnowView extends SkyconView {
                     path22.lineTo(pointsCircle12[b].getX(), (pointsCircle12[b].getY()));
                     path23.lineTo(pointsCircle12[c].getX(), (pointsCircle12[c].getY()));
 
-                    canvas.drawPath(path21, paintSnow);
-                    canvas.drawPath(path22, paintSnow);
-                    canvas.drawPath(path23, paintSnow);
+                    canvas.drawPath(path21, paint);
+                    canvas.drawPath(path22, paint);
+                    canvas.drawPath(path23, paint);
 
                     // drawing cloud with fill
                     paintCloud.setColor(bgColor);
@@ -406,9 +405,9 @@ public class CloudSnowView extends SkyconView {
                 path22.lineTo(pointsCircle12[b].getX(), (pointsCircle12[b].getY()));
                 path23.lineTo(pointsCircle12[c].getX(), (pointsCircle12[c].getY()));
 
-                canvas.drawPath(path21, paintSnow);
-                canvas.drawPath(path22, paintSnow);
-                canvas.drawPath(path23, paintSnow);
+                canvas.drawPath(path21, paint);
+                canvas.drawPath(path22, paint);
+                canvas.drawPath(path23, paint);
 
                 // drawing cloud with fill
                 paintCloud.setColor(bgColor);
@@ -471,9 +470,9 @@ public class CloudSnowView extends SkyconView {
                 path12.lineTo(pointsCircle21[b].getX(), (pointsCircle21[b].getY()));
                 path13.lineTo(pointsCircle21[c].getX(), (pointsCircle21[c].getY()));
 
-                canvas.drawPath(path11, paintSnow);
-                canvas.drawPath(path12, paintSnow);
-                canvas.drawPath(path13, paintSnow);
+                canvas.drawPath(path11, paint);
+                canvas.drawPath(path12, paint);
+                canvas.drawPath(path13, paint);
 
                 // drawing cloud with fill
                 paintCloud.setColor(bgColor);
@@ -515,9 +514,9 @@ public class CloudSnowView extends SkyconView {
                     path22.lineTo(pointsCircle22[b].getX(), (pointsCircle22[b].getY()));
                     path23.lineTo(pointsCircle22[c].getX(), (pointsCircle22[c].getY()));
 
-                    canvas.drawPath(path21, paintSnow);
-                    canvas.drawPath(path22, paintSnow);
-                    canvas.drawPath(path23, paintSnow);
+                    canvas.drawPath(path21, paint);
+                    canvas.drawPath(path22, paint);
+                    canvas.drawPath(path23, paint);
 
                     // drawing cloud with fill
                     paintCloud.setColor(bgColor);
@@ -579,9 +578,9 @@ public class CloudSnowView extends SkyconView {
                 path22.lineTo(pointsCircle22[b].getX(), (pointsCircle22[b].getY()));
                 path23.lineTo(pointsCircle22[c].getX(), (pointsCircle22[c].getY()));
 
-                canvas.drawPath(path21, paintSnow);
-                canvas.drawPath(path22, paintSnow);
-                canvas.drawPath(path23, paintSnow);
+                canvas.drawPath(path21, paint);
+                canvas.drawPath(path22, paint);
+                canvas.drawPath(path23, paint);
 
                 // drawing cloud with fill
                 paintCloud.setColor(bgColor);

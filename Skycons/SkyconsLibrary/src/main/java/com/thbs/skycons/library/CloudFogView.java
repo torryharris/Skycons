@@ -14,7 +14,7 @@ import android.view.MotionEvent;
  */
 public class CloudFogView extends SkyconView {
 
-    Paint paintCloud, paintFog;
+    Paint paintCloud;
     boolean expanding = false;
     boolean moving = true;
 
@@ -56,7 +56,7 @@ public class CloudFogView extends SkyconView {
             isAnimated = true;
         }
         paintCloud = new Paint();
-        paintFog = new Paint();
+        paint = new Paint();
 
         //Setting paint for cloud
         paintCloud.setColor(strokeColor);
@@ -67,12 +67,12 @@ public class CloudFogView extends SkyconView {
         paintCloud.setShadowLayer(0, 0, 0, Color.BLACK);
 
         //Setting paint for fog
-        paintFog.setColor(strokeColor);
-        paintFog.setAntiAlias(true);
-        paintFog.setStrokeCap(Paint.Cap.ROUND);
-        paintFog.setStrokeJoin(Paint.Join.ROUND);
-        paintFog.setStyle(Paint.Style.FILL_AND_STROKE);
-        paintFog.setShadowLayer(0, 0, 0, Color.BLACK);
+        paint.setColor(strokeColor);
+        paint.setAntiAlias(true);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setShadowLayer(0, 0, 0, Color.BLACK);
 
         cloud = new Cloud();
     }
@@ -95,10 +95,9 @@ public class CloudFogView extends SkyconView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawColor(bgColor);
-
+        paintCloud.setColor(strokeColor);
         paintCloud.setStrokeWidth((float)(0.02083*screenW));
-        paintFog.setStrokeWidth((float)(0.02083*screenW));
+        paint.setStrokeWidth((float) (0.02083 * screenW));
 
         path1 = new Path();
         path2 = new Path();
@@ -217,8 +216,8 @@ public class CloudFogView extends SkyconView {
         }
 
 
-        canvas.drawPath(path1,paintFog);
-        canvas.drawPath(path2,paintFog);
+        canvas.drawPath(path1, paint);
+        canvas.drawPath(path2, paint);
 
         if(isAnimated) {
             invalidate();

@@ -15,7 +15,7 @@ import android.view.MotionEvent;
  */
 public class CloudMoonView extends SkyconView {
 
-    Paint paintCloud, paintMoon;
+    Paint paintCloud;
     Path  pathMoon;
     private int screenW, screenH;
     private float X, Y, X2, Y2;
@@ -48,11 +48,11 @@ public class CloudMoonView extends SkyconView {
         paintCloud.setShadowLayer(0, 0, 0, strokeColor);
 
         //Paint for drawing Moon
-        paintMoon = new Paint();
-        paintMoon.setColor(strokeColor);
-        paintMoon.setAntiAlias(true);
-        paintMoon.setStrokeCap(Paint.Cap.ROUND);
-        paintMoon.setStyle(Paint.Style.STROKE);
+        paint = new Paint();
+        paint.setColor(strokeColor);
+        paint.setAntiAlias(true);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
 
         count = 0;
         cloud = new Cloud();
@@ -78,11 +78,9 @@ public class CloudMoonView extends SkyconView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // set canvas background color
-        canvas.drawColor(bgColor);
-
+        paintCloud.setColor(strokeColor);
         paintCloud.setStrokeWidth((float)(0.02083*screenW));
-        paintMoon.setStrokeWidth((float)(0.02083*screenW));
+        paint.setStrokeWidth((float) (0.02083 * screenW));
 
         count = count+0.5;
         int retval = Double.compare(count, 360.00);
@@ -131,7 +129,7 @@ public class CloudMoonView extends SkyconView {
             pathMoon.moveTo(a, b);
             pathMoon.cubicTo(p1.x, p1.y, p2.x, p2.y, c, d);
 
-            canvas.drawPath(pathMoon, paintMoon);
+            canvas.drawPath(pathMoon, paint);
 
             m = m + 0.5f;
 
@@ -160,7 +158,7 @@ public class CloudMoonView extends SkyconView {
             pathMoon.moveTo(a, b);
             pathMoon.cubicTo(p1.x, p1.y, p2.x, p2.y, c, d);
 
-            canvas.drawPath(pathMoon, paintMoon);
+            canvas.drawPath(pathMoon, paint);
 
             m = m + 0.5f;
 
