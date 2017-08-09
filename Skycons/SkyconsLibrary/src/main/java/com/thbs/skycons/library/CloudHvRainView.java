@@ -25,8 +25,14 @@ public class CloudHvRainView extends SkyconView {
     double radius1, radius2;
     Cloud cloud;
 
-    public CloudHvRainView(Context context) {
+    public CloudHvRainView(Context context,boolean isStatic,boolean isAnimated, int strokeColor , int backgroundColor) {
         super(context);
+
+        this.isStatic = isStatic;
+        this.isAnimated = isAnimated;
+        this.strokeColor = strokeColor;
+        this.bgColor = backgroundColor;
+
         init();
     }
 

@@ -27,8 +27,14 @@ public class CloudMoonView extends SkyconView {
     private double count;
     Cloud cloud;
 
-    public CloudMoonView(Context context) {
+    public CloudMoonView(Context context,boolean isStatic,boolean isAnimated, int strokeColor , int backgroundColor) {
         super(context);
+
+        this.isStatic = isStatic;
+        this.isAnimated = isAnimated;
+        this.strokeColor = strokeColor;
+        this.bgColor = backgroundColor;
+
         init();
     }
 

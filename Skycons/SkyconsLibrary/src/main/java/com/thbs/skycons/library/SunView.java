@@ -16,20 +16,19 @@ public class SunView extends SkyconView {
     private Path path, path1;
     private double count;
 
-    public SunView(Context context) {
-        super(context);
-
-        X = screenW/2;
-        Y = (screenH/2);
+    public SunView(Context context, AttributeSet attrs) {
+        super(context, attrs);
 
         init();
     }
 
-    public SunView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public SunView(Context context,boolean isStatic,boolean isAnimated, int strokeColor , int backgroundColor) {
+        super(context);
 
-        X = screenW/2;
-        Y = (screenH/2);
+        this.isStatic = isStatic;
+        this.isAnimated = isAnimated;
+        this.strokeColor = strokeColor;
+        this.bgColor = backgroundColor;
 
         init();
     }
@@ -39,13 +38,14 @@ public class SunView extends SkyconView {
         // initialize default values
         count = 0;
         paint = new Paint();
+
         paint.setColor(strokeColor);
 
         paint.setAntiAlias(true);
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setShadowLayer(0, 0, 0, Color.BLACK);
+        paint.setShadowLayer(0, 0, 0, strokeColor);
 
         path= new Path();
         isAnimated = true;

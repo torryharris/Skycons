@@ -4,32 +4,34 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class SkyconView extends View {
-    protected boolean isStatic;
-    boolean isAnimated;
-    int strokeColor;
-    int bgColor;
+    protected boolean isStatic =false;
+    boolean isAnimated = false;
+    int strokeColor = Color.parseColor("#000000");
+    int bgColor = Color.parseColor("#ffffff");
 
     public SkyconView(Context context) {
         super(context);
-        extractAttributes(context);
+    //    extractAttributes(context);
     }
 
     public SkyconView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        extractAttributes(context);
+        extractAttributes(context,attrs);
     }
 
-    private void extractAttributes(Context context) {
-        TypedArray a = context.obtainStyledAttributes(null, R.styleable.custom_view);
+    private void extractAttributes(Context context, AttributeSet attrs) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom_view);
 
         // get attributes from layout
         isStatic = a.getBoolean(R.styleable.custom_view_isStatic, this.isStatic);
         strokeColor = a.getColor(R.styleable.custom_view_strokeColor, this.strokeColor);
 
         if(strokeColor == 0){
+
             strokeColor = Color.BLACK;
         }
 
@@ -38,6 +40,8 @@ public class SkyconView extends View {
         if(bgColor == 0) {
             bgColor = Color.WHITE;
         }
+
+        a.recycle();
     }
 
 
@@ -62,6 +66,7 @@ public class SkyconView extends View {
     }
 
     public void setStrokeColor(int strokeColor) {
+        Log.e("strokecolor",""+strokeColor);
         this.strokeColor = strokeColor;
     }
 

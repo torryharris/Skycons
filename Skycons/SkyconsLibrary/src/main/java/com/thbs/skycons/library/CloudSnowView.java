@@ -40,8 +40,14 @@ public class CloudSnowView extends SkyconView {
     Cloud cloud;
 
     // Initial declaration of the coordinates.
-    public CloudSnowView(Context context) {
+    public CloudSnowView(Context context,boolean isStatic,boolean isAnimated, int strokeColor , int backgroundColor) {
         super(context);
+
+        this.isStatic = isStatic;
+        this.isAnimated = isAnimated;
+        this.strokeColor = strokeColor;
+        this.bgColor = backgroundColor;
+
         init();
     }
 

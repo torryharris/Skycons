@@ -29,8 +29,14 @@ public class CloudFogView extends SkyconView {
     boolean compress = false;
     float line1Y = 0, line2Y = 0,lineStartX, lineEndX;
 
-    public CloudFogView(Context context) {
+    public CloudFogView(Context context,boolean isStatic,boolean isAnimated, int strokeColor , int backgroundColor) {
         super(context);
+
+        this.isStatic = isStatic;
+        this.isAnimated = isAnimated;
+        this.strokeColor = strokeColor;
+        this.bgColor = backgroundColor;
+
         init();
     }
 

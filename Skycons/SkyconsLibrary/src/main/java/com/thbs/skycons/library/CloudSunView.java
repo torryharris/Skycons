@@ -22,8 +22,14 @@ public class CloudSunView extends SkyconView {
     float sweepAngle;
     Cloud cloud;
 
-    public CloudSunView(Context context) {
+    public CloudSunView(Context context,boolean isStatic,boolean isAnimated, int strokeColor , int backgroundColor) {
         super(context);
+
+        this.isStatic = isStatic;
+        this.isAnimated = isAnimated;
+        this.strokeColor = strokeColor;
+        this.bgColor = backgroundColor;
+
         init();
     }
 

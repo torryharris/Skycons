@@ -24,8 +24,14 @@ public class CloudRainView extends SkyconView {
     private double count;
     Cloud cloud;
 
-    public CloudRainView(Context context) {
+    public CloudRainView(Context context,boolean isStatic,boolean isAnimated, int strokeColor , int backgroundColor) {
         super(context);
+
+        this.isStatic = isStatic;
+        this.isAnimated = isAnimated;
+        this.strokeColor = strokeColor;
+        this.bgColor = backgroundColor;
+
         init();
     }
 

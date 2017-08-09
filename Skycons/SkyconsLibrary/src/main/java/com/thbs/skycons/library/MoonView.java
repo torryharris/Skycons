@@ -27,8 +27,14 @@ public class MoonView extends SkyconView {
 
     int count = 0; //counter for stopping animation
 
-    public MoonView(Context context) {
+    public MoonView(Context context,boolean isStatic,boolean isAnimated, int strokeColor , int backgroundColor) {
         super(context);
+
+        this.isStatic = isStatic;
+        this.isAnimated = isAnimated;
+        this.strokeColor = strokeColor;
+        this.bgColor = backgroundColor;
+
         init();
     }
 
